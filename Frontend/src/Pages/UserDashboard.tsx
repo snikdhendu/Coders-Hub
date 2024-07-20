@@ -3,6 +3,7 @@ import { Navbar } from "../Components";
 import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import GitHubCalendar from 'react-github-calendar';
+
 // import { UserProfileDetails } from "react-leetcode";
 
 const UserDashboard = () => {
@@ -10,10 +11,10 @@ const UserDashboard = () => {
         <div>
             <Navbar />
 
-            <div className=" min-h-screen w-full h-fit bg-blue-50 p-8 flex gap-6 border-2  flex-wrap md:flex-nowrap">
+            <div  className=" min-h-screen w-full h-fit bg-mainbg p-8 flex gap-6 border-2  flex-wrap md:flex-nowrap">
                 <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
 
-                    <div className=" w-full h-4/5 rounded-md bg-white shadow-2xl border border-zinc-300 flex flex-col gap-3">
+                    <div className=" w-full h-4/5 rounded-md bg-secondbg shadow-2xl border border-zinc-300 flex flex-col gap-3">
 
                         <div className=" w-full h-2/4 p-5 flex flex-col gap-2">
 
@@ -30,11 +31,11 @@ const UserDashboard = () => {
                             </div>
 
                             <div className=" w-full h-1/4 flex justify-center items-center">
-                                <h1 className=" text-3xl font-extrabold font-royal4  text-blue-900">Shreyam Kundu</h1>
+                                <h1 className=" text-3xl font-extrabold font-royal4 text-textmain">Shreyam Kundu</h1>
                             </div>
 
                             <div className=" w-full h-8 flex justify-center items-center">
-                                <span className=" text-lg font-semibold font-royal4 text-blue-900">A Fullstack Developer</span>
+                                <span className=" text-lg font-semibold font-royal4 text-textmain">A Fullstack Developer</span>
                             </div>
 
                             <div className="w-full h-1/4 flex justify-center items-center gap-6">
@@ -65,16 +66,16 @@ const UserDashboard = () => {
                         <div className=" w-full h-1/5  flex justify-center items-center flex-col gap-4">
 
                             <div className=" w-1/2 h-auto flex justify-center items-center">
-                                <Link to='./edit ' className=" w-full  rounded-md bg-blue-300 text-blue-600 flex justify-center items-center p-1 font-royal4" >
+                                <Link to='./edit ' className=" w-full  rounded-md bg-textfourth text-textsecond flex justify-center items-center p-1 font-royal4" >
                                     Edit profile
                                 </Link>
 
                             </div>
                             <div className=" flex gap-3">
-                                <Link to=' ' className=" w-24 h-full rounded-sm bg-blue-900 text-white flex justify-center items-center p-2 font-royal4" >
+                                <Link to=' ' className=" w-24 h-full rounded-sm bg-textmain text-white flex justify-center items-center p-2 font-royal4" >
                                     Connect
                                 </Link>
-                                <Link to=' ' className=" w-1/2 h-full rounded-sm bg-blue-900 text-white flex justify-center items-center p-2 font-royal-4" >
+                                <Link to=' ' className=" w-1/2 h-full rounded-sm bg-textmain text-white flex justify-center items-center p-2 font-royal-4" >
                                     Message
                                 </Link>
                             </div>
@@ -83,15 +84,15 @@ const UserDashboard = () => {
 
                         <div className=" w-full h-1/5  flex p-10">
 
-                            <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-blue-900 font-semibold text-base font-royal4">
+                            <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-textmain font-semibold text-base font-royal4">
                                 <h1>Project</h1>
                                 <span className=" font-extrabold text-2xl">80</span>
                             </div>
-                            <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-blue-900 font-semibold text-base font-royal4">
+                            <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-textmain font-semibold text-base font-royal4">
                                 <h1>Connection</h1>
                                 <span className=" font-extrabold text-2xl">12</span>
                             </div>
-                            <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-blue-900 font-semibold text-base font-royal4">
+                            <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-textmain font-semibold text-base font-royal4">
                                 <h1>Following</h1>
                                 <span className="font-extrabold text-2xl">67</span>
                             </div>
@@ -106,7 +107,7 @@ const UserDashboard = () => {
 
 
 
-                    <div className=" w-full h-96 overflow-y-auto rounded-md bg-white shadow-2xl border border-zinc-300 ">
+                    <div className=" w-full h-96 overflow-y-auto rounded-md bg-secondbg shadow-2xl border border-zinc-300 ">
 
                     </div>
 
@@ -117,13 +118,13 @@ const UserDashboard = () => {
 
                     <div className=" w-full h-1/3  flex gap-4">
 
-                        <div className=" w-1/3 h-full rounded-md bg-white shadow-2xl border border-zinc-300">
+                        <div className=" w-1/3 h-full rounded-md bg-secondbg shadow-2xl border border-zinc-300">
 
                         <img src=" https://leetcode-stat-api.herokuapp.com/adityag28/theme=dark" alt="LeetCode Stats" />
                             
                         </div>
 
-                        <div className=" w-2/3 h-full rounded-md  shadow-2xl border border-zinc-300 p-8 bg-white text-blue-900 font-royal4 font-bold">
+                        <div className=" w-2/3 h-full rounded-md  shadow-2xl border border-zinc-300 p-8 bg-white text-textmain font-royal4 font-bold">
                             <GitHubCalendar 
                             username="Xeven777"
                             colorScheme='light' />
@@ -133,11 +134,11 @@ const UserDashboard = () => {
 
                     </div>
                     <div className=" w-full h-2/3  flex gap-5  flex-wrap md:flex-nowrap">
-                        <div className=" h-full w-2/3 rounded-md bg-white shadow-2xl border border-zinc-300">
+                        <div className=" h-full w-2/3 rounded-md bg-secondbg shadow-2xl border border-zinc-300">
 
 
                         </div>
-                        <div className=" h-full w-1/3 rounded-md bg-white shadow-2xl border border-zinc-300">
+                        <div className=" h-full w-1/3 rounded-md bg-secondbg shadow-2xl border border-zinc-300">
 
 
                         </div>

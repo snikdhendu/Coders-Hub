@@ -9,17 +9,17 @@ import InputLabel from '@mui/material/InputLabel';
 
 const EditUser = () => {
   return (
-    <div className=' w-full  h-screen bg-blue-100 p-7'>
+    <div className=' w-full  h-screen bg-mainbg p-7'>
 
-      <div className=' h-full w-full bg-white shadow-lg border-zinc-300 rounded-lg overflow-y-auto p-8'>
+      <div className=' h-full w-full bg-secondbg shadow-lg border-zinc-300 rounded-lg overflow-y-auto scrollbar-thin scrollbar-webkit p-8'>
 
         <div className=' h-auto border-b-4 border-zinc-100 flex p-5'>
 
           <div className=' flex-1  flex flex-col'>
-            <h1 className='text-2xl font-extrabold font-royal4  text-blue-900'>
+            <h1 className='text-2xl font-extrabold font-royal4  text-textmain'>
               Personal
             </h1>
-            <span className=' text-lg font-semibold font-royal4  text-blue-900'>Use a permanent address where you can receive mail.</span>
+            <span className=' text-lg font-semibold font-royal4  text-textmain'>Use a permanent address where you can receive mail.</span>
           </div>
 
           <div className='w-1/2  flex flex-col gap-5 justify-center items-center h-auto p-4'>
@@ -82,10 +82,10 @@ const EditUser = () => {
         <div className=' h-auto border-b-4 border-zinc-100 flex p-5'>
 
           <div className=' flex-1  flex flex-col'>
-            <h1 className='text-2xl font-extrabold font-royal4  text-blue-900'>
+            <h1 className='text-2xl font-extrabold font-royal4  text-textmain'>
               Social Links
             </h1>
-            <span className=' text-lg font-semibold font-royal4  text-blue-900'>Your Social Links.</span>
+            <span className=' text-lg font-semibold font-royal4  text-textmain'>Your Social Links.</span>
           </div>
 
           <div className='w-1/2  flex flex-col gap-5 justify-center items-center h-auto p-4'>
@@ -130,10 +130,10 @@ const EditUser = () => {
         <div className=' h-auto border-b-4 border-zinc-100 flex p-5'>
 
           <div className=' flex-1  flex flex-col'>
-            <h1 className='text-2xl font-extrabold font-royal4  text-blue-900'>
+            <h1 className='text-2xl font-extrabold font-royal4  text-textmain'>
               Technical Skills
             </h1>
-            <span className=' text-lg font-semibold font-royal4  text-blue-900'>Highlighting technical expertise.</span>
+            <span className=' text-lg font-semibold font-royal4  text-textmain'>Highlighting technical expertise.</span>
           </div>
 
           <div className='w-1/2  flex flex-col gap-5 justify-center items-center h-auto p-4'>
@@ -169,10 +169,10 @@ const EditUser = () => {
         <div className=' h-auto flex p-5'>
 
           <div className=' flex-1  flex flex-col'>
-            <h1 className='text-2xl font-extrabold font-royal4  text-blue-900'>
+            <h1 className='text-2xl font-extrabold font-royal4  text-textmain'>
             Achievement
             </h1>
-            <span className=' text-lg font-semibold font-royal4  text-blue-900'>Highlighting your expertise.</span>
+            <span className=' text-lg font-semibold font-royal4  text-textmain'>Highlighting your expertise.</span>
           </div>
 
           <div className='w-1/2  flex flex-col gap-5 justify-center items-center h-auto p-4'>

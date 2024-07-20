@@ -28,10 +28,12 @@ module.exports = {
         },
       },
       colors: {
-        mainbg: '#F8F4E1',
-        secondbg:'#AF8F6F',
-        textmain:'#543310',
-        textsecond:'#74512D'
+        textmain: '#001F54',
+        textsecond:'#0A1128',
+        textthird:'#034078',
+        textfourth:'#1282a2',
+        mainbg:'#FEFCFB',
+        secondbg:'#ffffff',
       },
       fontFamily: {
         'royal1': ['"Cormorant Garamond"', 'serif'],
@@ -45,5 +47,29 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require('daisyui'),
+    function({ addUtilities }) {
+      const newUtilities = {
+        ".scrollbar-thin": {
+          "-webkit-scrollbar-width": "thin",
+          "-webkit-scrollbar-color": "rgb(31 29 29) white"
+        },
+        ".scrollbar-webkit": {
+          "&::-webkit-scrollbar": {
+            width: "8px"
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "white"
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgb(31 41 55)",
+            borderRadius: "20px",
+            border: "1px solid white"
+          }
+        }
+      }
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    }
+  ],
 }

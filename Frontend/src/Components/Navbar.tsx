@@ -7,12 +7,22 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+// import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
+// import Avatar from 'react-avatar';
+import AvatarCom from './AvatarCom';
+
+import {
+    SignedOut,
+    SignedIn,
+    // UserButton,
+    SignInButton,
+    useUser,
+} from "@clerk/clerk-react";
 
 const pages = [
     { name: 'Home', path: '/' },
@@ -28,9 +38,9 @@ function ResponsiveAppBar() {
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
+    // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    //     setAnchorElUser(event.currentTarget);
+    // };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
@@ -39,10 +49,18 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    // const { isLoaded, user } = useUser();
+
+    // if (!isLoaded || !user) {
+    //     return null;
+    // }
+
+
+
 
     return (
         <AppBar position="sticky" className='  justify-between'>
-            <Container maxWidth="xl" className=' bg-blue-50'>
+            <Container maxWidth="xl" className=' bg-secondbg'>
                 <Toolbar disableGutters className=' '>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
@@ -59,7 +77,7 @@ function ResponsiveAppBar() {
                             //   color: 'inherit',
                             textDecoration: 'none',
                         }}
-                        className=' text-blue-900 font-royal4'
+                        className=' text-textmain font-royal4'
                     >
                         LOGO
                     </Typography>
@@ -145,11 +163,25 @@ function ResponsiveAppBar() {
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBvqzyx_zoi6q2c0Gd1XnE7wysD9PGOLe3-A&s" />
-                            </IconButton>
-                        </Tooltip>
+
+
+
+                        <SignedOut>
+                            <SignInButton>
+                                <button
+                                    type="button"
+                                    className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                                >
+                                    Sign in
+                                </button>
+                            </SignInButton>
+                        </SignedOut>
+
+                        <SignedIn>
+                           <AvatarCom/>
+                        </SignedIn>
+
+
                         <Menu
                             sx={{ mt: '45px' }}
                             id="menu-appbar"

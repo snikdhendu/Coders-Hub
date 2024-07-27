@@ -1,8 +1,14 @@
 import React, { useState, useRef, ChangeEvent, DragEvent } from 'react';
-import DefaultImage from "../assets/upload-photo-here.png";
 import UploadingAnimation from "../assets/uploading.gif";
+import { useUser } from '@clerk/clerk-react';
 
-const ImageUpload: React.FC = () => {
+interface ImageUploadProps {
+  onUpload: (newPhotoUrl: string) => void;
+}
+
+const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload }) => {
+  const { user } = useUser();
+  const DefaultImage = user?.imageUrl || '';
   const [avatarURL, setAvatarURL] = useState<string>(DefaultImage);
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -44,7 +50,9 @@ const ImageUpload: React.FC = () => {
 
       if (response.status === 201) {
         const data = await response.json();
-        setAvatarURL(data.location);
+        const newPhotoUrl = data.location;
+        setAvatarURL(newPhotoUrl);
+        onUpload(newPhotoUrl); // Notify the parent component of the new photo URL
       } else {
         setAvatarURL(DefaultImage);
       }

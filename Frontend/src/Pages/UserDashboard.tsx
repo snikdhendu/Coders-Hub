@@ -4,14 +4,20 @@ import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import GitHubCalendar from 'react-github-calendar';
 
-// import { UserProfileDetails } from "react-leetcode";
+import { UserSolvedProblemsStats } from "react-leetcode";
+
+const theme = {
+    primaryColor: "#ffffff", // textmain
+    secondaryColor: "#ffffff", // textmain (since all text should use textmain color)
+    bgColor: "#034078" // mainbg
+  };
 
 const UserDashboard = () => {
     return (
-        <div>
+        <div className=" bg-slate-300">
             <Navbar />
 
-            <div  className=" min-h-screen w-full h-fit bg-mainbg p-8 flex gap-6 border-2  flex-wrap md:flex-nowrap">
+            <div className=" min-h-screen w-full h-fit bg-mainbg p-8 flex gap-6 border-2  flex-wrap md:flex-nowrap">
                 <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
 
                     <div className=" w-full h-4/5 rounded-md bg-secondbg shadow-2xl border border-zinc-300 flex flex-col gap-3">
@@ -116,18 +122,18 @@ const UserDashboard = () => {
 
                 <div className=" w-3/4 md:h-screen h-fit flex md:flex-col gap-5  flex-wrap md:flex-nowrap ">
 
-                    <div className=" w-full h-1/3  flex gap-4">
+                    <div className=" w-full h-48  flex gap-4">
 
-                        <div className=" w-1/3 h-full rounded-md bg-secondbg shadow-2xl border border-zinc-300">
+                        <div className=" w-1/3 h-full rounded-lg bg-secondbg shadow-2xl border border-zinc-300 flex justify-center items-center">
 
-                        <img src=" https://leetcode-stat-api.herokuapp.com/adityag28/theme=dark" alt="LeetCode Stats" />
-                            
+                           <div > <UserSolvedProblemsStats userName="snikdhendupramanik"  theme={theme} /></div>
+
                         </div>
 
-                        <div className=" w-2/3 h-full rounded-md  shadow-2xl border border-zinc-300 p-8 bg-white text-textmain font-royal4 font-bold">
-                            <GitHubCalendar 
-                            username="Xeven777"
-                            colorScheme='light' />
+                        <div className=" w-2/3 h-full rounded-md  shadow-2xl border border-zinc-300 p-3 bg-white text-textmain font-royal4 font-bold">
+                            <GitHubCalendar
+                                username="Xeven777"
+                                colorScheme='light' />
                         </div>
 
 
@@ -147,7 +153,7 @@ const UserDashboard = () => {
 
 
                 </div>
-                
+
             </div>
         </div>
     );

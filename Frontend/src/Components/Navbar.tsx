@@ -21,7 +21,6 @@ import {
     SignedIn,
     // UserButton,
     SignInButton,
-    useUser,
 } from "@clerk/clerk-react";
 
 const pages = [

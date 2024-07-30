@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Navbar } from "../Components";
-import { FaHeart,FaSearch } from "react-icons/fa";
+import { FaHeart,FaSearch,FaTimes } from "react-icons/fa";
 import Modal from "react-modal";
+import  Carousel  from "../Components/Carousel";
 
 interface ProjectType {
   id: number;
@@ -68,12 +69,21 @@ const projectList: ProjectType[] = [
   // Add more projects as needed
 ];
 
+
+
 const Project: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filterCategory, setFilterCategory] = useState<string>("All");
   const [projects, setProjects] = useState<ProjectType[]>(projectList);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null);
+
+  const images = [
+    // Add your images here
+    "https://via.placeholder.com/600x400",
+    "https://via.placeholder.com/600x400",
+    "https://via.placeholder.com/600x400",
+  ];
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -120,10 +130,10 @@ const Project: React.FC = () => {
               placeholder="Search projects..."
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 p-2 text-black w-full rounded-xl"
+              className="pl-10 p-2 text-black w-full rounded-xl bg-white border border-gray-300"
             />
           </div>
-          <select value={filterCategory} onChange={handleFilterChange} className="p-2 ml-2 text-black rounded-xl">
+          <select value={filterCategory} onChange={handleFilterChange} className="p-2 ml-2 text-black rounded-xl bg-white border border-gray-300">
             <option value="All">All Categories</option>
             <option value="Web Development">Web Development</option>
             <option value="Mobile Development">Mobile Development</option>
@@ -157,34 +167,65 @@ const Project: React.FC = () => {
             </div>
           ))}
         </div>
-        {selectedProject && (
+        { selectedProject && (
           <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            contentLabel="Project Details"
-            className="bg-white p-6 rounded-lg shadow-lg mx-auto my-20 max-w-3xl outline-none"
-            overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="Project Details"
+          className="relative bg-white p-6 rounded-lg shadow-xl mx-auto my-5 max-w-4xl min-w-[500px] outline-none text-black z-30"
+          overlayClassName="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center"
+        >
+          <button
+            onClick={closeModal}
+            className="absolute top-4 left-4 text-gray-600 hover:text-gray-900 text-2xl"
           >
-            <img src={selectedProject.imageUrl} alt={selectedProject.name} className="mb-4 w-full h-64 object-cover rounded" />
-            <h2 className="text-3xl mb-4">{selectedProject.name}</h2>
-            <p className="text-xl mb-4">{selectedProject.category}</p>
-            <p className="text-lg mb-4">{selectedProject.tagline}</p>
-            <p className="mb-4">{selectedProject.description}</p>
-            <a href={selectedProject.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline mx-5">
-              Project Link
-            </a>
-            <div className="flex items-center mt-4">
-              <img src={selectedProject.avatarUrl} alt={selectedProject.username} className="mr-2 w-8 h-8 rounded-full" />
-              <p className="text-lg">{selectedProject.username}</p>
+            <FaTimes />
+          </button>
+          <div className="flex items-start mb-4">
+            <img
+              src={selectedProject.imageUrl}
+              alt={selectedProject.name}
+              className="w-16 h-16 object-cover rounded-full mr-4"
+            />
+            <div className="flex-1 mt-4">
+              <h2 className="text-2xl font-semibold mb-2">{selectedProject.name}</h2>
             </div>
-            <button
-              onClick={closeModal}
-              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Close
-            </button>
-          </Modal>
+            <div className="flex items-center space-x-4 absolute right-8 top-8">
+              <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2">
+                <a
+                  href={selectedProject.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center"
+                >
+                  Visit
+                </a>
+              </button>
+              <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2">
+                <FaHeart />
+                <span className="ml-2">{selectedProject.likes}</span>
+              </button>
+            </div>
+          </div>
+          <p className="text-lg italic mb-2">{selectedProject.tagline}</p>
+          <p className="text-base mb-4">{selectedProject.description}</p>
+          <div className="mt-6">
+            <Carousel images={images} />
+          </div>
+          <div className="flex items-center mt-6 border-t border-gray-200 pt-4">
+            <img
+              src={selectedProject.avatarUrl}
+              alt={selectedProject.username}
+              className="w-10 h-10 rounded-full mr-4"
+            />
+            <p className="text-base font-semibold">
+              Created by <span className="text-gray-700">{selectedProject.username}</span>
+            </p>
+          </div>
+        </Modal>
+    
         )}
+
       </div>
     </div>
   );

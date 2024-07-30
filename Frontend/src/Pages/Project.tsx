@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Navbar } from "../Components";
-import { FaHeart,FaSearch,FaTimes } from "react-icons/fa";
+import { FaHeart, FaSearch, FaTimes } from "react-icons/fa";
 import Modal from "react-modal";
-import  Carousel  from "../Components/Carousel";
+import Carousel from "../Components/Carousel";
 
 interface ProjectType {
   id: number;
@@ -123,7 +123,7 @@ const Project: React.FC = () => {
       <div className="p-4">
         <h1 className="text-4xl mb-4 ml-40 text-black font-semibold">Projects ({filteredProjects.length})</h1>
         <div className="flex justify-center items-center mb-10 p-5 mx-40 bg-gray-200 rounded-xl shadow-xl ">
-        <div className="relative w-full">
+          <div className="relative w-full">
             <FaSearch className="absolute left-3 top-3 text-black" />
             <input
               type="text"
@@ -143,11 +143,11 @@ const Project: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-40">
           {filteredProjects.map((project) => (
-            <div key={project.id} className="bg-gray-800 p-8 rounded-lg shadow-lg">
+            <div key={project.id} className=" bg-secondbg text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer" onClick={() => openModal(project)}>
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <img src={project.imageUrl} alt={project.name} className="mr-2 w-16 h-16" />
-                  <h2 className="text-3xl mb-2 cursor-pointer" onClick={() => openModal(project)}>
+                  <h2 className="text-3xl mb-2 cursor-pointer" >
                     {project.name}
                   </h2>
                 </div>
@@ -167,63 +167,66 @@ const Project: React.FC = () => {
             </div>
           ))}
         </div>
-        { selectedProject && (
+        {selectedProject && (
           <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          contentLabel="Project Details"
-          className="relative bg-white p-6 rounded-lg shadow-xl mx-auto my-5 max-w-4xl min-w-[500px] outline-none text-black z-30"
-          overlayClassName="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center"
-        >
-          <button
-            onClick={closeModal}
-            className="absolute top-4 left-4 text-gray-600 hover:text-gray-900 text-2xl"
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            contentLabel="Project Details"
+            className="relative bg-white p-6 rounded-lg shadow-xl mx-auto my-5 max-w-4xl min-w-[500px] outline-none text-black z-30"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center"
           >
-            <FaTimes />
-          </button>
-          <div className="flex items-start mb-4">
-            <img
-              src={selectedProject.imageUrl}
-              alt={selectedProject.name}
-              className="w-16 h-16 object-cover rounded-full mr-4"
-            />
-            <div className="flex-1 mt-4">
-              <h2 className="text-2xl font-semibold mb-2">{selectedProject.name}</h2>
-            </div>
-            <div className="flex items-center space-x-4 absolute right-8 top-8">
-              <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2">
-                <a
-                  href={selectedProject.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center"
+
+            <div className="flex items-start mb-4">
+              <img
+                src={selectedProject.imageUrl}
+                alt={selectedProject.name}
+                className="w-16 h-16 object-cover rounded-full mr-4"
+              />
+              <div className="flex-1 mt-4">
+                <h2 className="text-2xl font-semibold mb-2">{selectedProject.name}</h2>
+              </div>
+              <div className="flex items-center space-x-4 absolute right-8 top-8  gap-2">
+                <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2">
+                  <a
+                    href={selectedProject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center"
+                  >
+                    Visit
+                  </a>
+                </button>
+                <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2">
+                  <FaHeart />
+                  <span className="ml-2">{selectedProject.likes}</span>
+                </button>
+
+                <button
+                  onClick={closeModal}
+                  className=" bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-3 flex items-center space-x-2"
                 >
-                  Visit
-                </a>
-              </button>
-              <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2">
-                <FaHeart />
-                <span className="ml-2">{selectedProject.likes}</span>
-              </button>
+                  <FaTimes />
+                </button>
+
+              </div>
             </div>
-          </div>
-          <p className="text-lg italic mb-2">{selectedProject.tagline}</p>
-          <p className="text-base mb-4">{selectedProject.description}</p>
-          <div className="mt-6">
-            <Carousel images={images} />
-          </div>
-          <div className="flex items-center mt-6 border-t border-gray-200 pt-4">
-            <img
-              src={selectedProject.avatarUrl}
-              alt={selectedProject.username}
-              className="w-10 h-10 rounded-full mr-4"
-            />
-            <p className="text-base font-semibold">
-              Created by <span className="text-gray-700">{selectedProject.username}</span>
-            </p>
-          </div>
-        </Modal>
-    
+            <p className="text-lg italic mb-2">{selectedProject.tagline}</p>
+            <p className="text-base mb-4">{selectedProject.description}</p>
+            <div className="mt-6">
+              <Carousel images={images} />
+            </div>
+            <div className="flex items-center mt-6 border-t border-gray-200 pt-4">
+              <img
+                src={selectedProject.avatarUrl}
+                alt={selectedProject.username}
+                className="w-10 h-10 rounded-full mr-4"
+              />
+              <p className="text-base font-semibold">
+                Created by <span className="text-gray-700">{selectedProject.username}</span>
+              </p>
+            </div>
+          </Modal>
+
         )}
 
       </div>

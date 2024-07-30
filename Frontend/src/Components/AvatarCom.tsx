@@ -9,15 +9,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faSignOut , faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 
 
+
 const AvatarCom = () => {
     const { isLoaded, user } = useUser();
+    if (!user) {
+        return null; // Or handle the case when user is null
+    }
+    const firstName = user.fullName ? user.fullName.split(' ')[0] : '';
+   
 
     if (!isLoaded || !user) {
         return null;
     }
-    if (!user) {
-        return null; // Or handle the case when user is null
-    }
+   
     return (
         <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button"> <Avatar className="dropdown" size="50" round={true} textSizeRatio={0.8} src={user.imageUrl || ''} /></div>
@@ -33,7 +37,7 @@ const AvatarCom = () => {
                 <hr />
                 <div className='flex  p-4 w-full gap-4 items-center'>
                     <FontAwesomeIcon icon={faGraduationCap} className=' text-textmain h-6 w-6' />
-                    <Link to='./dashboard' className='font-royal4 text-textmain font-bold text-lg '>DashBoard</Link>      
+                    <Link to={`/dashboard/${firstName}`} className='font-royal4 text-textmain font-bold text-lg '>DashBoard</Link>      
                 </div>
                 <hr />
                 </div>

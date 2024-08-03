@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home, Project, Roadmap,Signin, Signup ,Error,UserDashboard,EditUser} from './Pages';
 import { CreateRoadmap } from './Components';
+import CreateAccount from './Pages/CreateAccount';
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
           <Route path='/dashboard/:userName/edit' element={<EditUser/>}/>
           <Route path='/dashboard/:userName/roadmap' element={<CreateRoadmap/>}/>
           <Route path="*" element={<Error />} />
+          <Route path='/createAccount' element={<CreateAccount/>}/>
       </Routes>
     </Router>
   );

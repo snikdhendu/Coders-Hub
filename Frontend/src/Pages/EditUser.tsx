@@ -13,6 +13,7 @@ import { editUser } from '../graphql/mutation/userMutation';
 
 const UPDATE_USER = editUser;
 
+import { ImageUpload , TechStackSelector } from '../Components';  // Ensure the correct import path
 
 const EditUser: React.FC = () => {
 
@@ -211,7 +212,7 @@ const EditUser: React.FC = () => {
 
             <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto p-4'>
               <div className='flex gap-3 w-4/5 border-red justify-evenly'>
-                <FormControl fullWidth>
+                {/* <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">Technical Skills</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -224,7 +225,9 @@ const EditUser: React.FC = () => {
                     <MenuItem value="Skill2">Skill2</MenuItem>
                     <MenuItem value="Skill3">Skill3</MenuItem>
                   </Select>
-                </FormControl>
+                </FormControl> */}
+                <TechStackSelector/>
+                
               </div>
             </div>
           </div>

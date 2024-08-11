@@ -9,3 +9,46 @@
 @tailwind utilities;
 
 
+.tag {
+    display: inline-block;
+    background-color: #1282a2;
+    color: #fff;
+    padding: 0.25em 0.5em;
+    margin: 0.25em;
+    border-radius: 0.25em;
+  }
+  
+  .remove-tag-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    margin-left: 0.5em;
+    cursor: pointer;
+  }
+  
+  .input-with-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0.5em;
+    border: 1px solid #001F54;
+    border-radius: 0.25em;
+  }
+  
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em;
+  }
+  
+  .select-tag {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #001F54;
+    font-family: 'royal4', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  

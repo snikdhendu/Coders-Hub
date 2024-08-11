@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { EditUser } from '../Pages';
+import EditProect  from './EditProject';
 
 
 const Userproject = () => {
@@ -21,9 +22,10 @@ const Userproject = () => {
         <button className="flex justify-center items-center" onClick={openModal}><FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' /></button>
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box relative border-2 shadow-lg w-11/12 max-w-5xl h-screen bg-secondbg text-textmain">
-            <form method="dialog">
+            <form method="dialog" className=' flex justify-center items-center  h-full'>
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center ronded-full">✕</button>
+              <EditProect/>
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-6 top-5 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center ronded-full">✕</button>
             </form>
             {/* <EditUser/> */}
           </div>

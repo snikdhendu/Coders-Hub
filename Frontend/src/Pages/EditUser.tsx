@@ -6,10 +6,22 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import { useUser } from '@clerk/clerk-react';
+import { ImageUpload } from '../Components';  // Ensure the correct import path
+import { useMutation } from '@apollo/client';
+import { editUser } from '../graphql/mutation/userMutation';
+
+
+const UPDATE_USER = editUser;
+
 import { ImageUpload , TechStackSelector } from '../Components';  // Ensure the correct import path
 
 const EditUser: React.FC = () => {
+
   const { user } = useUser();
+
+  if (!user) {
+    return null;
+  }
 
   const [collegeName, setCollegeName] = useState('');
   const [year, setYear] = useState('');
@@ -26,28 +38,44 @@ const EditUser: React.FC = () => {
     setProfilePhotoUrl(newPhotoUrl);
   };
 
+  const [updateUserMutation] = useMutation(UPDATE_USER);
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const formData = {
-      name: user?.fullName,
-      email: user?.primaryEmailAddress?.emailAddress || 'No email address found',
-      collegeName,
-      year,
-      location,
-      github,
-      linkedin,
-      twitter,
-      portfolio,
-      technicalSkills,
-      achievement,
-      profilePhotoUrl
-    };
-    console.log(formData);
+    // const formData = {
+    //   name: user?.fullName,
+    //   email: user?.primaryEmailAddress?.emailAddress || 'No email address found',
+    //   collegeName,
+    //   year,
+    //   location,
+    //   github,
+    //   linkedin,
+    //   twitter,
+    //   portfolio,
+    //   technicalSkills,
+    //   achievement,
+    //   profilePhotoUrl
+    // };
+
+    updateUserMutation({
+      variables: {
+        clerkUserId: user?.id,
+        collegeName,
+        location,
+        github,
+        linkedIn:linkedin,
+        twitter,
+        portfolio,
+        profileUrl:profilePhotoUrl
+      },
+    }).then((response) => {
+      console.log("User updated successfully:", response.data);
+    }).catch((error) => {
+      console.error("Error updating user:", error);
+    });
+
+    // console.log(formData);
   };
 
-  if (!user) {
-    return null;
-  }
 
   return (
     <div className='w-full h-screen bg-mainbg p-7'>

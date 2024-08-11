@@ -6,7 +6,6 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import { useUser } from '@clerk/clerk-react';
-import { ImageUpload } from '../Components';  // Ensure the correct import path
 import { useMutation } from '@apollo/client';
 import { editUser } from '../graphql/mutation/userMutation';
 
@@ -39,6 +38,7 @@ const EditUser: React.FC = () => {
   };
 
   const [updateUserMutation] = useMutation(UPDATE_USER);
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // const formData = {

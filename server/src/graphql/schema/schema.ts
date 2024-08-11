@@ -11,7 +11,7 @@ type Links {
 type User {
     clerkUserId: String!,
     firstName: String!,
-    lastName: String!,
+    lastName: String,
     profileUrl: String,
     email: String!,
     collegeName: String,

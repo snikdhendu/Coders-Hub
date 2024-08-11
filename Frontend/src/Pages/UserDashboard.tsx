@@ -11,8 +11,15 @@ import {
     useUser
 } from "@clerk/clerk-react";
 
+import { useQuery } from '@apollo/client';
+import { getUsers } from "../graphql/query/userQuery";
 
 const UserDashboard = () => {
+
+    //Use this loading and error for better performance
+    const { loading, error, data } = useQuery(getUsers);
+    console.log(data);
+    
     const [selectedContent, setSelectedContent] = useState<'project' | 'roadmap'>('project');
     const { user } = useUser();
     if (!user) {

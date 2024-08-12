@@ -9,6 +9,17 @@ interface LinksObj {
   leetcode: string; 
 }
 
+interface ProjectObj {
+  name: string;
+  tagline: string;
+  description: string;
+  technologies: string[]; 
+  githubLink: string;
+  liveLink: string;
+  images: string[]; 
+  logo: string;
+}
+
 // Main user interface extending Mongoose Document
 interface IUser extends Document {
   clerkUserId: string;
@@ -19,6 +30,7 @@ interface IUser extends Document {
   collegeName?: string;
   location?: string;
   links: LinksObj;
+  projects: ProjectObj[];
 }
 
 // Schema for the links object
@@ -30,20 +42,33 @@ const LinksSchema = new Schema<LinksObj>({
   leetcode: { type: String, default: '' },
 }, { _id: false }); // _id: false to prevent creating an _id for this subdocument
 
+// Schema for the projects object
+const ProjectSchema = new Schema<ProjectObj>({
+  name: { type: String, required: true },
+  tagline: { type: String, required: true },
+  description: { type: String, required: true },
+  technologies: [{ type: String, required: true }],
+  githubLink: { type: String, default: '' },
+  liveLink: { type: String, default: '' },
+  images: [{ type: String, default: [] }],
+  logo: { type: String, required: true },
+});
+
 // Schema for the User
 const UserSchema = new Schema<IUser>({
   clerkUserId: { type: String, required: true, unique: true },
   firstName: { type: String, required: true },
   lastName: { type: String, default: '' }, 
-  profileUrl: { type: String},
+  profileUrl: { type: String },
   email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },
   collegeName: { type: String, default: '' }, 
   location: { type: String, default: '' }, 
   links: { type: LinksSchema, default: {} }, 
+  projects: { type: [ProjectSchema], default: [] }, // Default value is an empty array
 }, {
   timestamps: true, 
 });
 
 // Create and export the User model
 export const User = model<IUser>('User', UserSchema);
-export type {LinksObj};
+export type { LinksObj, ProjectObj, IUser }; 

@@ -22,7 +22,7 @@ type User {
 type Query {
     hello: String,
     signup: String,
-    users: [User]!,
+    getUserById(clerkUserId: String!): User!,
 }
 
 type UpdateUserResponse {

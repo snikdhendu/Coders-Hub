@@ -2,21 +2,23 @@ import { gql } from "@apollo/client";
 
 export const getUsers = gql`
   #graphql
-  query UserQuery {
-  users {
-    email
+  query GetUserQuery($clerkUserId: String!) {
+  getUserById(clerkUserId: $clerkUserId) {
+    clerkUserId
     firstName
     lastName
+    email
     collegeName
-    profileUrl
     location
     links {
       github
-      leetcode
       linkedIn
-      twitter
+      leetcode
       portfolio
+      twitter
     }
-  }
-  }  
+    profileUrl
+  } 
+}
+
 `

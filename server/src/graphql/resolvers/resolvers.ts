@@ -1,14 +1,16 @@
-import { User } from "../../models/User.js";
+import { FilterQuery } from "mongoose";
+import { IUser, User } from "../../models/User.js";
 
 export const graphqlResolvers = {
-  Query: {
-    hello: () => "Hello, World!",
-    signup: () => "Sign up successful!",
-    users: async () => {
-      const users = await User.find();
-      return users;
+    Query: {
+      hello: () => "Hello, World!",
+      signup: () => "Sign up successful!",
+      getUserById: async (_:any, {clerkUserId}:{clerkUserId:string}) => {
+        const user = await User.findOne({ clerkUserId });
+        if(user) return user;
+        throw new Error("User not found");
+      },      
     },
-  },
 
   Mutation: {
     UPDATE_USER: async (
@@ -33,18 +35,18 @@ export const graphqlResolvers = {
         profileUrl: string;
       }
     ) => {
-      const users = await User.find({ clerkUserId });
-      if (users.length > 0) {
-        users[0].location = location;
-        users[0].collegeName = collegeName;
-        users[0].links.github = github;
-        users[0].links.twitter = twitter;
-        users[0].links.linkedIn = linkedIn;  
-        users[0].links.portfolio = portfolio;
-        users[0].profileUrl = profileUrl;
-        await users[0].save();
-        console.log(users[0]);
-        return { user: users[0], msg: "User updated successfully" };
+      const user = await User.findOne({ clerkUserId });
+      if (user) {
+        user.location = location;
+        user.collegeName = collegeName;
+        user.links.github = github;
+        user.links.twitter = twitter;
+        user.links.linkedIn = linkedIn;  
+        user.links.portfolio = portfolio;
+        user.profileUrl = profileUrl;
+        await user.save();
+        console.log(user);
+        return { user: user, msg: "User updated successfully" };
       } else {
         return { user: null, msg: "User not found!" };
       }

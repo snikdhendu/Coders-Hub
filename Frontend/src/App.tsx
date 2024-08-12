@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home, Project, Roadmap,Signin, Signup ,Error,UserDashboard,EditUser} from './Pages';
 import { CreateRoadmap } from './Components';
 import CreateAccount from './Pages/CreateAccount';
+import FlowchartPage from './Pages/FlowchartPage';
 
 
 const App = () => {
@@ -19,6 +20,8 @@ const App = () => {
           <Route path='/dashboard/:userName/roadmap' element={<CreateRoadmap/>}/>
           <Route path="*" element={<Error />} />
           <Route path='/createAccount' element={<CreateAccount/>}/>
+          <Route path='/dashboard/:userName/roadmap/newflowchart' element={<FlowchartPage/>}/>
+
       </Routes>
     </Router>
   );

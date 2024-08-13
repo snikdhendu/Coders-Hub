@@ -1,5 +1,5 @@
 // import React from 'react';
-import { Navbar, LeetCodeStats, Userproject, Userroadmap } from "../Components";
+import { LeetCodeStats, Userproject, Userroadmap } from "../Components";
 import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import GitHubCalendar from 'react-github-calendar';
@@ -7,35 +7,39 @@ import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Navbar } from "../Components/Navbar";
 import {
     useUser
 } from "@clerk/clerk-react";
+
+import { useTheme } from "../Components/theme-provider";
 
 import { useQuery } from '@apollo/client';
 import { getUsers } from "../graphql/query/userQuery";
 
 const UserDashboard = () => {
     const { user } = useUser();
+    const { theme } = useTheme();
 
     if (!user) {
         return null; // Or handle the case when user is null
     }
     //Use this loading and error for better performance
     const { loading, error, data } = useQuery(getUsers, {
-        variables: { clerkUserId: user.id }, 
-      });    
-      console.log(data);
-    
+        variables: { clerkUserId: user.id },
+    });
+    console.log(data);
+
     const [selectedContent, setSelectedContent] = useState<'project' | 'roadmap'>('project');
-  
+
     return (
-        <div className=" bg-slate-300">
+        <div className=" bg-slate dark:border-b-slate-700 dark:bg-background">
             <Navbar />
 
-            <div className=" min-h-screen w-full h-fit bg-mainbg p-8 flex gap-6 border-2  flex-wrap md:flex-nowrap">
+            <div className=" min-h-screen w-full h-fit bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6 border-2  flex-wrap md:flex-nowrap">
                 <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
 
-                    <div className=" w-full h-4/5 rounded-md bg-secondbg shadow-2xl border border-zinc-300 flex flex-col gap-3">
+                    <div className=" w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3">
 
                         <div className=" w-full h-2/4 p-5 flex flex-col gap-2">
 
@@ -43,7 +47,7 @@ const UserDashboard = () => {
                             <div className=" w-full h-1/2 flex justify-center items-center">
 
                                 <Avatar
-                                   
+
                                     src={user.imageUrl}
                                     sx={{ width: 96, height: 96 }}
                                     className=" border-4 border-blue-900"
@@ -129,7 +133,7 @@ const UserDashboard = () => {
 
 
 
-                    <div className=" w-full h-96 overflow-y-auto rounded-md bg-secondbg shadow-2xl border border-zinc-300 ">
+                    <div className=" w-full h-96 overflow-y-auto rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 ">
 
                     </div>
 
@@ -140,18 +144,20 @@ const UserDashboard = () => {
 
                     <div className=" w-full h-1/3  flex gap-4">
 
-                        <div className=" w-1/3 h-full rounded-lg bg-secondbg shadow-2xl border border-zinc-300 flex justify-center items-center">
+                        <div className=" w-1/3 h-full rounded-lg bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex justify-center items-center">
 
                             {/* <div > <UserSolvedProblemsStats userName="snikdhendupramanik"  /></div> */}
-                            <LeetCodeStats username="Snikdhendupramanik" theme="light" />
+                            <LeetCodeStats username="Snikdhendupramanik" theme={theme === "dark" ? "dark" : "light"} />
 
                         </div>
 
-                        <div className=" w-2/3 h-full rounded-md  shadow-2xl border border-zinc-300 p-3 bg-white text-textmain font-royal4 font-bold">
+                        <div className="w-2/3 h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-2 font-royal4 font-bold">
                             <GitHubCalendar
                                 username="Xeven777"
-                                colorScheme='light' />
+                                colorScheme={theme === "dark" ? "dark" : "light"}
+                            />
                         </div>
+
 
 
 
@@ -159,8 +165,8 @@ const UserDashboard = () => {
 
                     <div className=" w-full h-2/3  flex gap-5  flex-wrap md:flex-nowrap">
                         {/* project and roadmap div */}
-                        <div className=" h-full w-2/3 rounded-md bg-secondbg shadow-2xl border  flex flex-col ">
-                            <div className=" h-1/6 w-full border-2 bg-mainbg  flex justify-center items-center relative">
+                        <div className=" h-full w-2/3 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border  flex flex-col ">
+                            <div className=" h-1/6 w-full border-2 bg-white dark:border-b-slate-700 dark:bg-background  flex justify-center items-center relative">
 
                                 <div className=" flex gap-4 bg-blue-100 justify-center h-fit rounded-md p-1"><button
                                     onClick={() => setSelectedContent('project')}
@@ -186,7 +192,7 @@ const UserDashboard = () => {
 
 
                         </div>
-                        <div className=" h-full w-1/3 rounded-md bg-secondbg shadow-2xl border border-zinc-300">
+                        <div className=" h-full w-1/3 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300">
 
 
                         </div>

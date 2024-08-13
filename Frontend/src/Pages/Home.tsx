@@ -1,10 +1,25 @@
-import { Navbar } from "../Components";
+import { Navbar  } from "../Components/Navbar";
+import { Hero , Sponsors, About, HowItWorks, Features,Services,Cta,Testimonials,Team,Pricing,Newsletter,FAQ,Footer,ScrollToTop } from "../Components";
 
 const Home = () => {
   return (
-    <div className="  bg-mainbg min-h-screen text-2xl text-slate-200">
-         <Navbar/>
-      Home
+    <div className="  ">
+      {/* <Navbar/> */}
+      <Navbar />
+      <Hero />
+      <Sponsors />
+      <About />
+      <HowItWorks />
+      <Features />
+      <Services />
+      <Cta />
+      <Testimonials />
+      <Team />
+      <Pricing />
+      <Newsletter />
+      <FAQ />
+      <Footer />
+      <ScrollToTop />
     </div>
   );
 }

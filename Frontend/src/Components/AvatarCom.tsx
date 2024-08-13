@@ -25,7 +25,7 @@ const AvatarCom = () => {
     return (
         <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button"> <Avatar className="dropdown" size="50" round={true} textSizeRatio={0.8} src={user.imageUrl || ''} /></div>
-            <ul tabIndex={0} className="dropdown-content z-[1] menu p-3   rounded-box w-fit bg-white shadow-lg flex flex-col gap-3">
+            <ul tabIndex={0} className="dropdown-content z-[1] menu p-3   rounded-box w-fit bg-white dark:border-b-slate-700 dark:bg-background shadow-lg flex flex-col gap-3">
                 <div className=' flex justify-between   gap-2 text-left w-full'>
                     <Avatar className=" w-40" size="50" round={true} textSizeRatio={0.8} src={user.imageUrl || ''} />
                     <div className=' flex flex-col w-3/4 justify-center '>

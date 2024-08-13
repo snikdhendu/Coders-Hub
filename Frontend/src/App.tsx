@@ -4,7 +4,7 @@ import { Home, Project, Roadmap,Signin, Signup ,Error,UserDashboard,EditUser} fr
 import { CreateRoadmap } from './Components';
 import CreateAccount from './Pages/CreateAccount';
 import FlowchartPage from './Pages/FlowchartPage';
-
+import "./App.css";
 
 const App = () => {
   return (

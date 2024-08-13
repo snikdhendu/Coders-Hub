@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Navbar } from "../Components";
+// import { Navbar } from "../Components";
 import { FaHeart, FaSearch, FaTimes } from "react-icons/fa";
 import Modal from "react-modal";
 import Carousel from "../Components/Carousel";
+import { Navbar } from "../Components/Navbar";
 
 interface ProjectType {
   id: number;
@@ -118,8 +119,9 @@ const Project: React.FC = () => {
   });
 
   return (
+    <> <Navbar />
     <div className="bg-mainbg min-h-screen text-2xl text-slate-200">
-      <Navbar />
+     
       <div className="p-4">
         <h1 className="text-4xl mb-4 ml-40 text-black font-semibold">Projects ({filteredProjects.length})</h1>
         <div className="flex justify-center items-center mb-10 p-5 mx-40 bg-gray-200 rounded-xl shadow-xl ">
@@ -231,6 +233,7 @@ const Project: React.FC = () => {
 
       </div>
     </div>
+    </>
   );
 };
 

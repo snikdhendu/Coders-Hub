@@ -1,6 +1,9 @@
+// userSlice.js
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Links {
+// src/features/userSlice.ts
+
+export interface Links {
   github: string;
   leetcode: string;
   linkedIn: string;
@@ -8,8 +11,9 @@ interface Links {
   twitter: string;
 }
 
-interface User {
+export interface User {
   collegeName: string;
+  year:string;
   email: string;
   firstName: string;
   lastName: string;
@@ -20,6 +24,7 @@ interface User {
 
 const initialState: User = {
   collegeName: '',
+  year:'',
   email: '',
   firstName: '',
   lastName: '',
@@ -40,6 +45,9 @@ const userSlice = createSlice({
   reducers: {
     setCollegeName: (state, action: PayloadAction<string>) => {
       state.collegeName = action.payload;
+    },
+    setYear:(state, action: PayloadAction<string>)=>{
+      state.year = action.payload;
     },
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
@@ -79,6 +87,7 @@ const userSlice = createSlice({
 
 export const {
   setCollegeName,
+  setYear,
   setEmail,
   setFirstName,
   setLastName,

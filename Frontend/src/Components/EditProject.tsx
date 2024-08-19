@@ -51,8 +51,8 @@ const EditUser: React.FC = () => {
   }
 
   return (
-    <div className='w-full h-full  bg-mainbg p-2'>
-      <div className='h-full w-full bg-secondbg shadow-lg  rounded-lg overflow-y-auto scrollbar-thin  p-3'>
+    <div className='w-full h-full  bg-white dark:border-b-slate-700 dark:bg-background p-2'>
+      <div className='h-full w-full bg-white dark:border-b-slate-700 dark:bg-background shadow-lg  rounded-lg overflow-y-auto scrollbar-thin  p-3'>
         <form onSubmit={handleSubmit} className=' h-full flex justify-center items-center flex-col overflow-y-auto gap-4'>
 
 
@@ -71,14 +71,14 @@ const EditUser: React.FC = () => {
                 <div className="label">
                   <span className="label-text text-textthird font-royal4 text-xl font-bold ">What is your Project's Name?</span>
                 </div>
-                <input type="text" placeholder="Type here" className="input input-bordered   bg-mainbg text-textmain border-textmain w-96" />
+                <input type="text" placeholder="Type here" className="input input-bordered  bg-white dark:border-b-slate-700 dark:bg-background text-textmain border-textmain w-96" />
               </label>
 
               <label className="form-control w-full max-w-xs">
                 <div className="label">
                   <span className="label-text text-textthird font-royal4 text-xl font-bold ">What is your Project's Tagline?</span>
                 </div>
-                <input type="text" placeholder="Type here" className="input input-bordered   bg-mainbg text-textmain border-textmain w-96" />
+                <input type="text" placeholder="Type here" className="input input-bordered   bg-white dark:border-b-slate-700 dark:bg-background text-textmain border-textmain w-96" />
               </label>
             </div>
 
@@ -86,7 +86,7 @@ const EditUser: React.FC = () => {
               <div className="label">
                 <span className="label-text text-textthird font-royal4 text-xl font-bold">Tell us brief about your project</span>
               </div>
-              <textarea className="textarea textarea-bordered h-24 bg-mainbg text-textmain border-textmain w-full" placeholder="Add project details here"></textarea>
+              <textarea className="textarea textarea-bordered h-24 bg-white dark:border-b-slate-700 dark:bg-background text-textmain border-textmain w-full" placeholder="Add project details here"></textarea>
             </label>
 
 
@@ -96,7 +96,7 @@ const EditUser: React.FC = () => {
                 <div className="label">
                   <span className="label-text text-textthird font-royal4 text-xl font-bold">Project Type</span>
                 </div>
-                <select className="select select-bordered bg-mainbg text-textmain border-textmain w-96">
+                <select className="select select-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain border-textmain w-96">
                   <option disabled selected className='text-textthird font-royal4 text-xl font-bold'>Pick one</option>
                   <option className=' text-textthird font-royal4 text-xl font-normal'>Team Project</option>
                   <option className='text-textthird font-royal4 text-xl font-normal'>Solo project</option>
@@ -122,14 +122,14 @@ const EditUser: React.FC = () => {
                 <div className="label">
                   <span className="label-text text-textthird font-royal4 text-xl font-bold ">Add github Link</span>
                 </div>
-                <input type="text" placeholder="Type here" className="input input-bordered   bg-mainbg text-textmain border-textmain w-96" />
+                <input type="text" placeholder="Type here" className="input input-bordered   bg-white dark:border-b-slate-700 dark:bg-background text-textmain border-textmain w-96" />
               </label>
 
               <label className="form-control w-full max-w-xs">
                 <div className="label">
                   <span className="label-text text-textthird font-royal4 text-xl font-bold ">Add deploy link</span>
                 </div>
-                <input type="text" placeholder="Type here" className="input input-bordered   bg-mainbg text-textmain border-textmain w-96" />
+                <input type="text" placeholder="Type here" className="input input-bordered   bg-white dark:border-b-slate-700 dark:bg-background text-textmain border-textmain w-96" />
               </label>
             </div>
 

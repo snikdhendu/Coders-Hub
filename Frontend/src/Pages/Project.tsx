@@ -120,22 +120,22 @@ const Project: React.FC = () => {
 
   return (
     <> <Navbar />
-    <div className="bg-mainbg min-h-screen text-2xl text-slate-200">
+    <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen text-2xl text-slate-200">
      
       <div className="p-4">
-        <h1 className="text-4xl mb-4 ml-40 text-black font-semibold">Projects ({filteredProjects.length})</h1>
-        <div className="flex justify-center items-center mb-10 p-5 mx-40 bg-gray-200 rounded-xl shadow-xl ">
+        <h1 className="text-4xl mb-4 ml-40 text-black dark:text-white font-semibold">Projects ({filteredProjects.length})</h1>
+        <div className="flex justify-center items-center mb-10 p-5 mx-40 bg-white dark:border-b-slate-700 dark:bg-background rounded-xl shadow-xl ">
           <div className="relative w-full">
-            <FaSearch className="absolute left-3 top-3 text-black" />
+            <FaSearch className="absolute left-3 top-3 text-black dark:text-white" />
             <input
               type="text"
               placeholder="Search projects..."
               value={searchQuery}
               onChange={handleSearchChange}
-              className="pl-10 p-2 text-black w-full rounded-xl bg-white border border-gray-300"
+              className="pl-10 p-2 text-black w-full rounded-xl bg-white dark:border-b-slate-700 dark:bg-background border border-gray-300"
             />
           </div>
-          <select value={filterCategory} onChange={handleFilterChange} className="p-2 ml-2 text-black rounded-xl bg-white border border-gray-300">
+          <select value={filterCategory} onChange={handleFilterChange} className="p-2 ml-2 text-black dark:text-white rounded-xl bg-white dark:border-b-slate-700 dark:bg-background border border-gray-300">
             <option value="All">All Categories</option>
             <option value="Web Development">Web Development</option>
             <option value="Mobile Development">Mobile Development</option>
@@ -145,7 +145,7 @@ const Project: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-40">
           {filteredProjects.map((project) => (
-            <div key={project.id} className=" bg-secondbg text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer" onClick={() => openModal(project)}>
+            <div key={project.id} className=" bg-white border-2 dark:border-b-slate-700 dark:bg-background text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer" onClick={() => openModal(project)}>
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <img src={project.imageUrl} alt={project.name} className="mr-2 w-16 h-16" />
@@ -174,11 +174,11 @@ const Project: React.FC = () => {
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Project Details"
-            className="relative bg-white p-6 rounded-lg shadow-xl mx-auto my-5 max-w-4xl min-w-[500px] outline-none text-black z-30"
+            className="relative bg-white dark:border-b-slate-700 dark:bg-background p-6 rounded-lg shadow-xl mx-auto my-5 max-w-4xl min-w-[500px] text-black z-30"
             overlayClassName="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center"
           >
 
-            <div className="flex items-start mb-4">
+            <div className="flex items-start mb-4 ">
               <img
                 src={selectedProject.imageUrl}
                 alt={selectedProject.name}
@@ -188,7 +188,7 @@ const Project: React.FC = () => {
                 <h2 className="text-2xl font-semibold mb-2">{selectedProject.name}</h2>
               </div>
               <div className="flex items-center space-x-4 absolute right-8 top-8  gap-2">
-                <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2">
+                <button className="bg-white dark:border-b-slate-700 dark:bg-background border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2">
                   <a
                     href={selectedProject.link}
                     target="_blank"
@@ -198,14 +198,14 @@ const Project: React.FC = () => {
                     Visit
                   </a>
                 </button>
-                <button className="bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2">
+                <button className="bg-white dark:border-b-slate-700 dark:bg-background border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2">
                   <FaHeart />
                   <span className="ml-2">{selectedProject.likes}</span>
                 </button>
 
                 <button
                   onClick={closeModal}
-                  className=" bg-white border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-3 flex items-center space-x-2"
+                  className=" bg-white dark:border-b-slate-700 dark:bg-background border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-3 flex items-center space-x-2"
                 >
                   <FaTimes />
                 </button>

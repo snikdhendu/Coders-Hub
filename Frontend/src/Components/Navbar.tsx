@@ -19,6 +19,13 @@ import { Menu } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 import { LogoIcon } from "./Icons";
 
+import {
+  SignedOut,
+  SignedIn,
+  // UserButton,
+  SignInButton,
+} from "@clerk/clerk-react";
+
 interface RouteProps {
   href: string;
   label: string;
@@ -115,7 +122,21 @@ export const Navbar = () => {
 
           <div className="hidden md:flex gap-4 justify-center items-center">
 
-            <AvatarCom />
+            <SignedOut>
+              <SignInButton >
+                <button
+                  type="button"
+                  className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2"
+                >
+                  Sign in
+                </button>
+              </SignInButton>
+            </SignedOut>
+
+            <SignedIn>
+              <AvatarCom />
+            </SignedIn>
+
 
 
             <ModeToggle />

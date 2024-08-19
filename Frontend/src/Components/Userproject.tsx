@@ -21,7 +21,7 @@ const Userproject = () => {
       
         <button className="flex justify-center items-center" onClick={openModal}><FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' /></button>
         <dialog id="my_modal_3" className="modal">
-          <div className="modal-box relative border-2 shadow-lg w-11/12 max-w-5xl h-screen bg-secondbg text-textmain">
+          <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white   dark:bg-gray-950 text-textmain">
             <form method="dialog" className=' flex justify-center items-center  h-full'>
               {/* if there is a button in form, it will close the modal */}
               <EditProect/>

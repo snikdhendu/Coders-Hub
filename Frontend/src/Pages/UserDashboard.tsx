@@ -4,7 +4,7 @@ import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import GitHubCalendar from 'react-github-calendar';
 import { FaPlus } from "react-icons/fa";
-import { useState } from "react";
+import { useState ,useEffect } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Navbar } from "../Components/Navbar";
@@ -16,10 +16,18 @@ import { useTheme } from "../Components/theme-provider";
 
 import { useQuery } from '@apollo/client';
 import { getUsers } from "../graphql/query/userQuery";
+import {  useDispatch ,useSelector} from "react-redux";
+import {
+    setCollegeName, setEmail, setFirstName, setLastName, setLocation,
+    setProfileUrl, setGithubLink, setLeetcodeLink,
+    setLinkedInLink, setPortfolioLink, setTwitterLink
+} from '../../features/userSlice';
+import { RootState } from "../../store";
 
 const UserDashboard = () => {
     const { user } = useUser();
     const { theme } = useTheme();
+    const dispatch = useDispatch();
 
     if (!user) {
         return null; // Or handle the case when user is null
@@ -28,15 +36,32 @@ const UserDashboard = () => {
     const { loading, error, data } = useQuery(getUsers, {
         variables: { clerkUserId: user.id },
     });
-    console.log(data);
+    useEffect(() => {
+        if (data) {
+            const userData = data.getUserById;
+            dispatch(setCollegeName(userData.collegeName));
+            dispatch(setEmail(userData.email));
+            dispatch(setFirstName(userData.firstName));
+            dispatch(setLastName(userData.lastName));
+            dispatch(setLocation(userData.location));
+            dispatch(setProfileUrl(userData.profileUrl));
+            dispatch(setGithubLink(userData.links.github));
+            dispatch(setLeetcodeLink(userData.links.leetcode));
+            dispatch(setLinkedInLink(userData.links.linkedIn));
+            dispatch(setPortfolioLink(userData.links.portfolio));
+            dispatch(setTwitterLink(userData.links.twitter));
+            console.log(data);
+        }
+    }, [data, dispatch]);
 
     const [selectedContent, setSelectedContent] = useState<'project' | 'roadmap'>('project');
+    const userState = useSelector((state: RootState) => state.user);
 
     return (
-        <div className=" bg-slate dark:border-b-slate-700 dark:bg-background">
+        <div className="  dark:border-b-slate-700 dark:bg-background">
             <Navbar />
 
-            <div className=" min-h-screen w-full h-fit bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6 border-2  flex-wrap md:flex-nowrap">
+            <div className=" min-h-screen w-full h-fit bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap">
                 <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
 
                     <div className=" w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3">
@@ -50,7 +75,7 @@ const UserDashboard = () => {
 
                                     src={user.imageUrl}
                                     sx={{ width: 96, height: 96 }}
-                                    className=" border-4 border-blue-900"
+                                    className=" border-4 border-textmain"
                                 />
 
                             </div>
@@ -65,22 +90,22 @@ const UserDashboard = () => {
 
                             <div className="w-full h-1/4 flex justify-center items-center gap-6">
                                 <span>
-                                    <Link to=''>
+                                    <Link to={userState.links.github || ''}>
                                         <img src="/github.svg" className="h-8 w-8" alt="GitHub" />
                                     </Link>
                                 </span>
                                 <span>
-                                    <Link to=''>
+                                    <Link to={userState.links.linkedIn || ''}>
                                         <img src="/linkedin.svg" className="h-8 w-8" alt="LinkedIn" />
                                     </Link>
                                 </span>
                                 <span>
-                                    <Link to=''>
+                                    <Link to={userState.links.twitter || ''}>
                                         <img src="/portfolio.svg" className="h-8 w-8" alt="Portfolio" />
                                     </Link>
                                 </span>
                                 <span>
-                                    <Link to=''>
+                                    <Link to={userState.links.portfolio || ''}>
                                         <img src="/twitter.svg" className="h-8 w-8" alt="Twitter" />
                                     </Link>
                                 </span>
@@ -151,7 +176,7 @@ const UserDashboard = () => {
 
                         </div>
 
-                        <div className="w-2/3 h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-2 font-royal4 font-bold">
+                        <div className="w-2/3 h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-4 font-royal4 font-bold">
                             <GitHubCalendar
                                 username="Xeven777"
                                 colorScheme={theme === "dark" ? "dark" : "light"}
@@ -165,18 +190,18 @@ const UserDashboard = () => {
 
                     <div className=" w-full h-2/3  flex gap-5  flex-wrap md:flex-nowrap">
                         {/* project and roadmap div */}
-                        <div className=" h-full w-2/3 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border  flex flex-col ">
-                            <div className=" h-1/6 w-full border-2 bg-white dark:border-b-slate-700 dark:bg-background  flex justify-center items-center relative">
+                        <div className=" h-full w-2/3 rounded-md bg-white border-2 dark:border-b-slate-700 dark:bg-background shadow-2xl flex flex-col">
+                            <div className=" h-1/6 w-full bg-white  dark:bg-background  flex justify-center items-center relative border-2">
 
                                 <div className=" flex gap-4 bg-blue-100 justify-center h-fit rounded-md p-1"><button
                                     onClick={() => setSelectedContent('project')}
-                                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${selectedContent === 'project' ? ' bg-textthird text-secondbg' : 'text-textmain'}`}
+                                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${selectedContent === 'project' ? ' bg-textmain text-secondbg' : 'text-textmain'}`}
                                 >
                                     Project
                                 </button>
                                     <button
                                         onClick={() => setSelectedContent('roadmap')}
-                                        className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${selectedContent === 'roadmap' ? 'bg-textthird text-secondbg' : 'text-textmain'} `}
+                                        className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${selectedContent === 'roadmap' ? 'bg-textmain text-secondbg' : 'text-textmain'} `}
                                     >
                                         RoadMap
                                     </button>
@@ -186,13 +211,13 @@ const UserDashboard = () => {
                                     <FontAwesomeIcon icon={faPlus} className=' text-mainbg h-6 w-6' />
                                 </div>
                             </div>
-                            <div className="h-5/6 border-2 overflow-y-auto  w-full">
+                            <div className="h-5/6  overflow-y-auto  w-full">
                                 {selectedContent === 'project' ? <Userproject /> : <Userroadmap />}
                             </div>
 
 
                         </div>
-                        <div className=" h-full w-1/3 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300">
+                        <div className=" h-full w-1/3 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border-2">
 
 
                         </div>

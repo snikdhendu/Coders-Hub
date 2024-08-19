@@ -8,30 +8,41 @@ import Button from '@mui/material/Button';
 import { useUser } from '@clerk/clerk-react';
 import { useMutation } from '@apollo/client';
 import { editUser } from '../graphql/mutation/userMutation';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCollegeName, setEmail, setFirstName, setLastName, setLocation,
+  setYear,setProfileUrl, setGithubLink, setLeetcodeLink,
+  setLinkedInLink, setPortfolioLink, setTwitterLink
+} from '../../features/userSlice';
+import { RootState } from '../../store';
+
 
 
 const UPDATE_USER = editUser;
 
-import { ImageUpload , TechStackSelector } from '../Components';  // Ensure the correct import path
+import { ImageUpload, TechStackSelector } from '../Components';  // Ensure the correct import path
 
 const EditUser: React.FC = () => {
 
   const { user } = useUser();
+  const dispatch = useDispatch();
 
   if (!user) {
     return null;
   }
 
-  const [collegeName, setCollegeName] = useState('');
-  const [year, setYear] = useState('');
-  const [location, setLocation] = useState('');
-  const [github, setGithub] = useState('');
-  const [linkedin, setLinkedin] = useState('');
-  const [twitter, setTwitter] = useState('');
-  const [portfolio, setPortfolio] = useState('');
+  const userState = useSelector((state: RootState) => state.user);
+
+  const [collegeName, setCollege] = useState(userState.collegeName || '');
+  const [year, setY] = useState(userState.year || '');
+  const [location, setLoc] = useState(userState.location || '');
+  const [github, setGithub] = useState(userState.links.github || '');
+  const [linkedin, setLinkedin] = useState(userState.links.linkedIn || '');
+  const [twitter, setTwitter] = useState(userState.links.twitter || '');
+  const [portfolio, setPortfolio] = useState(userState.links.portfolio || '');
   const [technicalSkills, setTechnicalSkills] = useState('');
   const [achievement, setAchievement] = useState('');
-  const [profilePhotoUrl, setProfilePhotoUrl] = useState(user?.imageUrl || '');
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState(userState.profileUrl || user?.imageUrl || '');
 
   const handlePhotoUpload = (newPhotoUrl: string) => {
     setProfilePhotoUrl(newPhotoUrl);
@@ -55,6 +66,14 @@ const EditUser: React.FC = () => {
     //   achievement,
     //   profilePhotoUrl
     // };
+    dispatch(setCollegeName(collegeName));
+    dispatch(setLocation(location));
+    dispatch(setYear(year))
+    dispatch(setProfileUrl(profilePhotoUrl));
+    dispatch(setGithubLink(github));
+    dispatch(setLinkedInLink(linkedin));
+    dispatch(setTwitterLink(twitter));
+    dispatch(setPortfolioLink(portfolio));
 
     updateUserMutation({
       variables: {
@@ -62,10 +81,10 @@ const EditUser: React.FC = () => {
         collegeName,
         location,
         github,
-        linkedIn:linkedin,
+        linkedIn: linkedin,
         twitter,
         portfolio,
-        profileUrl:profilePhotoUrl
+        profileUrl: profilePhotoUrl
       },
     }).then((response) => {
       console.log("User updated successfully:", response.data);
@@ -75,6 +94,8 @@ const EditUser: React.FC = () => {
 
     // console.log(formData);
   };
+
+
 
 
   return (
@@ -120,7 +141,7 @@ const EditUser: React.FC = () => {
                   label="College Name"
                   id="fullWidth"
                   value={collegeName}
-                  onChange={(e) => setCollegeName(e.target.value)}
+                  onChange={(e) => setCollege(e.target.value)}
                 />
               </div>
               <div className='flex gap-3 w-full justify-evenly'>
@@ -133,7 +154,7 @@ const EditUser: React.FC = () => {
                     id="demo-simple-select"
                     value={year}
                     label="Year"
-                    onChange={(e) => setYear(e.target.value)}
+                    onChange={(e) => setY(e.target.value)}
                   >
                     <MenuItem value={1}>First Year</MenuItem>
                     <MenuItem value={2}>Second Year</MenuItem>
@@ -148,7 +169,7 @@ const EditUser: React.FC = () => {
                   label="Location"
                   placeholder='Kolkata'
                   value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  onChange={(e) => setLoc(e.target.value)}
                 />
               </div>
             </div>
@@ -226,8 +247,8 @@ const EditUser: React.FC = () => {
                     <MenuItem value="Skill3">Skill3</MenuItem>
                   </Select>
                 </FormControl> */}
-                <TechStackSelector/>
-                
+                <TechStackSelector />
+
               </div>
             </div>
           </div>

@@ -36,11 +36,11 @@ const TechStackSelector: React.FC = () => {
 
   return (
   
-      <label className="form-control w-full max-w-xs text-textthird font-royal4 text-xl font-bold ">
+      <label className="form-control w-full max-w-xs text-textthird font-royal4 text-xl font-bold dark:bg-black ">
         <div className="label">
           <span className="label-text text-textthird font-royal4 text-xl font-bold">Technology used</span>
         </div>
-        <div className="flex flex-wrap items-center bg-mainbg">
+        <div className="flex flex-wrap items-center bg-mainbg dark:bg-black">
           <div className="flex flex-wrap gap-2 items-center">
             {selectedTechStack.map((tech, index) => (
               <Tag key={index} text={tech} onRemove={() => handleRemoveTag(tech)} />
@@ -48,9 +48,9 @@ const TechStackSelector: React.FC = () => {
             <select
               ref={selectRef}
               onChange={handleSelect}
-              className="select bg-transparent text-textmain font-royal4 text-xl font-bold outline-none w-96 border-1 border-textmain "
+              className="select bg-transparent text-textmain font-royal4 text-xl font-bold outline-none w-96 border-1 border-textmain dark:bg-black "
             >
-              <option disabled selected className="text-textthird font-royal4 text-base font-normal">Pick one</option>
+              <option disabled selected className="text-textthird font-royal4 text-base font-normal dark:bg-black">Pick one</option>
               {techStack.map((tech, index) => (
                 <option key={index} className="text-textthird font-royal4 text-xl font-normal">
                   {tech}

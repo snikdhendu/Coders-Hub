@@ -23,11 +23,9 @@ const Userproject = () => {
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white   dark:bg-gray-950 text-textmain">
             <form method="dialog" className=' flex justify-center items-center  h-full'>
-              {/* if there is a button in form, it will close the modal */}
               <EditProect/>
               <button className="btn btn-sm btn-circle btn-ghost absolute right-6 top-5 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center ronded-full">✕</button>
             </form>
-            {/* <EditUser/> */}
           </div>
         </dialog>
       </div>

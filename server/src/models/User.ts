@@ -1,4 +1,4 @@
-import { Document, model, Schema } from 'mongoose';
+import { Document, model, Schema, Types  } from 'mongoose';
 
 // Interface for the links object
 interface LinksObj {
@@ -10,6 +10,7 @@ interface LinksObj {
 }
 
 interface ProjectObj {
+  _id?: Types.ObjectId; 
   projectName: string;
   tagline: string;
   description: string;

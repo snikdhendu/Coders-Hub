@@ -1,15 +1,12 @@
 import { FilterQuery } from "mongoose";
 import { IUser, User } from "../../models/User.js";
+import { getUserById } from "../../controllers/userController.js";
+import { getProjectById } from "../../controllers/projectController.js";
 
 export const graphqlResolvers = {
   Query: {
-    hello: () => "Hello, World!",
-    signup: () => "Sign up successful!",
-    getUserById: async (_: any, { clerkUserId }: { clerkUserId: string }) => {
-      const user = await User.findOne({ clerkUserId });
-      if (user) return user;
-      throw new Error("User not found");
-    },
+    getUserById,
+    getProjectById,
   },
 
   Mutation: {
@@ -50,6 +47,7 @@ export const graphqlResolvers = {
         return { user: null, msg: "User not found!" };
       }
     },
+    
     CREATE_PROJECT: async (
       _: any,
       {
@@ -71,31 +69,32 @@ export const graphqlResolvers = {
       }
     ) => {
       const user = await User.findOne({ clerkUserId });
-    
+
       if (user) {
         const newProject = {
-          projectName, // Ensure this field is correctly set
+          projectName, 
           tagline,
           description,
           technologies,
           githubRepoLink,
           liveLink,
-          images: [], // Initialize as needed
-          logo: "", // Initialize as needed
+          images: [],
+          logo: "",
         };
-    
+
         user.projects.push(newProject);
-    
+
         try {
           await user.save();
-          return newProject;
-        } catch (error:any) {
+          // Returning the last added project, which should have the _id
+          const savedProject = user.projects[user.projects.length - 1];
+          return savedProject;
+        } catch (error: any) {
           throw new Error("Failed to save the project: " + error.message);
         }
       } else {
         throw new Error("User not found");
       }
-    }
-    
+    },
   },
 };

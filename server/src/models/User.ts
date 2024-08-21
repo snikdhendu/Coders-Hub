@@ -10,14 +10,14 @@ interface LinksObj {
 }
 
 interface ProjectObj {
-  name: string;
+  projectName: string;
   tagline: string;
   description: string;
   technologies: string[]; 
-  githubLink: string;
+  githubRepoLink: string;
   liveLink: string;
-  images: string[]; 
-  logo: string;
+  images?: string[]; 
+  logo?: string;
 }
 
 // Main user interface extending Mongoose Document
@@ -44,14 +44,14 @@ const LinksSchema = new Schema<LinksObj>({
 
 // Schema for the projects object
 const ProjectSchema = new Schema<ProjectObj>({
-  name: { type: String, required: true },
+  projectName: { type: String, required: true },
   tagline: { type: String, required: true },
   description: { type: String, required: true },
-  technologies: [{ type: String, required: true }],
-  githubLink: { type: String, default: '' },
+  technologies: [{ type: String, }], //required true will be set in future
+  githubRepoLink: { type: String, default: '' },
   liveLink: { type: String, default: '' },
   images: [{ type: String, default: [] }],
-  logo: { type: String, required: true },
+  logo: { type: String, }, // required true will be set in future
 });
 
 // Schema for the User

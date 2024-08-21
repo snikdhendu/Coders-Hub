@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import TechStackSelector from './TechStackSelector';
+import { createProject } from '../graphql/mutation/projectMutation';
+import { useMutation } from '@apollo/client';
+
+
 
 const EditUser: React.FC = () => {
   const { user } = useUser();
+  
+  if (!user) {
+    return null;
+  }
+
+  const [createProjectMutation] = useMutation(createProject);
 
   const [projectName, setProjectName] = useState('');
   const [projectTagline, setProjectTagline] = useState('');
@@ -21,11 +31,24 @@ const EditUser: React.FC = () => {
       githubLink,
       deployLink,
     });
+
+    createProjectMutation({
+      variables: {
+        clerkUserId: user?.id,
+        projectName,
+        tagline: projectTagline,
+        description:projectDescription,
+        githubRepoLink: githubLink,
+        liveLink: deployLink
+      },
+    }).then((response) => {
+      console.log("Project created successfully:", response.data);
+    }).catch((error) => {
+      console.error("Error creating user:", error);
+    });
+
   };
 
-  if (!user) {
-    return null;
-  }
 
   return (
     <div className='w-full h-full bg-white dark:border-b-slate-700 dark:bg-background p-2'>

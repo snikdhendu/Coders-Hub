@@ -1,53 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAbout,setLeetcodeLink,setGithubLink } from '../../features/userSlice'; 
 
-const createAccount: React.FC = () => {
+const CreateAccount: React.FC = () => {
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        collegeName: '',
-        year: '',
-        location: '',
-        linkedin: '',
+        about: '',
         gitHub: '',
-        twitter: '',
+        linkedin: '',
     });
 
     const [formStep, setFormStep] = useState(1);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const navigate = useNavigate();
+    const dispatch = useDispatch(); 
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
+        if (name === 'about' && value.split(' ').length > 50) {
+            return; // Prevent typing beyond 50 words
+        }
         setFormData({ ...formData, [name]: value });
-        setErrors({ ...errors, [name]: '' }); // Clear the error message on change
-    };
-
-    
-    const validateEmail = (email: string) => {
-        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return re.test(String(email).toLowerCase());
-    };
-
-    const validateURL = (url: string) => {
-        const re = /^(https?:\/\/)?([\w-]+)+([\w-]+)+([\w-]+)(\/[\w-]*)*\/?$/;
-        return re.test(String(url).toLowerCase());
+        setErrors({ ...errors, [name]: '' }); // Clear error message on change
     };
 
     const validateStep1 = () => {
         const newErrors: { [key: string]: string } = {};
 
-        if (!formData.firstName) newErrors.firstName = 'Firstname is required';
-        if (!formData.lastName) newErrors.lastName = 'Lastname is required';
-        if (!formData.email) {
-            newErrors.email = 'Email is required';
-        } else if (!validateEmail(formData.email)) {
-            newErrors.email = 'Invalid email format';
-        }
-        if (!formData.collegeName) newErrors.collegeName = 'College Name is required';
-        if (!formData.year) newErrors.year = 'Year is required';
-        if (!formData.location) newErrors.location = 'Location is required';
+        if (!formData.about) newErrors.about = 'Please tell us about yourself';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -57,21 +37,11 @@ const createAccount: React.FC = () => {
         const newErrors: { [key: string]: string } = {};
 
         if (!formData.linkedin) {
-            newErrors.linkedin = 'LinkedIn is required';
-        } else if (!validateURL(formData.linkedin)) {
-            newErrors.linkedin = 'Invalid LinkedIn URL';
+            newErrors.linkedin = 'LinkedIn URL is required';
         }
         if (!formData.gitHub) {
-            newErrors.gitHub = 'GitHub is required';
-        } else if (!validateURL(formData.gitHub)) {
-            newErrors.gitHub = 'Invalid GitHub URL';
+            newErrors.gitHub = 'GitHub URL is required';
         }
-        if (!formData.twitter) {
-            newErrors.twitter = 'Twitter is required';
-        } else if (!validateURL(formData.twitter)) {
-            newErrors.twitter = 'Invalid Twitter URL';
-        }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -80,202 +50,140 @@ const createAccount: React.FC = () => {
         e.preventDefault();
 
         if (formStep === 1 && validateStep1()) {
-            setFormStep(formStep + 1);
+            // Dispatch the about information
+            dispatch(setAbout(formData.about));
+            setFormStep(2);
         } else if (formStep === 2 && validateStep2()) {
-            setFormStep(formStep + 1);
+            // Dispatch the GitHub and LinkedIn links
+            dispatch(setGithubLink(formData.gitHub));
+            dispatch(setLeetcodeLink(formData.linkedin));
+            navigate('/');
         }
     };
 
+
     const handleSkip = (e: React.FormEvent) => {
         e.preventDefault();
-        navigate('/dashboard/:userName'); // Redirect to the user dashboard
+        if (formStep === 1) {
+            setFormStep(2);
+        } else if (formStep === 2) {
+            navigate('/');
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateStep2()) {
-            // Handle form submission logic here
+            // Dispatch the GitHub and LinkedIn links
+            dispatch(setGithubLink(formData.gitHub));
+            dispatch(setLeetcodeLink(formData.linkedin));
             console.log(formData);
-            navigate('/dashboard/:userName');
+            navigate('/');
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-mainbg">
-            <form className="flex flex-col gap-4 max-w-md p-8 rounded-2xl bg-gray-800 text-white border border-gray-700 shadow-xl" onSubmit={handleSubmit}>
-                <p className="text-2xl font-semibold text-cyan-500 relative flex items-center pl-7">
-                    Profile Details
-                    <span className="absolute left-0 w-4 h-4 rounded-full bg-cyan-500"></span>
-                    <span className="absolute left-0 w-4 h-4 rounded-full bg-cyan-500 animate-pulse"></span>
-                </p>
-
-                {formStep === 1 && (
-                    <>
-                        <p className="text-sm text-gray-400">Fill in your personal details</p>
-                        <div className="flex gap-2">
-                            <label className="relative w-full">
-                                <input
-                                    className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.firstName ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                    type="text"
-                                    name="firstName"
-                                    placeholder="Firstname"
-                                    value={formData.firstName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.firstName ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                    Firstname
-                                </span>
-                                {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
-                            </label>
-                            <label className="relative w-full">
-                                <input
-                                    className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.lastName ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                    type="text"
-                                    name="lastName"
-                                    placeholder="Lastname"
-                                    value={formData.lastName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.lastName ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                    Lastname
-                                </span>
-                                {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
-                            </label>
+        <div className="min-h-screen flex items-center justify-center bg-mainbg dark:bg-black w-full">
+            <form className="flex gap-4 w-4/5 p-8 bg-muted/50 border rounded-lg shadow-xl" onSubmit={handleSubmit}>
+                <div className='flex gap-4 flex-col w-full justify-between'>
+                    <div className='flex gap-4 flex-col'>
+                        <div className="flex items-center">
+                            <p className="text-2xl font-semibold text-cyan-500 relative flex items-center pl-7">
+                                Profile Details
+                                <span className="absolute left-0 w-4 h-4 rounded-full bg-cyan-500"></span>
+                                <span className="absolute left-0 w-4 h-4 rounded-full bg-cyan-500 animate-pulse"></span>
+                            </p>
                         </div>
-                        <label className="relative w-full">
-                            <input
-                                className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.email ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.email ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                Email
-                            </span>
-                            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-                        </label>
-                        <label className="relative w-full">
-                            <input
-                                className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.collegeName ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                type="text"
-                                name="collegeName"
-                                placeholder="College Name"
-                                value={formData.collegeName}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.collegeName ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                College Name
-                            </span>
-                            {errors.collegeName && <p className="text-red-500 text-xs mt-1">{errors.collegeName}</p>}
-                        </label>
-                        <label className="relative w-full">
-                            <select
-                                className={`bg-gray-700 text-white w-full p-4 rounded-lg border ${errors.year ? 'border-red-600' : 'border-gray-600'} outline-none`}
-                                name="year"
-                                value={formData.year}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="" disabled></option>
-                                <option value="1">1st Year</option>
-                                <option value="2">2nd Year</option>
-                                <option value="3">3rd Year</option>
-                                <option value="4">4th Year</option>
-                                <option value="passout">Passout</option>
-                            </select>
-                            <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.year ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                Year
-                            </span>
-                            {errors.year && <p className="text-red-500 text-xs mt-1">{errors.year}</p>}
-                        </label>
-                        <label className="relative w-full">
-                            <input
-                                className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.location ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                type="text"
-                                name="location"
-                                placeholder="Location"
-                                value={formData.location}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.location ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                Location
-                            </span>
-                            {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
-                        </label>
-                        <button className="w-full py-3 rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all" onClick={handleNext}>
-                            Next
-                        </button>
-                    </>
-                )}
 
-                {formStep === 2 && (
-                    <>
-                        <p className="text-sm text-gray-400">Provide your social links</p>
-                        <label className="relative w-full">
-                            <input
-                                className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.linkedin ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                type="url"
-                                name="linkedin"
-                                placeholder="LinkedIn"
-                                value={formData.linkedin}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.linkedin ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                LinkedIn
-                            </span>
-                            {errors.linkedin && <p className="text-red-500 text-xs mt-1">{errors.linkedin}</p>}
-                        </label>
-                        <label className="relative w-full">
-                            <input
-                                className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.gitHub ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                type="url"
-                                name="gitHub"
-                                placeholder="GitHub"
-                                value={formData.gitHub}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.gitHub ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                GitHub
-                            </span>
-                            {errors.gitHub && <p className="text-red-500 text-xs mt-1">{errors.gitHub}</p>}
-                        </label>
-                        <label className="relative w-full">
-                            <input
-                                className={`bg-gray-700 text-white w-full p-4 pt-5 rounded-lg border ${errors.twitter ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
-                                type="url"
-                                name="twitter"
-                                placeholder="Twitter"
-                                value={formData.twitter}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.twitter ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                Twitter
-                            </span>
-                            {errors.twitter && <p className="text-red-500 text-xs mt-1">{errors.twitter}</p>}
-                        </label>
-                        <div className="flex gap-2 mt-4">
-                            <button className="w-full py-3 rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all" onClick={handleSkip}>
-                                Skip
-                            </button>
-                            <button className="w-full py-3 rounded-lg text-white bg-gray-600 hover:bg-gray-700 transition-all" onClick={handleSubmit}>
-                                Finish
-                            </button>
-                        </div>
-                    </>
-                )}
+                        {formStep === 1 && (
+                            <>
+                                <p className="text-sm text-gray-400">Tell us more about yourself</p>
+                                <label className="relative w-full">
+                                    <textarea
+                                        className={`bg-muted/50  text-textmain dark:text-white w-full p-4 pt-5 rounded-lg border ${errors.about ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
+                                        name="about"
+                                        placeholder="Tell us about yourself (max 50 words)"
+                                        value={formData.about}
+                                        onChange={handleChange}
+                                        rows={4}
+                                        required
+                                    />
+                                    <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.about ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
+                                        About
+                                    </span>
+                                    {errors.about && <p className="text-red-500 text-xs mt-1">{errors.about}</p>}
+                                </label>
+                                <div className="flex gap-2 mt-4">
+                                    <button className="w-full py-3 rounded-lg text-white bg-gray-600 hover:bg-gray-700 transition-all" onClick={handleSkip}>
+                                        Skip
+                                    </button>
+                                    <button className="w-full py-3 rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all" onClick={handleNext}>
+                                        Save & Next
+                                    </button>
+                                </div>
+                            </>
+                        )}
+
+                        {formStep === 2 && (
+                            <>
+                                <p className="text-sm text-gray-400">Provide your social links</p>
+                                <label className="relative w-full">
+                                    <input
+                                        className={`bg-muted/50  text-textmain dark:text-white  w-full p-4 pt-5 rounded-lg border ${errors.linkedin ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
+                                        type="url"
+                                        name="linkedin"
+                                        placeholder="LinkedIn"
+                                        value={formData.linkedin}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.linkedin ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
+                                        LinkedIn
+                                    </span>
+                                    {errors.linkedin && <p className="text-red-500 text-xs mt-1">{errors.linkedin}</p>}
+                                </label>
+                                <label className="relative w-full">
+                                    <input
+                                        className={`bg-muted/50  text-textmain dark:text-white  w-full p-4 pt-5 rounded-lg border ${errors.gitHub ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
+                                        type="url"
+                                        name="gitHub"
+                                        placeholder="GitHub"
+                                        value={formData.gitHub}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.gitHub ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
+                                        GitHub
+                                    </span>
+                                    {errors.gitHub && <p className="text-red-500 text-xs mt-1">{errors.gitHub}</p>}
+                                </label>
+                                <div className="flex gap-2 mt-4">
+                                    <button className="w-full py-3 rounded-lg text-white bg-gray-600 hover:bg-gray-700 transition-all" onClick={handleSkip}>
+                                        Skip
+                                    </button>
+                                    <button className="w-full py-3 rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all" onClick={handleSubmit}>
+                                        Save & Next
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                    <div className="join">
+                        <input
+                            className="join-item btn btn-square"
+                            type="radio"
+                            name="options"
+                            aria-label="1"
+                            defaultChecked
+                        />
+                        <input className="join-item btn btn-square" type="radio" name="options" aria-label="2" />
+                    </div>
+                </div>
+                <img src="/growth.png" alt="" className='relative z-10' />
+                <div className="shadow"></div>
             </form>
         </div>
     );
 };
 
-export default createAccount;
+export default CreateAccount;

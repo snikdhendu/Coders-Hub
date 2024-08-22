@@ -1,6 +1,8 @@
 import { User, } from "../models/User.js";
 import { Types } from 'mongoose';
 
+//Query functions
+
 export const getProjectById = async (
     _: any,
     {
@@ -25,3 +27,56 @@ export const getProjectById = async (
 }
 
 
+
+//######################################################
+
+//Mutation Functions
+
+export const createProject = async (
+  _: any,
+  {
+    clerkUserId,
+    projectName,
+    tagline,
+    description,
+    technologies,
+    githubRepoLink,
+    liveLink,
+  }: {
+    clerkUserId: string;
+    projectName: string;
+    tagline: string;
+    description: string;
+    technologies: string[];
+    githubRepoLink: string;
+    liveLink: string;
+  }
+) => {
+  const user = await User.findOne({ clerkUserId });
+
+  if (user) {
+    const newProject = {
+      projectName, 
+      tagline,
+      description,
+      technologies,
+      githubRepoLink,
+      liveLink,
+      images: [],
+      logo: "",
+    };
+
+    user.projects.push(newProject);
+
+    try {
+      await user.save();
+      // Returning the last added project, which should have the _id
+      const savedProject = user.projects[user.projects.length - 1];
+      return savedProject;
+    } catch (error: any) {
+      throw new Error("Failed to save the project: " + error.message);
+    }
+  } else {
+    throw new Error("User not found");
+  }
+}

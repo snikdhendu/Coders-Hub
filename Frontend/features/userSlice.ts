@@ -12,6 +12,7 @@ export interface Links {
 }
 
 export interface User {
+  about:string
   collegeName: string;
   year:string;
   email: string;
@@ -23,6 +24,7 @@ export interface User {
 }
 
 const initialState: User = {
+  about:'',
   collegeName: '',
   year:'',
   email: '',
@@ -43,6 +45,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setAbout: (state, action: PayloadAction<string>) => {
+      state.about = action.payload;
+    },
     setCollegeName: (state, action: PayloadAction<string>) => {
       state.collegeName = action.payload;
     },
@@ -86,6 +91,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  setAbout,
   setCollegeName,
   setYear,
   setEmail,

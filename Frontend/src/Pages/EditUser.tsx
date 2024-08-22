@@ -16,8 +16,6 @@ import {
 } from '../../features/userSlice';
 import { RootState } from '../../store';
 
-
-
 const UPDATE_USER = editUser;
 
 import { ImageUpload, TechStackSelector } from '../Components';  // Ensure the correct import path

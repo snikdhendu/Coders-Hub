@@ -27,6 +27,7 @@ import {
   setLinkedInLink,
   setPortfolioLink,
   setTwitterLink,
+  setProjects
 } from "../../features/userSlice";
 import { RootState } from "../../store";
 
@@ -56,6 +57,7 @@ const UserDashboard = () => {
       dispatch(setLinkedInLink(userData.links.linkedIn));
       dispatch(setPortfolioLink(userData.links.portfolio));
       dispatch(setTwitterLink(userData.links.twitter));
+      dispatch(setProjects(userData.projects));
       console.log(data);
     }
   }, [data, dispatch]);
@@ -63,7 +65,7 @@ const UserDashboard = () => {
   const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">(
     "project"
   );
-  const userState = useSelector((state: RootState) => state.user);
+  const userState:any = useSelector((state: RootState) => state.user);
 
   return (
     <div className="  dark:border-b-slate-700 dark:bg-background">

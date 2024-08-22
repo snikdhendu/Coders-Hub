@@ -1,8 +1,17 @@
 // userSlice.js
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
 // src/features/userSlice.ts
 
+export interface Project {
+    projectName: string
+    tagline: string
+    description: string
+    technologies: string[]
+    githubRepoLink: string
+    liveLink: string
+    images: string[]
+    logo: string
+}
 export interface Links {
   github: string;
   leetcode: string;
@@ -21,6 +30,7 @@ export interface User {
   links: Links;
   location: string;
   profileUrl: string;
+  projects?: Project[];
 }
 
 const initialState: User = {
@@ -39,6 +49,7 @@ const initialState: User = {
   },
   location: '',
   profileUrl: '',
+  projects: [],
 };
 
 const userSlice = createSlice({
@@ -87,6 +98,9 @@ const userSlice = createSlice({
     setTwitterLink: (state, action: PayloadAction<string>) => {
       state.links.twitter = action.payload;
     },
+    setProjects:(state, action: PayloadAction<Project[]>) => {
+      state.projects = action.payload;
+    }
   },
 });
 
@@ -105,6 +119,7 @@ export const {
   setLinkedInLink,
   setPortfolioLink,
   setTwitterLink,
+  setProjects
 } = userSlice.actions;
 
 export default userSlice.reducer;

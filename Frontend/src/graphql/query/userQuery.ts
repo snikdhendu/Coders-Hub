@@ -18,7 +18,17 @@ export const getUsers = gql`
       twitter
     }
     profileUrl
+    projects {
+      _id
+      projectName
+      tagline
+      description
+      technologies
+      githubRepoLink
+      liveLink
+      logo
+      images
+    }
   } 
 }
-
 `

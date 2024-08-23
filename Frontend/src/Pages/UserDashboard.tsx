@@ -43,6 +43,17 @@ const UserDashboard = () => {
   const { loading, error, data } = useQuery(getUsers, {
     variables: { clerkUserId: user.id },
   });
+  const achievements = [
+    "Won 1st place in the Devbits 2024 Hackathon.",
+    "Completed 100+ coding challenges on LeetCode.",
+    "Published 3 technical blogs on Medium.",
+    "Achieved AWS Certified Solutions Architect - Associate.",
+    "Contributed to 10+ open-source projects."
+  ];
+  const Education = [
+    "Techno Main Saltlake",
+    "Third Year"
+  ];
   useEffect(() => {
     if (data) {
       const userData = data.getUserById;
@@ -65,7 +76,16 @@ const UserDashboard = () => {
   const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">(
     "project"
   );
-  const userState:any = useSelector((state: RootState) => state.user);
+  const userState: any = useSelector((state: RootState) => state.user);
+  const technologies = [
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "Tailwind CSS",
+    "React.js",
+    "Redux Toolkit",
+    "Google AI Studio"
+  ];
 
   return (
     <div className="  dark:border-b-slate-700 dark:bg-background  h-auto overflow-y-auto">
@@ -127,16 +147,17 @@ const UserDashboard = () => {
               </div>
             </div>
 
-            <div className=" w-full h-1/5  flex justify-center items-center flex-col gap-4">
-              <div className=" w-1/2 h-auto flex justify-center items-center">
+            <div className=" w-full h-1/4 mt-10  flex justify-center items-center flex-col gap-12">
+              <div className=" w-1/2 h-auto  flex justify-center items-center">
                 <Link
                   to="./edit "
                   className=" w-full  rounded-md bg-blue-100 hover:bg-blue-300 text-textsecond flex justify-center items-center p-1 font-royal4"
                 >
                   Edit profile
                 </Link>
+
               </div>
-              <div className=" flex gap-3">
+              {/* <div className=" flex gap-3">
                 <Link
                   to=" "
                   className=" w-24 h-full rounded-sm bg-textmain text-white flex justify-center items-center p-2 font-royal4"
@@ -149,26 +170,46 @@ const UserDashboard = () => {
                 >
                   Message
                 </Link>
+              </div> */}
+              <div className=" flex gap-4  w-full justify-center items-center">
+                <img src="/loc.png" alt="" className=" h-8 w-8"/>
+                <h1 className=" inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text font-bold text-2xl">Kolkata</h1>
               </div>
             </div>
 
-            <div className=" w-full h-1/5  flex p-10">
-              <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-textmain font-semibold text-base font-royal4">
-                <h1>Project</h1>
-                <span className=" font-extrabold text-2xl">80</span>
-              </div>
-              <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-textmain font-semibold text-base font-royal4">
-                <h1>Connection</h1>
-                <span className=" font-extrabold text-2xl">12</span>
-              </div>
-              <div className=" w-1/3 h-full flex justify-center items-center flex-col gap-3 text-textmain font-semibold text-base font-royal4">
-                <h1>Following</h1>
-                <span className="font-extrabold text-2xl">67</span>
-              </div>
-            </div>
           </div>
 
-          <div className=" w-full h-96 overflow-y-auto rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 "></div>
+          <div className=" w-full h-96 overflow-y-auto rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 ">
+
+            <div className="bg-transparent rounded-lg p-5">
+              <h2 className="text-lg font-semibold text-gray-600 dark:text-white mb-3">Technologies known:</h2>
+              <div className="flex flex-wrap gap-2">
+                {technologies.map((tech, index) => (
+                  <span
+                    key={index}
+                    className="px-1 py-1 bg-textmain text-white  font-medium text-sm rounded-lg shadow-sm"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className=" h-full bg-transparent p-4 rounded-lg">
+              <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">Education</h2>
+              <ul className="space-y-3">
+                {Education.map((Education, index) => (
+                  <li key={index} className="flex items-start">
+                    <img
+                      src="/college.png"
+                      alt="Bullet point"
+                      className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
+                    />
+                    <span className="dark:text-white text-textmain font-royal4 font-medium ">{Education}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div className=" w-full lg:w-3/4 md:h-screen h-fit flex md:flex-col gap-5  flex-wrap md:flex-nowrap ">
@@ -196,21 +237,19 @@ const UserDashboard = () => {
                 <div className=" flex gap-4 bg-blue-100 justify-center h-fit rounded-md p-1">
                   <button
                     onClick={() => setSelectedContent("project")}
-                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${
-                      selectedContent === "project"
-                        ? " bg-textmain text-secondbg"
-                        : "text-textmain"
-                    }`}
+                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${selectedContent === "project"
+                      ? " bg-textmain text-secondbg"
+                      : "text-textmain"
+                      }`}
                   >
                     Project
                   </button>
                   <button
                     onClick={() => setSelectedContent("roadmap")}
-                    className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${
-                      selectedContent === "roadmap"
-                        ? "bg-textmain text-secondbg"
-                        : "text-textmain"
-                    } `}
+                    className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${selectedContent === "roadmap"
+                      ? "bg-textmain text-secondbg"
+                      : "text-textmain"
+                      } `}
                   >
                     RoadMap
                   </button>
@@ -231,7 +270,23 @@ const UserDashboard = () => {
                 )}
               </div>
             </div>
-            <div className=" h-full lg:w-1/3 w-full rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border-2"></div>
+            <div className=" h-full lg:w-1/3 w-full rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border-2">
+              <div className=" h-full bg-transparent p-4 rounded-lg">
+                <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">Achievements</h2>
+                <ul className="space-y-3">
+                  {achievements.map((achievement, index) => (
+                    <li key={index} className="flex items-start justify-evenly">
+                      <img
+                        src="/cup.png"
+                        alt="Bullet point"
+                        className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
+                      />
+                      <span className="dark:text-white text-textmain font-royal4 font-medium ">{achievement}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

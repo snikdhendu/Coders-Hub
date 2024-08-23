@@ -7,12 +7,13 @@ import FlowchartPage from './Pages/FlowchartPage';
 import "./App.css";
 import Signin from './sign-in/[[...index]]';
 import Signup from './sign-up/[[...index]]';
-import { useUser } from '@clerk/clerk-react';
-
+import { RootState } from '../store';
+import { useSelector } from "react-redux";
 
 const App = () => {
-  const {user}=useUser();
-  const firstName = user?.fullName ? user.fullName.split(' ')[0] : '';
+  const projects = useSelector((state: RootState) => state.user.projects);
+
+  // const firstName = user?.fullName ? user.fullName.split(' ')[0] : '';
   return (
     <Router>
       <Routes>
@@ -27,7 +28,7 @@ const App = () => {
           <Route path="*" element={<Error />} />
           <Route path='/createAccount' element={<CreateAccount/>}/>
           <Route path='/dashboard/:userName/roadmap/newflowchart' element={<FlowchartPage/>}/>
-          <Route path={`/${firstName}/*`} element={<Detailproject />} />
+          <Route path={`/projects/:id`} element={<Detailproject />} />
          
 
       </Routes>

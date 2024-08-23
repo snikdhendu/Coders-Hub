@@ -1,17 +1,14 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReactFlow, { Edge, Node, Controls, MiniMap, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
-import Modal from 'react-modal';
 import 'tailwindcss/tailwind.css';
-
-// Set the app element for accessibility
-Modal.setAppElement('#root');
 
 interface CustomNode {
   id: string;
   label: string;
   time: string;
-  link: string;
+  links: string[];
   tips: string;
 }
 
@@ -20,30 +17,15 @@ interface FlowchartProps {
   nodes: CustomNode[];
 }
 
-const customModalStyles = {
-  content: {
-    top: '0',
-    right: '0',
-    bottom: '0',
-    left: 'auto',
-    width: '30%',
-    height: '100%',
-    backgroundColor: '#fff',
-    padding: '20px',
-    borderRadius: '0',
-    border: '1px solid #ccc',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-    color: 'black',
-    overflowY: 'auto' as const,
-  },
-};
-
 const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
   const [selectedNode, setSelectedNode] = useState<CustomNode | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [cardPosition, setCardPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const nodeElements: Node[] = [];
   const edgeElements: Edge[] = [];
-  console.log({title})
+  const navigate = useNavigate();
+
   const nodeDetailsMap: { [key: string]: Omit<CustomNode, 'id' | 'label'> } = {};
 
   const baseNodeStyle = {
@@ -61,7 +43,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
     const labelNodeId = `node-${index}`;
     nodeDetailsMap[labelNodeId] = {
       time: node.time,
-      link: node.link,
+      links: node.links,
       tips: node.tips,
     };
 
@@ -95,11 +77,31 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
       : null;
 
     setSelectedNode(selected);
-    setIsModalOpen(true);
+    setCardPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 150 }); // Center modal
+    setIsModalVisible(true);
   }, [nodeDetailsMap]);
+
+  const handleEditClick = () => {
+    navigate(`/dashboard/:userName/roadmap`, { state: { title, nodes } });
+  };
+
+  const handleSave = () => {
+    setIsEditMode(false);
+    setIsModalVisible(false);
+  };
+
+  const handleFinalize = () => {
+    
+  };
 
   return (
     <div className="w-screen h-screen relative bg-cover bg-center" style={{ backgroundImage: 'url("/pexels-hngstrm-1939485.jpg")' }}>
+      <div className="absolute top-5 left-5 bg-blue-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleEditClick}>
+        Edit
+      </div>
+      <div className="absolute top-5 right-5 bg-green-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleFinalize}>
+        Finalize
+      </div>
       <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-black text-white p-4 rounded-md border border-gray-300 z-10 text-center">
         <h1 className="text-3xl font-fantasy">{title}</h1>
       </div>
@@ -112,27 +114,75 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
         <MiniMap />
         <Background gap={13} size={1} offset={2} />
       </ReactFlow>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        style={customModalStyles}
-      >
-        {selectedNode ? (
-          <div className="p-4">
-            <h2 className="text-2xl font-bold mb-2">{selectedNode.label}</h2>
-            <p className="mb-2"><strong>Time Taken:</strong> {selectedNode.time}</p>
-            <p className="mb-2"><strong>Useful Link:</strong></p>
-            <ul className="list-disc list-inside mb-2">
-              <li>
-                <a href={selectedNode.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{selectedNode.link}</a>
-              </li>
-            </ul>
-            <p><strong>Tips:</strong> {selectedNode.tips}</p>
+      {isModalVisible && selectedNode && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30"
+          onClick={() => setIsModalVisible(false)}
+        >
+          <div
+            className="relative bg-white border border-blue-200 shadow-lg rounded-md p-6 w-80 h-80 transition-all duration-200 ease-in-out hover:shadow-blue-500 hover:shadow-md"
+            onClick={(e) => e.stopPropagation()} 
+          >
+            {isEditMode ? (
+              <>
+                <h2 className="text-2xl font-bold mb-2">Edit {selectedNode.label}</h2>
+                <label className="block mb-2">Label:</label>
+                <input
+                  className="w-full mb-2 p-2 border rounded"
+                  value={selectedNode.label}
+                  onChange={(e) => setSelectedNode({ ...selectedNode, label: e.target.value })}
+                />
+                <label className="block mb-2">Time Taken:</label>
+                <input
+                  className="w-full mb-2 p-2 border rounded"
+                  value={selectedNode.time}
+                  onChange={(e) => setSelectedNode({ ...selectedNode, time: e.target.value })}
+                />
+                <label className="block mb-2">Links:</label>
+                {selectedNode.links.map((link, index) => (
+                  <input
+                    key={index}
+                    className="w-full mb-2 p-2 border rounded"
+                    value={link}
+                    onChange={(e) => {
+                      const newLinks = [...selectedNode.links];
+                      newLinks[index] = e.target.value;
+                      setSelectedNode({ ...selectedNode, links: newLinks });
+                    }}
+                  />
+                ))}
+                <label className="block mb-2">Tips:</label>
+                <input
+                  className="w-full mb-2 p-2 border rounded"
+                  value={selectedNode.tips}
+                  onChange={(e) => setSelectedNode({ ...selectedNode, tips: e.target.value })}
+                />
+                <button
+                  onClick={handleSave}
+                  className="bg-green-500 text-white p-2 rounded mt-4"
+                >
+                  Save
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold mb-2">{selectedNode.label}</h2>
+                <p className="mb-2"><strong>Time Taken:</strong> {selectedNode.time}</p>
+                <p className="mb-2"><strong>Useful Links:</strong></p>
+                <ul className="list-disc list-inside mb-2">
+                  {selectedNode.links.map((link, index) => (
+                    <li key={index}>
+                      <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{link}</a>
+                    </li>
+                  ))}
+                </ul>
+                <p><strong>Tips:</strong> {selectedNode.tips}</p>
+              </>
+            )}
+            <button onClick={() => setIsModalVisible(false)} className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded">Close</button>
           </div>
-        ) : (
-          <p>No details available.</p>
-        )}
-      </Modal>
+        </div>
+      )}
     </div>
   );
 };

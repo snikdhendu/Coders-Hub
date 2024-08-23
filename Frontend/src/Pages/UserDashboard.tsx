@@ -27,7 +27,7 @@ import {
   setLinkedInLink,
   setPortfolioLink,
   setTwitterLink,
-  setProjects
+  setProjects,
 } from "../../features/userSlice";
 import { RootState } from "../../store";
 
@@ -48,12 +48,9 @@ const UserDashboard = () => {
     "Completed 100+ coding challenges on LeetCode.",
     "Published 3 technical blogs on Medium.",
     "Achieved AWS Certified Solutions Architect - Associate.",
-    "Contributed to 10+ open-source projects."
+    "Contributed to 10+ open-source projects.",
   ];
-  const Education = [
-    "Techno Main Saltlake",
-    "Third Year"
-  ];
+  const Education = ["Techno Main Saltlake", "Third Year"];
   useEffect(() => {
     if (data) {
       const userData = data.getUserById;
@@ -84,7 +81,7 @@ const UserDashboard = () => {
     "Tailwind CSS",
     "React.js",
     "Redux Toolkit",
-    "Google AI Studio"
+    "Google AI Studio",
   ];
 
   return (
@@ -117,32 +114,45 @@ const UserDashboard = () => {
 
               <div className="w-full h-1/4 flex justify-center items-center gap-6">
                 <span>
-                  <Link to={userState.links.github || ""}>
+                  <a
+                    href={userState.links.github || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <img src="/github.svg" className="h-8 w-8" alt="GitHub" />
-                  </Link>
+                  </a>
                 </span>
                 <span>
-                  <Link to={userState.links.linkedIn || ""}>
+                  <a href={userState.links.linkedIn || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >
                     <img
                       src="/linkedin.svg"
                       className="h-8 w-8"
                       alt="LinkedIn"
                     />
-                  </Link>
+                  </a>
                 </span>
                 <span>
-                  <Link to={userState.links.twitter || ""}>
+                  <a href={userState.links.portfolio || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >
                     <img
                       src="/portfolio.svg"
                       className="h-8 w-8"
                       alt="Portfolio"
                     />
-                  </Link>
+                  </a>
                 </span>
                 <span>
-                  <Link to={userState.links.portfolio || ""}>
+                  <a href={userState.links.twitter || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >
                     <img src="/twitter.svg" className="h-8 w-8" alt="Twitter" />
-                  </Link>
+                  </a>
                 </span>
               </div>
             </div>
@@ -155,7 +165,6 @@ const UserDashboard = () => {
                 >
                   Edit profile
                 </Link>
-
               </div>
               {/* <div className=" flex gap-3">
                 <Link
@@ -172,17 +181,19 @@ const UserDashboard = () => {
                 </Link>
               </div> */}
               <div className=" flex gap-4  w-full justify-center items-center">
-                <img src="/loc.png" alt="" className=" h-8 w-8"/>
-                <h1 className=" inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text font-bold text-2xl">Kolkata</h1>
+                <img src="/loc.png" alt="" className=" h-8 w-8" />
+                <h1 className=" inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text font-bold text-2xl">
+                  Kolkata
+                </h1>
               </div>
             </div>
-
           </div>
 
           <div className=" w-full h-96 overflow-y-auto rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 ">
-
             <div className="bg-transparent rounded-lg p-5">
-              <h2 className="text-lg font-semibold text-gray-600 dark:text-white mb-3">Technologies known:</h2>
+              <h2 className="text-lg font-semibold text-gray-600 dark:text-white mb-3">
+                Technologies known:
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {technologies.map((tech, index) => (
                   <span
@@ -195,7 +206,9 @@ const UserDashboard = () => {
               </div>
             </div>
             <div className=" h-full bg-transparent p-4 rounded-lg">
-              <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">Education</h2>
+              <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">
+                Education
+              </h2>
               <ul className="space-y-3">
                 {Education.map((Education, index) => (
                   <li key={index} className="flex items-start">
@@ -204,7 +217,9 @@ const UserDashboard = () => {
                       alt="Bullet point"
                       className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
                     />
-                    <span className="dark:text-white text-textmain font-royal4 font-medium ">{Education}</span>
+                    <span className="dark:text-white text-textmain font-royal4 font-medium ">
+                      {Education}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -237,19 +252,21 @@ const UserDashboard = () => {
                 <div className=" flex gap-4 bg-blue-100 justify-center h-fit rounded-md p-1">
                   <button
                     onClick={() => setSelectedContent("project")}
-                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${selectedContent === "project"
-                      ? " bg-textmain text-secondbg"
-                      : "text-textmain"
-                      }`}
+                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${
+                      selectedContent === "project"
+                        ? " bg-textmain text-secondbg"
+                        : "text-textmain"
+                    }`}
                   >
                     Project
                   </button>
                   <button
                     onClick={() => setSelectedContent("roadmap")}
-                    className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${selectedContent === "roadmap"
-                      ? "bg-textmain text-secondbg"
-                      : "text-textmain"
-                      } `}
+                    className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${
+                      selectedContent === "roadmap"
+                        ? "bg-textmain text-secondbg"
+                        : "text-textmain"
+                    } `}
                   >
                     RoadMap
                   </button>
@@ -272,7 +289,9 @@ const UserDashboard = () => {
             </div>
             <div className=" h-full lg:w-1/3 w-full rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border-2">
               <div className=" h-full bg-transparent p-4 rounded-lg">
-                <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">Achievements</h2>
+                <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">
+                  Achievements
+                </h2>
                 <ul className="space-y-3">
                   {achievements.map((achievement, index) => (
                     <li key={index} className="flex items-start justify-evenly">
@@ -281,7 +300,9 @@ const UserDashboard = () => {
                         alt="Bullet point"
                         className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
                       />
-                      <span className="dark:text-white text-textmain font-royal4 font-medium ">{achievement}</span>
+                      <span className="dark:text-white text-textmain font-royal4 font-medium ">
+                        {achievement}
+                      </span>
                     </li>
                   ))}
                 </ul>

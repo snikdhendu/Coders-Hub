@@ -1,11 +1,17 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { EditUser } from '../Pages';
-import EditProect  from './EditProject';
-
+import EditProject from './EditProject';
+import { useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
+import { RootState } from '../../store';
+import { useUser } from '@clerk/clerk-react';
 
 const Userproject = () => {
+  const projects = useSelector((state: RootState) => state.user.projects);
+  const {user}=useUser();
+  const firstName = user ?.fullName ? user.fullName.split(' ')[0] : '';
+
   const openModal = () => {
     const modal = document.getElementById('my_modal_3');
     if (modal instanceof HTMLDialogElement) {
@@ -14,26 +20,46 @@ const Userproject = () => {
       console.error('Modal element not found or is not a dialog.');
     }
   };
+  const formatProjectName = (name:any) => {
+    return name.replace(/\s+/g, '-').toLowerCase(); // Replace spaces with hyphens and convert to lowercase
+  };
 
   return (
     <div className="flex justify-center items-center text-3xl font-royal1 h-96 gap-6 flex-col">
       <div className="bg-textfourth rounded-full p-6 flex justify-center items-center">
-      
-        <button className="flex justify-center items-center" onClick={openModal}><FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' /></button>
+        <button className="flex justify-center items-center" onClick={openModal}>
+          <FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' />
+        </button>
         <dialog id="my_modal_3" className="modal">
-          <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white   dark:bg-gray-950 text-textmain">
-            <form method="dialog" className=' flex justify-center items-center  h-full'>
-              <EditProect/>
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-6 top-5 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center ronded-full">✕</button>
+          <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
+            <form method="dialog" className='flex justify-center items-center h-full'>
+              <EditProject />
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full">✕</button>
             </form>
           </div>
         </dialog>
       </div>
-      <h1 className="font-royal4 font-bold">You have no project yet. Add Project.</h1>
+      {projects && projects.length > 0 ? (
+        <div className="w-full flex flex-col items-center p-3 mt-8">
+          {projects.map((project) => (
+            <Link 
+              key={project._id} 
+              to={`/${firstName}/${formatProjectName(project.projectName)}`}
+              className="bg-muted/50 border shadow-md rounded-lg p-4 w-full mb-4 h-36 cursor-pointer"
+            >
+              <h2 className="text-2xl font-bold">{project.projectName}</h2>
+              <p className="text-lg">{project.description}</p>
+              <p className="text-sm text-gray-500">Tech Stack: {project.technologies.join(', ') || 'Not specified'}</p>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <h1 className="font-royal4 font-bold inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text">
+          You have no projects yet. Add a project.
+        </h1>
+      )}
     </div>
   );
 }
-
-
 
 export default Userproject;

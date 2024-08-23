@@ -51,7 +51,7 @@ const EditUser: React.FC = () => {
 
 
   return (
-    <div className='w-full h-full bg-white dark:border-b-slate-700 dark:bg-background p-2'>
+    <div className='w-full h-full bg-white dark:border-b-slate-700 dark:bg-background p-2 border-2'>
       <div className='h-full w-full bg-white dark:border-b-slate-700 dark:bg-background shadow-lg rounded-lg overflow-y-auto scrollbar-thin p-3'>
         <div className='h-full flex justify-center items-center flex-col overflow-y-auto gap-4'>
           <div className='w-full flex justify-center items-center flex-col gap-4 h-fit mt-60 pb-8 border-b-4 border-dotted border-zinc-200'>

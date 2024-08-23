@@ -7,7 +7,7 @@ const CreateAccount: React.FC = () => {
     const [formData, setFormData] = useState({
         about: '',
         gitHub: '',
-        linkedin: '',
+        leetcode: '',
     });
 
     const [formStep, setFormStep] = useState(1);
@@ -36,8 +36,8 @@ const CreateAccount: React.FC = () => {
     const validateStep2 = () => {
         const newErrors: { [key: string]: string } = {};
 
-        if (!formData.linkedin) {
-            newErrors.linkedin = 'LinkedIn URL is required';
+        if (!formData.leetcode) {
+            newErrors.leetcode = 'leetcode URL is required';
         }
         if (!formData.gitHub) {
             newErrors.gitHub = 'GitHub URL is required';
@@ -54,9 +54,9 @@ const CreateAccount: React.FC = () => {
             dispatch(setAbout(formData.about));
             setFormStep(2);
         } else if (formStep === 2 && validateStep2()) {
-            // Dispatch the GitHub and LinkedIn links
+            // Dispatch the GitHub and leetcode links
             dispatch(setGithubLink(formData.gitHub));
-            dispatch(setLeetcodeLink(formData.linkedin));
+            dispatch(setLeetcodeLink(formData.leetcode));
             navigate('/');
         }
     };
@@ -74,17 +74,22 @@ const CreateAccount: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateStep2()) {
-            // Dispatch the GitHub and LinkedIn links
+            // Dispatch the GitHub and leetcode links
             dispatch(setGithubLink(formData.gitHub));
-            dispatch(setLeetcodeLink(formData.linkedin));
+            dispatch(setLeetcodeLink(formData.leetcode));
             console.log(formData);
             navigate('/');
         }
     };
+    const handlePaginationChange = (step: number) => {
+        if (step >= 1 && step <= 2) {
+            setFormStep(step);
+        }
+    };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-mainbg dark:bg-black w-full">
-            <form className="flex gap-4 w-4/5 p-8 bg-muted/50 border rounded-lg shadow-xl" onSubmit={handleSubmit}>
+        <div className="min-h-screen overflow-y-auto flex items-center justify-center bg-mainbg dark:bg-black w-full">
+            <form className="flex flex-col lg:flex-row gap-4 w-4/5 p-8 bg-muted/50 border rounded-lg shadow-xl" onSubmit={handleSubmit}>
                 <div className='flex gap-4 flex-col w-full justify-between'>
                     <div className='flex gap-4 flex-col'>
                         <div className="flex items-center">
@@ -129,18 +134,18 @@ const CreateAccount: React.FC = () => {
                                 <p className="text-sm text-gray-400">Provide your social links</p>
                                 <label className="relative w-full">
                                     <input
-                                        className={`bg-muted/50  text-textmain dark:text-white  w-full p-4 pt-5 rounded-lg border ${errors.linkedin ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
+                                        className={`bg-muted/50  text-textmain dark:text-white  w-full p-4 pt-5 rounded-lg border ${errors.leetcode ? 'border-red-600' : 'border-gray-600'} outline-none placeholder-transparent focus:placeholder-transparent`}
                                         type="url"
-                                        name="linkedin"
-                                        placeholder="LinkedIn"
-                                        value={formData.linkedin}
+                                        name="leetcode"
+                                        placeholder="leetcode"
+                                        value={formData.leetcode}
                                         onChange={handleChange}
                                         required
                                     />
-                                    <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.linkedin ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
-                                        LinkedIn
+                                    <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.leetcode ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
+                                        Leetcode
                                     </span>
-                                    {errors.linkedin && <p className="text-red-500 text-xs mt-1">{errors.linkedin}</p>}
+                                    {errors.leetcode && <p className="text-red-500 text-xs mt-1">{errors.leetcode}</p>}
                                 </label>
                                 <label className="relative w-full">
                                     <input
@@ -170,13 +175,21 @@ const CreateAccount: React.FC = () => {
                     </div>
                     <div className="join">
                         <input
-                            className="join-item btn btn-square"
+                            className={`join-item btn btn-square ${formStep === 1 ? 'bg-cyan-500' : 'bg-gray-600'}`}
                             type="radio"
                             name="options"
                             aria-label="1"
-                            defaultChecked
+                            checked={formStep === 1}
+                            onChange={() => handlePaginationChange(1)}
                         />
-                        <input className="join-item btn btn-square" type="radio" name="options" aria-label="2" />
+                        <input
+                            className={`join-item btn btn-square ${formStep === 2 ? 'bg-cyan-500' : 'bg-gray-600'}`}
+                            type="radio"
+                            name="options"
+                            aria-label="2"
+                            checked={formStep === 2}
+                            onChange={() => handlePaginationChange(2)}
+                        />
                     </div>
                 </div>
                 <img src="/growth.png" alt="" className='relative z-10' />

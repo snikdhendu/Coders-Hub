@@ -36,11 +36,11 @@ const TechStackSelector: React.FC = () => {
 
   return (
   
-      <label className="form-control w-full max-w-xs text-textthird font-royal4 text-xl font-bold dark:bg-black ">
+      <label className="form-control w-full max-w-xs text-textthird dark:text-white font-royal4 text-xl font-bold bg-white dark:border-b-slate-700 dark:bg-background ">
         <div className="label">
-          <span className="label-text text-textthird font-royal4 text-xl font-bold">Technology used</span>
+          <span className="label-text dark:text-white text-textthird font-royal4 text-xl font-bold">Technology used</span>
         </div>
-        <div className="flex flex-wrap items-center bg-mainbg dark:bg-black">
+        <div className="flex flex-wrap items-center bg-white dark:border-b-slate-700 dark:bg-background">
           <div className="flex flex-wrap gap-2 items-center">
             {selectedTechStack.map((tech, index) => (
               <Tag key={index} text={tech} onRemove={() => handleRemoveTag(tech)} />
@@ -48,11 +48,11 @@ const TechStackSelector: React.FC = () => {
             <select
               ref={selectRef}
               onChange={handleSelect}
-              className="select bg-transparent text-textmain font-royal4 text-xl font-bold outline-none w-96 border-1 border-textmain dark:bg-black "
+              className="select bg-transparent dark:text-white text-textthird font-royal4 text-xl font-bold outline-none w-96 border-1 border-textmain bg-white dark:border-b-slate-700 dark:bg-background "
             >
-              <option disabled selected className="text-textthird font-royal4 text-base font-normal dark:bg-black">Pick one</option>
+              <option disabled selected className="dark:text-white text-textthird font-royal4 text-base font-normal bg-white dark:border-b-slate-700 dark:bg-background">Pick one</option>
               {techStack.map((tech, index) => (
-                <option key={index} className="text-textthird font-royal4 text-xl font-normal">
+                <option key={index} className="dark:text-white text-textthird font-royal4 text-xl font-normal">
                   {tech}
                 </option>
               ))}

@@ -21,6 +21,7 @@ const UPDATE_USER = editUser;
 import { ImageUpload, TechStackSelector } from '../Components';  // Ensure the correct import path
 
 const EditUser: React.FC = () => {
+  
 
   const { user } = useUser();
   const dispatch = useDispatch();
@@ -97,8 +98,8 @@ const EditUser: React.FC = () => {
 
 
   return (
-    <div className='w-full h-screen bg-mainbg p-7'>
-      <div className='h-full w-full bg-secondbg shadow-lg border-zinc-300 rounded-lg overflow-y-auto scrollbar-thin scrollbar-webkit p-8'>
+    <div className='w-full h-screen bg-mainbg dark:bg-black p-7'>
+      <div className='h-full w-full border bg-white dark:border-b-slate-700 dark:bg-background shadow-lg border-zinc-300 rounded-lg overflow-y-auto scrollbar-thin scrollbar-webkit p-8'>
         <form onSubmit={handleSubmit}>
           <div className='h-auto border-b-4 border-zinc-100 flex p-5'>
             <div className='flex-1 flex flex-col'>
@@ -122,6 +123,8 @@ const EditUser: React.FC = () => {
                   placeholder='John Doe'
                   defaultValue={user.fullName}
                   disabled
+                  variant='outlined'
+                  sx={{ input: { color: 'white' } }}      
                 />
                 <TextField
                   required
@@ -130,7 +133,7 @@ const EditUser: React.FC = () => {
                   placeholder='John@gmail.com'
                   defaultValue={user.primaryEmailAddress?.emailAddress || 'No email address found'}
                   disabled
-                  className='text-sm'
+                  className='text-sm text-white'
                 />
               </div>
               <div className='w-4/5'>
@@ -147,7 +150,7 @@ const EditUser: React.FC = () => {
                   <InputLabel id="demo-simple-select-label">Year</InputLabel>
                   <Select
                     required
-                    className='w-56'
+                    className='w-56 text-white'
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={year}

@@ -78,15 +78,20 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
-        pulse: { // Added pulse keyframes from the old configuration
+        pulse: { 
           '0%': { transform: 'scale(0.9)', opacity: '1' },
           '100%': { transform: 'scale(1.8)', opacity: '0' },
         },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-1deg)' },
+          '50%': { transform: 'rotate(1deg)' },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        pulse: 'pulse 1s linear infinite', // Added pulse animation from the old configuration
+        pulse: 'pulse 1s linear infinite', 
+        wiggle: 'wiggle 2s ease-in infinite'
       },
     },
   },

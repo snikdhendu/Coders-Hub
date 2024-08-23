@@ -284,34 +284,32 @@
 // export default Userroadmap;
 
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import NodeInputForm from './NodeInputForm';
 
 interface CustomNode {
   id: string;
   label: string;
   time: string;
-  link: string;
-  tips: string; // Ensure consistency with the new Node structure
+  links: string[];
+  tips: string;
 }
 
 const Userroadmap: React.FC = () => {
-  const [nodes, setNodes] = useState<CustomNode[]>([]);
-  const [roadmapTitle, setRoadmapTitle] = useState<string>(''); // State for roadmap title
+  const location = useLocation();
   const navigate = useNavigate();
 
+  // Ensure that location.state is an object with title and nodes properties
+  const { title = '', nodes = [] } = location.state as { title?: string; nodes?: CustomNode[] } || {};
+
   const handleSubmit = (title: string, nodes: CustomNode[]) => {
-    setNodes(nodes);
-    setRoadmapTitle(title);
-    console.log(title);
-    navigate(`/dashboard/:userName/roadmap/newflowchart`, { state: { title,nodes } });
+    navigate(`/dashboard/:userName/roadmap/newflowchart`, { state: { title, nodes } });
   };
 
   return (
     <div>
-      {/* <h1>React Flowchart Creator</h1> */}
-      <NodeInputForm onSubmit={handleSubmit} />
+      <NodeInputForm onSubmit={handleSubmit} initialTitle={title} initialNodes={nodes} />
     </div>
   );
 };

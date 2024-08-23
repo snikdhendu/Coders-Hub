@@ -9,12 +9,13 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Navbar } from "../Components/Navbar";
 import { useUser } from "@clerk/clerk-react";
-
+import { EditProect } from "../Components";
 import { useTheme } from "../Components/theme-provider";
 
 import { useQuery } from "@apollo/client";
 import { getUsers } from "../graphql/query/userQuery";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   setCollegeName,
   setEmail,
@@ -83,6 +84,26 @@ const UserDashboard = () => {
     "Redux Toolkit",
     "Google AI Studio",
   ];
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handlePlusClick = () => {
+    if (selectedContent === "project") {
+      openModal(); // Open the modal if in the project tab
+    } else if (selectedContent === "roadmap") {
+      navigate('./roadmap'); // Navigate to the roadmap route if in the roadmap tab
+    }
+  };
+  
+  
+  const openModal = () => {
+    const modal = document.getElementById('my_modal_3');
+    if (modal instanceof HTMLDialogElement) {
+      modal.showModal();
+    } else {
+      console.error('Modal element not found or is not a dialog.');
+    }
+  };
 
   return (
     <div className="  dark:border-b-slate-700 dark:bg-background  h-auto overflow-y-auto">
@@ -124,8 +145,8 @@ const UserDashboard = () => {
                 </span>
                 <span>
                   <a href={userState.links.linkedIn || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <img
                       src="/linkedin.svg"
@@ -136,8 +157,8 @@ const UserDashboard = () => {
                 </span>
                 <span>
                   <a href={userState.links.portfolio || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <img
                       src="/portfolio.svg"
@@ -148,8 +169,8 @@ const UserDashboard = () => {
                 </span>
                 <span>
                   <a href={userState.links.twitter || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <img src="/twitter.svg" className="h-8 w-8" alt="Twitter" />
                   </a>
@@ -252,31 +273,35 @@ const UserDashboard = () => {
                 <div className=" flex gap-4 bg-blue-100 justify-center h-fit rounded-md p-1">
                   <button
                     onClick={() => setSelectedContent("project")}
-                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${
-                      selectedContent === "project"
-                        ? " bg-textmain text-secondbg"
-                        : "text-textmain"
-                    }`}
+                    className={`block  duration-500 p-3 rounded-md font-royal4 font-bold ${selectedContent === "project"
+                      ? " bg-textmain text-secondbg"
+                      : "text-textmain"
+                      }`}
                   >
                     Project
                   </button>
                   <button
                     onClick={() => setSelectedContent("roadmap")}
-                    className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${
-                      selectedContent === "roadmap"
-                        ? "bg-textmain text-secondbg"
-                        : "text-textmain"
-                    } `}
+                    className={`  duration-500 rounded-md font-royal4 p-3 font-bold ${selectedContent === "roadmap"
+                      ? "bg-textmain text-secondbg"
+                      : "text-textmain"
+                      } `}
                   >
                     RoadMap
                   </button>
                 </div>
 
-                <div className=" relative left-6 lg:left-48 bg-textfourth rounded-full p-2 flex justify-center items-center">
+
+                <div
+                  onClick={handlePlusClick}
+                  className="relative left-6 lg:left-48 bg-textfourth rounded-full border-2 p-2 flex justify-center items-center cursor-pointer"
+                >
                   <FontAwesomeIcon
                     icon={faPlus}
-                    className=" text-mainbg h-6 w-6"
+                    className="text-mainbg h-6 w-6"
                   />
+
+
                 </div>
               </div>
               <div className="h-5/6  overflow-y-auto  w-full">
@@ -311,6 +336,24 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <dialog id="my_modal_3" className="modal">
+          <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
+            <form
+              method="dialog"
+              className="flex justify-center items-center h-full"
+            >
+              <EditProect />
+              <button
+                className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full"
+                onClick={() => setIsModalOpen(false)} // Close modal on button click
+              >
+                ✕
+              </button>
+            </form>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 };

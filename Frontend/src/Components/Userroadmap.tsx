@@ -21,7 +21,7 @@ const Userroadmap = () => {
         <Link to='./roadmap' className="flex justify-center items-center"><FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' /></Link>
 
       </div>
-      <h1 className="font-royal4 font-bold">You have no roadmap yet. Add Roadmap.</h1>
+      <h1 className="font-royal4 font-bold inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text">You have no roadmap yet. Add Roadmap.</h1>
     </div>
   );
 }

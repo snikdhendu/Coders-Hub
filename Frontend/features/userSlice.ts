@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // src/features/userSlice.ts
 
 export interface Project {
+    _id:string,
     projectName: string
     tagline: string
     description: string

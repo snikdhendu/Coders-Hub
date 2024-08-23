@@ -68,10 +68,10 @@ const UserDashboard = () => {
   const userState:any = useSelector((state: RootState) => state.user);
 
   return (
-    <div className="  dark:border-b-slate-700 dark:bg-background">
+    <div className="  dark:border-b-slate-700 dark:bg-background  h-auto overflow-y-auto">
       <Navbar />
 
-      <div className=" min-h-screen w-full h-fit bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap">
+      <div className=" min-h-screen w-full h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap ">
         <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
           <div className=" w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3">
             <div className=" w-full h-2/4 p-5 flex flex-col gap-2">
@@ -171,9 +171,9 @@ const UserDashboard = () => {
           <div className=" w-full h-96 overflow-y-auto rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 "></div>
         </div>
 
-        <div className=" w-3/4 md:h-screen h-fit flex md:flex-col gap-5  flex-wrap md:flex-nowrap ">
-          <div className=" w-full h-1/3  flex gap-4">
-            <div className=" w-1/3 h-full rounded-lg bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex justify-center items-center">
+        <div className=" w-full lg:w-3/4 md:h-screen h-fit flex md:flex-col gap-5  flex-wrap md:flex-nowrap ">
+          <div className=" w-full h-1/3  flex flex-col lg:flex-row gap-4 ">
+            <div className=" w-full lg:w-1/3 h-full rounded-lg bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex justify-center items-center">
               {/* <div > <UserSolvedProblemsStats userName="snikdhendupramanik"  /></div> */}
               <LeetCodeStats
                 username="Snikdhendupramanik"
@@ -181,7 +181,7 @@ const UserDashboard = () => {
               />
             </div>
 
-            <div className="w-2/3 h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-4 font-royal4 font-bold">
+            <div className="lg:w-2/3 w-full h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-4 font-royal4 font-bold text-base">
               <GitHubCalendar
                 username="Xeven777"
                 colorScheme={theme === "dark" ? "dark" : "light"}
@@ -189,9 +189,9 @@ const UserDashboard = () => {
             </div>
           </div>
 
-          <div className=" w-full h-2/3  flex gap-5  flex-wrap md:flex-nowrap">
+          <div className=" w-full lg:h-2/3 h-screen  flex gap-5  flex-col lg:flex-row ">
             {/* project and roadmap div */}
-            <div className=" h-full w-2/3 rounded-md bg-white border-2 dark:border-b-slate-700 dark:bg-background shadow-2xl flex flex-col">
+            <div className=" h-full w-full lg:w-2/3 rounded-md bg-white border-2 dark:border-b-slate-700 dark:bg-background shadow-2xl flex flex-col">
               <div className=" h-1/6 w-full bg-white  dark:bg-background  flex justify-center items-center relative border-2">
                 <div className=" flex gap-4 bg-blue-100 justify-center h-fit rounded-md p-1">
                   <button
@@ -216,7 +216,7 @@ const UserDashboard = () => {
                   </button>
                 </div>
 
-                <div className=" relative left-48 bg-textfourth rounded-full p-2 flex justify-center items-center">
+                <div className=" relative left-6 lg:left-48 bg-textfourth rounded-full p-2 flex justify-center items-center">
                   <FontAwesomeIcon
                     icon={faPlus}
                     className=" text-mainbg h-6 w-6"
@@ -231,7 +231,7 @@ const UserDashboard = () => {
                 )}
               </div>
             </div>
-            <div className=" h-full w-1/3 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border-2"></div>
+            <div className=" h-full lg:w-1/3 w-full rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border-2"></div>
           </div>
         </div>
       </div>

@@ -64,16 +64,27 @@ export const Navbar = () => {
           </NavigationMenuItem>
 
           {/* mobile */}
-          <span className="flex md:hidden">
+          <span className="flex justify-center items-center gap-4 md:hidden">
+
             <ModeToggle />
+            {user ? (
+              <AvatarCom />
+            ) : (
+              <Link
+                to="/sign-in"
+                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-2"
+              >
+                Sign in
+              </Link>
+            )}
 
             <Sheet
               open={isOpen}
               onOpenChange={setIsOpen}
             >
-              <SheetTrigger className="px-2">
+              <SheetTrigger className="p-1 rounded-md border-2 ">
                 <Menu
-                  className="flex md:hidden h-5 w-5"
+                  className="flex md:hidden h-6 w-6 "
                   onClick={() => setIsOpen(true)}
                 >
                   <span className="sr-only">Menu Icon</span>
@@ -98,7 +109,7 @@ export const Navbar = () => {
                       {label}
                     </Link>
                   ))}
-                  <AvatarCom />
+
                 </nav>
               </SheetContent>
             </Sheet>

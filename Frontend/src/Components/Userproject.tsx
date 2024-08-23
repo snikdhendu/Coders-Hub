@@ -9,8 +9,8 @@ import { useUser } from '@clerk/clerk-react';
 
 const Userproject = () => {
   const projects = useSelector((state: RootState) => state.user.projects);
-  const {user}=useUser();
-  const firstName = user ?.fullName ? user.fullName.split(' ')[0] : '';
+  // const {user}=useUser();
+  // const firstName = user ?.fullName ? user.fullName.split(' ')[0] : '';
 
   const openModal = () => {
     const modal = document.getElementById('my_modal_3');
@@ -20,9 +20,9 @@ const Userproject = () => {
       console.error('Modal element not found or is not a dialog.');
     }
   };
-  const formatProjectName = (name:any) => {
-    return name.replace(/\s+/g, '-').toLowerCase(); // Replace spaces with hyphens and convert to lowercase
-  };
+  // const formatProjectName = (name:any) => {
+  //   return name.replace(/\s+/g, '-').toLowerCase(); // Replace spaces with hyphens and convert to lowercase
+  // };
 
   return (
     <div className="flex justify-center items-center text-3xl font-royal1 h-96 gap-6 flex-col">
@@ -44,7 +44,7 @@ const Userproject = () => {
           {projects.map((project) => (
             <Link 
               key={project._id} 
-              to={`/${firstName}/${formatProjectName(project.projectName)}`}
+              to={`/projects/${project._id}`}
               className="bg-muted/50 border shadow-md rounded-lg p-4 w-full mb-4 h-36 cursor-pointer"
             >
               <h2 className="text-2xl font-bold">{project.projectName}</h2>

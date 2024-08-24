@@ -11,7 +11,6 @@ import { Navbar } from "../Components/Navbar";
 import { useUser } from "@clerk/clerk-react";
 import { EditProect } from "../Components";
 import { useTheme } from "../Components/theme-provider";
-
 import { useQuery } from "@apollo/client";
 import { getUsers } from "../graphql/query/userQuery";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,18 +83,17 @@ const UserDashboard = () => {
     "Redux Toolkit",
     "Google AI Studio",
   ];
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Handle the click event for the plus sign
   const handlePlusClick = () => {
     if (selectedContent === "project") {
-      openModal(); // Open the modal if in the project tab
+      openModal(); // Open modal in "Project" tab
     } else if (selectedContent === "roadmap") {
-      navigate('./roadmap'); // Navigate to the roadmap route if in the roadmap tab
+      navigate("./roadmap"); // Navigate to "./roadmap" in "Roadmap" tab
     }
   };
-  
-  
   const openModal = () => {
     const modal = document.getElementById('my_modal_3');
     if (modal instanceof HTMLDialogElement) {
@@ -104,6 +102,20 @@ const UserDashboard = () => {
       console.error('Modal element not found or is not a dialog.');
     }
   };
+
+  const closeModal = () => {
+     const modal = document.getElementById('my_modal_3');
+      if (modal instanceof HTMLDialogElement) {
+       modal.close();
+     } else {
+       console.error('Modal element not found or is not a dialog.');
+      }
+    8};
+    9
+
+
+
+
 
   return (
     <div className="  dark:border-b-slate-700 dark:bg-background  h-auto overflow-y-auto">
@@ -293,18 +305,17 @@ const UserDashboard = () => {
 
 
                 <div
-                  onClick={handlePlusClick}
+
                   className="relative left-6 lg:left-48 bg-textfourth rounded-full border-2 p-2 flex justify-center items-center cursor-pointer"
                 >
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    className="text-mainbg h-6 w-6"
-                  />
+                  <button onClick={handlePlusClick} className=" bg-textfourth rounded-full h-5 w-5 flex justify-center items-center">
+                    <FontAwesomeIcon icon={faPlus} className="text-white" />
+                  </button>
 
 
                 </div>
               </div>
-              <div className="h-5/6  overflow-y-auto  w-full">
+              <div className="h-5/6 flex flex-col  items-center overflow-y-auto  w-full">
                 {selectedContent === "project" ? (
                   <Userproject />
                 ) : (
@@ -336,24 +347,21 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-      {isModalOpen && (
-        <dialog id="my_modal_3" className="modal">
-          <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
-            <form
-              method="dialog"
-              className="flex justify-center items-center h-full"
+
+      <dialog id="my_modal_3" className="modal">
+        <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
+          <div className="flex justify-center items-center h-full">
+            <EditProect closeModal={closeModal}/>
+            <button
+              type="button"
+              className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full"
+              onClick={closeModal}
             >
-              <EditProect />
-              <button
-                className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full"
-                onClick={() => setIsModalOpen(false)} // Close modal on button click
-              >
-                ✕
-              </button>
-            </form>
+              ✕
+            </button>
           </div>
-        </dialog>
-      )}
+        </div>
+      </dialog>
     </div>
   );
 };

@@ -3,10 +3,13 @@ import { useUser } from '@clerk/clerk-react';
 import TechStackSelector from './TechStackSelector';
 import { createProject } from '../graphql/mutation/projectMutation';
 import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
+interface EditUserProps {
+  closeModal: () => void;
+}
 
-
-const EditUser: React.FC = () => {
+const EditUser: React.FC<EditUserProps> = ({ closeModal }) => {
   const { user } = useUser();
   
   if (!user) {
@@ -21,8 +24,10 @@ const EditUser: React.FC = () => {
   const [projectType, setProjectType] = useState('');
   const [githubLink, setGithubLink] = useState('');
   const [deployLink, setDeployLink] = useState('');
+  // const navigate=useNavigate();
 
   const handleSubmit = () => {
+    
     console.log({
       projectName,
       projectTagline,
@@ -43,18 +48,21 @@ const EditUser: React.FC = () => {
       },
     }).then((response) => {
       console.log("Project created successfully:", response.data);
+      closeModal();
     }).catch((error) => {
       console.error("Error creating user:", error);
     });
+
+    
 
   };
 
 
   return (
-    <div className='w-full h-full bg-white dark:border-b-slate-700 dark:bg-background p-2 border-2'>
+    <div className='w-full h-full bg-white dark:border-b-slate-700 dark:bg-background p-2 border-2 border-red-500'>
       <div className='h-full w-full bg-white dark:border-b-slate-700 dark:bg-background shadow-lg rounded-lg overflow-y-auto scrollbar-thin p-3'>
         <div className='h-full flex justify-center items-center flex-col overflow-y-auto gap-4'>
-          <div className='w-full flex justify-center items-center flex-col gap-4 h-fit mt-60 pb-8 border-b-4 border-dotted border-zinc-200'>
+          <div className='w-full flex justify-center items-center flex-col gap-4 h-fit mt-44 pb-8 border-b-4 border-dotted border-zinc-200'>
             <div className='flex-1 flex flex-col justify-center items-center'>
               <h1 className='text-2xl font-extrabold font-royal4 text-textmain dark:text-white'>
                 Project details

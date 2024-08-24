@@ -5,12 +5,9 @@ import EditProject from './EditProject';
 import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { RootState } from '../../store';
-import { useUser } from '@clerk/clerk-react';
 
 const Userproject = () => {
   const projects = useSelector((state: RootState) => state.user.projects);
-  // const {user}=useUser();
-  // const firstName = user ?.fullName ? user.fullName.split(' ')[0] : '';
 
   const openModal = () => {
     const modal = document.getElementById('my_modal_3');
@@ -20,30 +17,23 @@ const Userproject = () => {
       console.error('Modal element not found or is not a dialog.');
     }
   };
-  // const formatProjectName = (name:any) => {
-  //   return name.replace(/\s+/g, '-').toLowerCase(); // Replace spaces with hyphens and convert to lowercase
-  // };
+
+  const closeModal = () => {
+    const modal = document.getElementById('my_modal_3');
+    if (modal instanceof HTMLDialogElement) {
+      modal.close();
+    } else {
+      console.error('Modal element not found or is not a dialog.');
+    }
+  };
 
   return (
-    <div className="flex justify-center items-center text-3xl font-royal1 h-96 gap-6 flex-col">
-      <div className="bg-textfourth rounded-full p-6 flex justify-center items-center">
-        <button className="flex justify-center items-center" onClick={openModal}>
-          <FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' />
-        </button>
-        <dialog id="my_modal_3" className="modal">
-          <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
-            <form method="dialog" className='flex justify-center items-center h-full'>
-              <EditProject />
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full">✕</button>
-            </form>
-          </div>
-        </dialog>
-      </div>
+    <div className="flex justify-center items-center text-3xl font-royal1 gap-6 flex-col w-full">
       {projects && projects.length > 0 ? (
-        <div className="w-full flex flex-col items-center p-3 mt-8">
+        <div className="w-full flex flex-col items-center p-3">
           {projects.map((project) => (
-            <Link 
-              key={project._id} 
+            <Link
+              key={project._id}
               to={`/projects/${project._id}`}
               className="bg-muted/50 border shadow-md rounded-lg p-4 w-full mb-4 h-36 cursor-pointer"
             >
@@ -54,9 +44,34 @@ const Userproject = () => {
           ))}
         </div>
       ) : (
-        <h1 className="font-royal4 font-bold inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text">
-          You have no projects yet. Add a project.
-        </h1>
+        <>
+          <div className="bg-textfourth rounded-full p-6 flex justify-center items-center mt-28">
+            <button
+              className="btn flex justify-center items-center bg-transparent border-none rounded-full h-16 w-16 hover:bg-transparent"
+              onClick={openModal}
+            >
+              <FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' />
+            </button>
+
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
+                <div className="flex justify-center items-center h-full">
+                  <EditProject closeModal={closeModal}/>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full"
+                    onClick={closeModal}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            </dialog>
+          </div>
+          <h1 className="font-royal4 font-bold inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text mt-4">
+            You have no projects yet. Add a project.
+          </h1>
+        </>
       )}
     </div>
   );

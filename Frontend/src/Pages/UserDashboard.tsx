@@ -104,15 +104,31 @@ const UserDashboard = () => {
   };
 
   const closeModal = () => {
-     const modal = document.getElementById('my_modal_3');
-      if (modal instanceof HTMLDialogElement) {
-       modal.close();
-     } else {
-       console.error('Modal element not found or is not a dialog.');
-      }
-    8};
-    9
+    const modal = document.getElementById('my_modal_3');
+    if (modal instanceof HTMLDialogElement) {
+      modal.close();
+    } else {
+      console.error('Modal element not found or is not a dialog.');
+    }
+  };
+  const getGitHubUsername = (githubUrl: string): string => {
+    try {
+      // Use URL object to parse the URL and extract the path
+      const url = new URL(githubUrl);
+      // Extract the last part of the pathname
+      const username = url.pathname.split('/').filter(Boolean).pop();
+      return username || '';
+    } catch (error) {
+      console.error('Invalid GitHub URL', error);
+      return '';
+    }
+  };
 
+  const avatarUrl = userState.profileUrl;
+  const githubUrl = userState.links.github;
+  // Get the username from the GitHub URL
+  const githubUsername = getGitHubUsername(githubUrl);
+  const location =userState.location;
 
 
 
@@ -127,7 +143,7 @@ const UserDashboard = () => {
             <div className=" w-full h-2/4 p-5 flex flex-col gap-2">
               <div className=" w-full h-1/2 flex justify-center items-center">
                 <Avatar
-                  src={user.imageUrl}
+                  src={avatarUrl}
                   sx={{ width: 96, height: 96 }}
                   className=" border-4 border-textmain"
                 />
@@ -214,10 +230,20 @@ const UserDashboard = () => {
                 </Link>
               </div> */}
               <div className=" flex gap-4  w-full justify-center items-center">
-                <img src="/loc.png" alt="" className=" h-8 w-8" />
-                <h1 className=" inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text font-bold text-2xl">
-                  Kolkata
-                </h1>
+                {
+                    location ?(
+                      <>
+                      <img src="/loc.png" alt="" className=" h-8 w-8" />
+                      <h1 className=" inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text font-bold text-2xl">
+                        {location}
+                      </h1>
+                      </>
+
+                    ):(
+                        <></>
+                    )
+                }
+
               </div>
             </div>
           </div>
@@ -271,10 +297,14 @@ const UserDashboard = () => {
             </div>
 
             <div className="lg:w-2/3 w-full h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-4 font-royal4 font-bold text-base">
-              <GitHubCalendar
-                username="Xeven777"
-                colorScheme={theme === "dark" ? "dark" : "light"}
-              />
+              {githubUsername ? (
+                <GitHubCalendar
+                  username={githubUsername}
+                  colorScheme={theme === "dark" ? "dark" : "light"}
+                />
+              ) : (
+                <p>Add GitHub</p>
+              )}
             </div>
           </div>
 
@@ -351,7 +381,7 @@ const UserDashboard = () => {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
           <div className="flex justify-center items-center h-full">
-            <EditProect closeModal={closeModal}/>
+            <EditProect closeModal={closeModal} />
             <button
               type="button"
               className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full"

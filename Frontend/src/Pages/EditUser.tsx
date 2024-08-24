@@ -1,37 +1,36 @@
 import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import Button from '@mui/material/Button';
 import { useUser } from '@clerk/clerk-react';
 import { useMutation } from '@apollo/client';
 import { editUser } from '../graphql/mutation/userMutation';
 import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from '../Components/theme-provider';
 import {
   setCollegeName, setEmail, setFirstName, setLastName, setLocation,
-  setYear,setProfileUrl, setGithubLink, setLeetcodeLink,
-  setLinkedInLink, setPortfolioLink, setTwitterLink
+  setYear, setProfileUrl, setGithubLink, setLeetcodeLink,
+  setLinkedInLink, setPortfolioLink, setTwitterLink,
+  setAbout
 } from '../../features/userSlice';
 import { RootState } from '../../store';
 
 const UPDATE_USER = editUser;
 
 import { ImageUpload, TechStackSelector } from '../Components';  // Ensure the correct import path
+import { useNavigate } from 'react-router-dom';
 
 const EditUser: React.FC = () => {
-  
-
   const { user } = useUser();
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+  
 
   if (!user) {
     return null;
   }
 
-  const userState = useSelector((state: RootState) => state.user);
 
+  const firstName = user.fullName ? user.fullName.split(' ')[0] : '';
+  const userState = useSelector((state: RootState) => state.user);
+  const [bio,setBio]=useState(userState.collegeName || '');
   const [collegeName, setCollege] = useState(userState.collegeName || '');
   const [year, setY] = useState(userState.year || '');
   const [location, setLoc] = useState(userState.location || '');
@@ -39,6 +38,7 @@ const EditUser: React.FC = () => {
   const [linkedin, setLinkedin] = useState(userState.links.linkedIn || '');
   const [twitter, setTwitter] = useState(userState.links.twitter || '');
   const [portfolio, setPortfolio] = useState(userState.links.portfolio || '');
+  const [leetcode, setLeetcode] = useState(userState.links.leetcode || '');
   const [technicalSkills, setTechnicalSkills] = useState('');
   const [achievement, setAchievement] = useState('');
   const [profilePhotoUrl, setProfilePhotoUrl] = useState(userState.profileUrl || user?.imageUrl || '');
@@ -48,54 +48,41 @@ const EditUser: React.FC = () => {
   };
 
   const [updateUserMutation] = useMutation(UPDATE_USER);
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // const formData = {
-    //   name: user?.fullName,
-    //   email: user?.primaryEmailAddress?.emailAddress || 'No email address found',
-    //   collegeName,
-    //   year,
-    //   location,
-    //   github,
-    //   linkedin,
-    //   twitter,
-    //   portfolio,
-    //   technicalSkills,
-    //   achievement,
-    //   profilePhotoUrl
-    // };
+    dispatch(setAbout(bio));
     dispatch(setCollegeName(collegeName));
     dispatch(setLocation(location));
-    dispatch(setYear(year))
+    dispatch(setYear(year));
     dispatch(setProfileUrl(profilePhotoUrl));
     dispatch(setGithubLink(github));
     dispatch(setLinkedInLink(linkedin));
     dispatch(setTwitterLink(twitter));
     dispatch(setPortfolioLink(portfolio));
+    dispatch(setLeetcodeLink(leetcode));
 
     updateUserMutation({
       variables: {
         clerkUserId: user?.id,
+        bio,
         collegeName,
         location,
         github,
         linkedIn: linkedin,
         twitter,
         portfolio,
+        leetcode,
         profileUrl: profilePhotoUrl
       },
     }).then((response) => {
       console.log("User updated successfully:", response.data);
+      navigate(`/dashboard/${firstName}`);
     }).catch((error) => {
       console.error("Error updating user:", error);
     });
-
-    // console.log(formData);
   };
-
-
-
 
   return (
     <div className='w-full h-screen bg-mainbg dark:bg-black p-7'>
@@ -115,63 +102,120 @@ const EditUser: React.FC = () => {
               <div>
                 <ImageUpload onUpload={handlePhotoUpload} />
               </div>
-              <div className='flex gap-3 w-full border-red justify-evenly'>
-                <TextField
-                  required
-                  id="outlined-required"
-                  label="Name"
-                  placeholder='John Doe'
-                  defaultValue={user.fullName}
-                  disabled
-                  variant='outlined'
-                  sx={{ input: { color: 'white' } }}      
-                />
-                <TextField
-                  required
-                  id="outlined-required"
-                  label="Email"
-                  placeholder='John@gmail.com'
-                  defaultValue={user.primaryEmailAddress?.emailAddress || 'No email address found'}
-                  disabled
-                  className='text-sm text-white'
-                />
+              <div className='flex gap-3 w-full justify-evenly '>
+                <div className=' w-1/2 '>
+                  <label className="form-control w-24 max-w-xs ">
+                    <div className="label">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Name:
+                      </span>
+                    </div>
+                    <input
+                      required
+                      type="text"
+                      placeholder="Name"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-fit"
+                      defaultValue={user.fullName || ''}
+                      disabled
+                    />
+                  </label>
+                </div>
+                <div className='w-1/2 '>
+                  <label className="form-control w-24 max-w-xs ">
+                    <div className="label ">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Email:
+                      </span>
+                    </div>
+                    <input
+                      required
+                      type="text"
+                      placeholder="Email"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-fit"
+                      value={user.primaryEmailAddress?.emailAddress || 'No email address found'}
+                      disabled
+                    />
+                  </label>
+                </div>
               </div>
-              <div className='w-4/5'>
-                <TextField
-                  fullWidth
-                  label="College Name"
-                  id="fullWidth"
-                  value={collegeName}
-                  onChange={(e) => setCollege(e.target.value)}
-                />
+              <div className='flex gap-3 w-full justify-evenly  pr-11'>
+                <div className='w-full '>
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold ">About yourself:</span>
+
+                    </div>
+                    <textarea
+                      rows={3}
+                      placeholder="Full Stack Developer || Btech'26 "
+                      className="textarea textarea-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-full"
+                      value={achievement}
+                      onChange={(e) => setBio(e.target.value)}
+                    />
+
+                  </label>
+
+                </div>
+              </div>
+
+              <div className=' flex  w-full'>
+                <label className="form-control w-full  pr-11">
+                  <div className="label ">
+                    <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                      College Name:
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="College Name"
+                    className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-full"
+                    value={collegeName}
+                    onChange={(e) => setCollege(e.target.value)}
+                  />
+                </label>
+
               </div>
               <div className='flex gap-3 w-full justify-evenly'>
-                <FormControl>
-                  <InputLabel id="demo-simple-select-label">Year</InputLabel>
-                  <Select
-                    required
-                    className='w-56 text-white'
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={year}
-                    label="Year"
-                    onChange={(e) => setY(e.target.value)}
-                  >
-                    <MenuItem value={1}>First Year</MenuItem>
-                    <MenuItem value={2}>Second Year</MenuItem>
-                    <MenuItem value={3}>Third Year</MenuItem>
-                    <MenuItem value={4}>Fourth Year</MenuItem>
-                    <MenuItem value={0}>Pass Out</MenuItem>
-                  </Select>
-                </FormControl>
-                <TextField
-                  required
-                  id="outlined"
-                  label="Location"
-                  placeholder='Kolkata'
-                  value={location}
-                  onChange={(e) => setLoc(e.target.value)}
-                />
+                <div className='w-1/2'>
+                  <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">Year:</span>
+
+                    </div>
+                    <select
+                      required
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-64"
+                      value={year}
+                      onChange={(e) => setY(e.target.value)}
+                    >
+                      <option disabled selected>Pick one</option>
+                      <option value={1}>First Year</option>
+                      <option value={2}>Second Year</option>
+                      <option value={3}>Third Year</option>
+                      <option value={4}>Fourth Year</option>
+                      <option value={0}>Pass Out</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div className='w-1/2 '>
+                  <label className="form-control w-96 ">
+                    <div className="label ">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Your Location:
+                      </span>
+                    </div>
+                    <input
+                      required
+                      type="text"
+                      placeholder="Location"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
+                      value={location}
+                      onChange={(e) => setLoc(e.target.value)}
+                    />
+                  </label>
+                </div>
+
               </div>
             </div>
           </div>
@@ -187,38 +231,98 @@ const EditUser: React.FC = () => {
             </div>
 
             <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto p-4'>
-              <div className='flex gap-3 w-full border-red justify-evenly'>
-                <TextField
-                  id="outlined-required"
-                  label="Github"
-                  placeholder='github.com'
-                  value={github}
-                  onChange={(e) => setGithub(e.target.value)}
-                />
-                <TextField
-                  id="outlined-required"
-                  label="Linkedin"
-                  placeholder='linkedin.com'
-                  value={linkedin}
-                  onChange={(e) => setLinkedin(e.target.value)}
-                />
+              <div className='flex gap-3 w-full justify-evenly '>
+                <div className=' w-1/2 '>
+                  <label className="form-control w-24 max-w-xs ">
+                    <div className="label">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Github :
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Github"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
+                      value={github}
+                      onChange={(e) => setGithub(e.target.value)}
+                    />
+                  </label>
+                </div>
+                <div className='w-1/2'>
+                  <label className="form-control w-24 max-w-xs ">
+                    <div className="label ">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Linkedin:
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Linkedin"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
+                      value={linkedin}
+                      onChange={(e) => setLinkedin(e.target.value)}
+                    />
+                  </label>
+                </div>
+
               </div>
-              <div className='flex gap-3 w-full border-red justify-evenly'>
-                <TextField
-                  id="outlined-required"
-                  label="Twitter"
-                  placeholder='twitter.com'
-                  value={twitter}
-                  onChange={(e) => setTwitter(e.target.value)}
-                />
-                <TextField
-                  id="outlined-required"
-                  label="Portfolio website"
-                  placeholder='portfolio.com'
-                  value={portfolio}
-                  onChange={(e) => setPortfolio(e.target.value)}
-                />
+
+              <div className='flex gap-3 w-full justify-evenly '>
+                <div className=' w-1/2 '>
+                  <label className="form-control w-24 max-w-xs ">
+                    <div className="label">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Twitter:
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Twitter"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
+                      value={twitter}
+                      onChange={(e) => setTwitter(e.target.value)}
+                    />
+                  </label>
+                </div>
+                <div className='w-1/2 '>
+                  <label className="form-control w-24 max-w-xs ">
+                    <div className="label ">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Portfolio:
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Portfolio website"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
+                      value={portfolio}
+                      onChange={(e) => setPortfolio(e.target.value)}
+                    />
+                  </label>
+                </div>
               </div>
+
+              <div className='flex gap-3 w-full justify-evenly'>
+
+                <div className='w-1/2 '>
+                  <label className="form-control w-24 max-w-xs ">
+                    <div className="label ">
+                      <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
+                        Leetcode:
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Leetcode"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
+                      value={portfolio}
+                      onChange={(e) => setLeetcode(e.target.value)}
+                    />
+                  </label>
+                </div>
+              </div>
+
+
             </div>
           </div>
 
@@ -232,56 +336,56 @@ const EditUser: React.FC = () => {
               </span>
             </div>
 
-            <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto p-4'>
-              <div className='flex gap-3 w-4/5 border-red justify-evenly'>
-                {/* <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Technical Skills</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={technicalSkills}
-                    label="Technical Skills"
-                    onChange={(e) => setTechnicalSkills(e.target.value)}
-                  >
-                    <MenuItem value="Skill1">Skill1</MenuItem>
-                    <MenuItem value="Skill2">Skill2</MenuItem>
-                    <MenuItem value="Skill3">Skill3</MenuItem>
-                  </Select>
-                </FormControl> */}
+            <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto '>
+              <div className='w-full pr-11'>
                 <TechStackSelector />
-
               </div>
+
             </div>
           </div>
 
-          <div className='h-auto flex p-5'>
+
+          <div className='h-auto  flex p-5'>
             <div className='flex-1 flex flex-col'>
               <h1 className='text-2xl font-extrabold font-royal4 text-textmain'>
-                Achievement
+                Technical Skills
               </h1>
               <span className='text-lg font-semibold font-royal4 text-textmain'>
-                Highlighting your expertise.
+                Highlighting technical expertise.
               </span>
             </div>
 
-            <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto p-4'>
-              <div className='flex gap-3 w-4/5 border-red justify-evenly'>
-                <TextField
-                  fullWidth
-                  id="outlined-required"
-                  label="Achievement"
-                  placeholder='hori bol'
-                  value={achievement}
-                  onChange={(e) => setAchievement(e.target.value)}
-                />
+            <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto'>
+
+              <div className='w-full pr-11'>
+                <label className="form-control">
+                  <div className="label">
+                    <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold ">Achivements:</span>
+
+                  </div>
+                  <textarea
+                    rows={3}
+                    placeholder="Achievements"
+                    className="textarea textarea-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-full"
+                    value={achievement}
+                    onChange={(e) => setAchievement(e.target.value)}
+                  />
+
+                </label>
+
               </div>
+
             </div>
           </div>
 
-          <div className='w-full flex justify-center'>
-            <Button type="submit" variant="contained" color="primary" className=' p-3'>
-              Save
-            </Button>
+
+          <div className='flex justify-center px-28 ml-32 items-end '>
+            <button
+              type="submit"
+              className="btn btn-primary bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            >
+              Save Changes
+            </button>
           </div>
         </form>
       </div>

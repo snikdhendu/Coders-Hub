@@ -1,14 +1,16 @@
 import React, { useState, useRef, ChangeEvent, DragEvent } from 'react';
 import UploadingAnimation from "../assets/uploading.gif";
 import { useUser } from '@clerk/clerk-react';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 interface ImageUploadProps {
   onUpload: (newPhotoUrl: string) => void;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload }) => {
   const { user } = useUser();
-  const DefaultImage = user?.imageUrl || '';
+  const userState: any = useSelector((state: RootState) => state.user);
+  const DefaultImage = userState.profileUrl;
   const [avatarURL, setAvatarURL] = useState<string>(DefaultImage);
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -68,6 +70,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload }) => {
       uploadImageDisplay(file);
     }
   };
+ 
 
   return (
     <div className="flex items-center gap-4">
@@ -79,7 +82,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload }) => {
 
       <div
         className={`border-dashed border-2 rounded-lg p-6 w-96 font-royal4 flex flex-col items-center justify-center cursor-pointer ${
-          isDragging ? 'border-blue-500 bg-blue-100' : 'border-gray-300 bg-gray-100'
+          isDragging ? 'border-blue-500 bg-blue-100 dark:bg-background' : 'border-gray-300 bg-gray-100 dark:bg-background'
         }`}
         onClick={handleImageUpload}
         onDragOver={handleDragOver}

@@ -47,7 +47,7 @@ const Userproject = () => {
         <>
           <div className="bg-textfourth rounded-full p-6 flex justify-center items-center mt-28">
             <button
-              className="btn flex justify-center items-center bg-transparent border-none rounded-full h-16 w-16 hover:bg-transparent"
+              className="btn flex justify-center items-center bg-transparent border-none rounded-full h-12 w-12 hover:bg-transparent"
               onClick={openModal}
             >
               <FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' />

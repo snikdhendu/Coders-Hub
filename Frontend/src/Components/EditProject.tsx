@@ -59,9 +59,9 @@ const EditUser: React.FC<EditUserProps> = ({ closeModal }) => {
 
 
   return (
-    <div className='w-full h-full bg-white dark:border-b-slate-700 dark:bg-background p-2 border-2 border-red-500'>
+    <div className='w-full h-full bg-white dark:border-b-slate-700 dark:bg-background p-2 border'>
       <div className='h-full w-full bg-white dark:border-b-slate-700 dark:bg-background shadow-lg rounded-lg overflow-y-auto scrollbar-thin p-3'>
-        <div className='h-full flex justify-center items-center flex-col overflow-y-auto gap-4'>
+        <div className='h-full flex justify-center items-center flex-col overflow-y-auto gap-4 w-full overflow-x-hidden'>
           <div className='w-full flex justify-center items-center flex-col gap-4 h-fit mt-44 pb-8 border-b-4 border-dotted border-zinc-200'>
             <div className='flex-1 flex flex-col justify-center items-center'>
               <h1 className='text-2xl font-extrabold font-royal4 text-textmain dark:text-white'>
@@ -71,7 +71,7 @@ const EditUser: React.FC<EditUserProps> = ({ closeModal }) => {
                 Tell us more about this project
               </span>
             </div>
-            <div className='flex gap-20'>
+            <div className='flex lg:gap-20 lg:flex-row flex-col gap-5 w-full p-7 lg:p-0'>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
                   <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">

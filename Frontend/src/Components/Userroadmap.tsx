@@ -7,14 +7,7 @@ import { RootState } from '../../store';
 
 const Userroadmap = () => {
   const flowcharts = useSelector((state: RootState) => state.user.flowcharts);
-  const openModal = () => {
-    const modal = document.getElementById('my_modal_3');
-    if (modal instanceof HTMLDialogElement) {
-      modal.showModal();
-    } else {
-      console.error('Modal element not found or is not a dialog.');
-    }
-  };
+  console.log(flowcharts);
 
   return (
     <div className="flex flex-col items-center h-96 gap-6">

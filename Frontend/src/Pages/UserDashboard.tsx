@@ -28,6 +28,7 @@ import {
   setPortfolioLink,
   setTwitterLink,
   setProjects,
+  setFlowcharts
 } from "../../features/userSlice";
 import { RootState } from "../../store";
 

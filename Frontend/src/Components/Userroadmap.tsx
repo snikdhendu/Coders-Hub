@@ -1,13 +1,24 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
 const Userroadmap = () => {
   const flowcharts = useSelector((state: RootState) => state.user.flowcharts);
-  console.log(flowcharts);
+  const navigate = useNavigate();
+  const { userName } = useParams();
+
+  const handleFlowchartClick = (flowchart: any) => {
+    navigate(`/dashboard/${userName}/roadmap/${flowchart.title.trim().replace(/\s+/g, '-').toLowerCase()}`, {
+      state: { 
+        title: flowchart.title, 
+        nodes: flowchart.nodes, 
+        viewOnly: true
+      }
+    });
+  };
 
   return (
     <div className="flex flex-col items-center h-96 gap-6">
@@ -19,14 +30,14 @@ const Userroadmap = () => {
       {flowcharts && flowcharts.length > 0 ? (
         <div className="w-full flex flex-col items-center p-3 mt-8">
           {flowcharts.map((flowchart) => (
-            <Link 
+            <div 
               key={flowchart._id} 
-              to={`/roadmap/${flowchart.title}`}
+              onClick={() => handleFlowchartClick(flowchart)}
               className="bg-muted/50 border shadow-md rounded-lg p-4 w-full mb-4 h-36 cursor-pointer"
             >
               <h2 className="text-2xl font-bold">{flowchart.title}</h2>
               <p className="text-lg">{flowchart.nodes.length} Nodes</p>
-            </Link>
+            </div>
           ))}
         </div>
       ) : (

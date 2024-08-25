@@ -3,15 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ReactFlow, { Edge, Node, Controls, MiniMap, Background } from 'reactflow';
 import { useMutation } from '@apollo/client';
 import { createFlowchart } from '../graphql/mutation/flowchartMutation';
-import { UseDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import {setFlowchartTitle,addFlowchartNode} from '../../features/flowchartSlice';
+import { setFlowchartTitle, addFlowchartNode } from '../../features/flowchartSlice';
 import { setFlowcharts } from '../../features/userSlice';
 import { getUsers } from "../graphql/query/userQuery";
 import { useQuery } from "@apollo/client";
 import 'reactflow/dist/style.css';
 import 'tailwindcss/tailwind.css';
-import { useDispatch } from 'react-redux';
 import { useUser } from "@clerk/clerk-react";
 
 interface CustomNode {
@@ -25,9 +24,10 @@ interface CustomNode {
 interface FlowchartProps {
   title: string;
   nodes: CustomNode[];
+  viewOnly: boolean;
 }
 
-const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
+const Flowchart: React.FC<FlowchartProps> = ({ title, nodes, viewOnly }) => {
   const [selectedNode, setSelectedNode] = useState<CustomNode | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -42,7 +42,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
   if (!user) {
     return null;
   }
-  const {userName}=useParams();
+  const { userName } = useParams();
   const baseNodeStyle = {
     backgroundColor: '#f9f295',
     border: '2px solid #000',
@@ -110,7 +110,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
       dispatch(setFlowchartTitle(title));
       const response = await createFlowchartMutation({
         variables: {
-          clerkUserId:user?.id,
+          clerkUserId: user?.id,
           title,
           nodes: nodes.map((node) => ({
             label: node.label,
@@ -132,12 +132,16 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
 
   return (
     <div className="w-screen h-screen relative bg-cover bg-center" style={{ backgroundImage: 'url("/pexels-hngstrm-1939485.jpg")' }}>
-      <div className="absolute top-5 left-5 bg-blue-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleEditClick}>
-        Edit
-      </div>
-      <div className="absolute top-5 right-5 bg-green-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleFinalize}>
-        Finalize
-      </div>
+      {!viewOnly && (
+        <>
+          <div className="absolute top-5 left-5 bg-blue-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleEditClick}>
+            Edit
+          </div>
+          <div className="absolute top-5 right-5 bg-green-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleFinalize}>
+            Finalize
+          </div>
+        </>
+      )}
       <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-black text-white p-4 rounded-md border border-gray-300 z-10 text-center">
         <h1 className="text-3xl font-fantasy">{title}</h1>
       </div>

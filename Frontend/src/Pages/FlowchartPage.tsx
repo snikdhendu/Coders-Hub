@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Flowchart from '../Components/Flowchart';
@@ -14,6 +13,7 @@ interface CustomNode {
 interface LocationState {
   title: string;
   nodes: CustomNode[];
+  viewOnly: boolean; // Include viewOnly in the LocationState interface
 }
 
 const FlowchartPage: React.FC = () => {
@@ -26,14 +26,13 @@ const FlowchartPage: React.FC = () => {
     return null;
   }
 
-  const { title, nodes } = state;
+  const { title, nodes, viewOnly } = state;
 
   return (
     <div>
-      <Flowchart title={title} nodes={nodes} />
+      <Flowchart title={title} nodes={nodes} viewOnly={viewOnly} /> 
     </div>
   );
 };
 
 export default FlowchartPage;
-

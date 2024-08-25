@@ -21,7 +21,7 @@ const EditUser: React.FC = () => {
   const { user } = useUser();
   const dispatch = useDispatch();
   const { theme } = useTheme();
-  
+
 
   if (!user) {
     return null;
@@ -30,7 +30,7 @@ const EditUser: React.FC = () => {
 
   const firstName = user.fullName ? user.fullName.split(' ')[0] : '';
   const userState = useSelector((state: RootState) => state.user);
-  const [bio,setBio]=useState(userState.collegeName || '');
+  const [bio, setBio] = useState(userState.collegeName || '');
   const [collegeName, setCollege] = useState(userState.collegeName || '');
   const [year, setY] = useState(userState.year || '');
   const [location, setLoc] = useState(userState.location || '');
@@ -85,11 +85,13 @@ const EditUser: React.FC = () => {
   };
 
   return (
-    <div className='w-full h-screen bg-mainbg dark:bg-black p-7'>
-      <div className='h-full w-full border bg-white dark:border-b-slate-700 dark:bg-background shadow-lg border-zinc-300 rounded-lg overflow-y-auto scrollbar-thin scrollbar-webkit p-8'>
+    <div className='w-full h-screen bg-mainbg dark:bg-black lg:p-7 p-4'>
+      {/* Container for the form and its content */}
+      <div className='h-full lg:w-full w-full overflow-x-hidden border bg-white dark:border-b-slate-700 dark:bg-background shadow-lg border-zinc-300 rounded-lg overflow-y-auto scrollbar-thin scrollbar-webkit lg:p-8 p-4'>
         <form onSubmit={handleSubmit}>
-          <div className='h-auto border-b-4 border-zinc-100 flex p-5'>
-            <div className='flex-1 flex flex-col'>
+          {/* Personal Information Section */}
+          <div className='h-auto border-b-4 border-zinc-100 flex lg:p-5 p-0  flex-col lg:flex-row'>
+            <div className='flex-1 flex flex-col  lg:py-20 py-0'>
               <h1 className='text-2xl font-extrabold font-royal4 text-textmain'>
                 Personal
               </h1>
@@ -98,12 +100,15 @@ const EditUser: React.FC = () => {
               </span>
             </div>
 
-            <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto p-4'>
-              <div>
+            {/* Right-side of the Personal Information Section */}
+            <div className='lg:w-1/2 w-full flex flex-col gap-5 justify-center items-center h-auto p-4'>
+              <div className=' lg:w-full w-80 '>
+                {/* Image upload component */}
                 <ImageUpload onUpload={handlePhotoUpload} />
               </div>
-              <div className='flex gap-3 w-full justify-evenly '>
-                <div className=' w-1/2 '>
+              <div className='flex gap-3 w-full justify-evenly lg:flex-row flex-col '>
+                <div className=' lg:w-1/2 w-full '>
+                  {/* Name Input Field */}
                   <label className="form-control w-24 max-w-xs ">
                     <div className="label">
                       <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
@@ -114,13 +119,14 @@ const EditUser: React.FC = () => {
                       required
                       type="text"
                       placeholder="Name"
-                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-fit"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain lg:w-fit w-72"
                       defaultValue={user.fullName || ''}
                       disabled
                     />
                   </label>
                 </div>
                 <div className='w-1/2 '>
+                  {/* Email Input Field */}
                   <label className="form-control w-24 max-w-xs ">
                     <div className="label ">
                       <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
@@ -131,14 +137,15 @@ const EditUser: React.FC = () => {
                       required
                       type="text"
                       placeholder="Email"
-                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-fit"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain lg:w-fit w-72"
                       value={user.primaryEmailAddress?.emailAddress || 'No email address found'}
                       disabled
                     />
                   </label>
                 </div>
               </div>
-              <div className='flex gap-3 w-full justify-evenly  pr-11'>
+              {/* About Yourself Section */}
+              <div className='flex gap-3 w-full justify-evenly  lg:pr-11 pr-0'>
                 <div className='w-full '>
                   <label className="form-control">
                     <div className="label">
@@ -158,8 +165,9 @@ const EditUser: React.FC = () => {
                 </div>
               </div>
 
+              {/* College Name Section */}
               <div className=' flex  w-full'>
-                <label className="form-control w-full  pr-11">
+                <label className="form-control w-full  lg:pr-11 pr-0">
                   <div className="label ">
                     <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
                       College Name:
@@ -175,7 +183,9 @@ const EditUser: React.FC = () => {
                 </label>
 
               </div>
-              <div className='flex gap-3 w-full justify-evenly'>
+
+              {/* Year and Location Fields */}
+              <div className='flex gap-3 w-full justify-evenly lg:flex-row flex-col'>
                 <div className='w-1/2'>
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
@@ -184,7 +194,7 @@ const EditUser: React.FC = () => {
                     </div>
                     <select
                       required
-                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-64"
+                      className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain lg:w-64 w-72"
                       value={year}
                       onChange={(e) => setY(e.target.value)}
                     >
@@ -220,7 +230,8 @@ const EditUser: React.FC = () => {
             </div>
           </div>
 
-          <div className='h-auto border-b-4 border-zinc-100 flex p-5'>
+          {/* Social Links Section */}
+          <div className='h-auto border-b-4 border-zinc-100 flex lg:p-5 p-0  flex-col lg:flex-row py-6'>
             <div className='flex-1 flex flex-col'>
               <h1 className='text-2xl font-extrabold font-royal4 text-textmain'>
                 Social Links
@@ -231,8 +242,9 @@ const EditUser: React.FC = () => {
             </div>
 
             <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto p-4'>
-              <div className='flex gap-3 w-full justify-evenly '>
-                <div className=' w-1/2 '>
+              <div className='flex gap-3 w-full justify-evenly lg:flex-row flex-col '>
+                <div className=' lg:w-1/2 w-full'>
+                  {/* Github Input Field */}
                   <label className="form-control w-24 max-w-xs ">
                     <div className="label">
                       <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
@@ -249,6 +261,7 @@ const EditUser: React.FC = () => {
                   </label>
                 </div>
                 <div className='w-1/2'>
+                  {/* Linkedin Input Field */}
                   <label className="form-control w-24 max-w-xs ">
                     <div className="label ">
                       <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
@@ -267,8 +280,9 @@ const EditUser: React.FC = () => {
 
               </div>
 
-              <div className='flex gap-3 w-full justify-evenly '>
-                <div className=' w-1/2 '>
+              <div className='flex gap-3 w-full justify-evenly lg:flex-row flex-col  '>
+                <div className=' lg:w-1/2 w-full '>
+                  {/* Twitter Input Field */}
                   <label className="form-control w-24 max-w-xs ">
                     <div className="label">
                       <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
@@ -285,6 +299,7 @@ const EditUser: React.FC = () => {
                   </label>
                 </div>
                 <div className='w-1/2 '>
+                  {/* Portfolio Website Input Field */}
                   <label className="form-control w-24 max-w-xs ">
                     <div className="label ">
                       <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
@@ -293,19 +308,19 @@ const EditUser: React.FC = () => {
                     </div>
                     <input
                       type="text"
-                      placeholder="Portfolio website"
+                      placeholder="Portfolio Website"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
                       value={portfolio}
                       onChange={(e) => setPortfolio(e.target.value)}
                     />
                   </label>
                 </div>
-              </div>
 
-              <div className='flex gap-3 w-full justify-evenly'>
+              </div>
+              <div className='flex gap-3 w-full lg:justify-evenly justify-start'>
 
                 <div className='w-1/2 '>
-                  <label className="form-control w-24 max-w-xs ">
+                  <label className="form-control lg:w-24 max-w-xs ">
                     <div className="label ">
                       <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">
                         Leetcode:
@@ -321,12 +336,11 @@ const EditUser: React.FC = () => {
                   </label>
                 </div>
               </div>
-
-
             </div>
           </div>
 
-          <div className='h-auto border-b-4 border-zinc-100 flex p-5'>
+          {/* Tech stack Select Section */}
+          <div className='h-auto border-b-4 border-zinc-100 flex lg:p-5 p-0  flex-col lg:flex-row py-6'>
             <div className='flex-1 flex flex-col'>
               <h1 className='text-2xl font-extrabold font-royal4 text-textmain'>
                 Technical Skills
@@ -337,27 +351,28 @@ const EditUser: React.FC = () => {
             </div>
 
             <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto '>
-              <div className='w-full pr-11'>
+              <div className='w-full pl-2 '>
                 <TechStackSelector />
               </div>
 
             </div>
           </div>
 
+          {/* Achivement Section */}
 
-          <div className='h-auto  flex p-5'>
+          <div className='h-auto  flex lg:p-5 p-0  flex-col lg:flex-row border-b-4 border-zinc-100 py-6'>
             <div className='flex-1 flex flex-col'>
               <h1 className='text-2xl font-extrabold font-royal4 text-textmain'>
-                Technical Skills
+                Achivements
               </h1>
               <span className='text-lg font-semibold font-royal4 text-textmain'>
-                Highlighting technical expertise.
+                Showcase your achivements.
               </span>
             </div>
 
             <div className='w-1/2 flex flex-col gap-5 justify-center items-center h-auto'>
 
-              <div className='w-full pr-11'>
+              <div className='w-full  lg:pl-2 pl-0'>
                 <label className="form-control">
                   <div className="label">
                     <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold ">Achivements:</span>
@@ -366,7 +381,7 @@ const EditUser: React.FC = () => {
                   <textarea
                     rows={3}
                     placeholder="Achievements"
-                    className="textarea textarea-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-full"
+                    className="textarea textarea-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain lg:w-full w-72"
                     value={achievement}
                     onChange={(e) => setAchievement(e.target.value)}
                   />
@@ -379,10 +394,12 @@ const EditUser: React.FC = () => {
           </div>
 
 
-          <div className='flex justify-center px-28 ml-32 items-end '>
+
+          {/* Submit Button */}
+          <div className="flex justify-center p-5 ">
             <button
               type="submit"
-              className="btn btn-primary bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              className="btn btn-primary font-royal4 text-white"
             >
               Save Changes
             </button>
@@ -390,6 +407,7 @@ const EditUser: React.FC = () => {
         </form>
       </div>
     </div>
+
   );
 };
 

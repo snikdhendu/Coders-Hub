@@ -3,7 +3,6 @@ import { LeetCodeStats, Userproject, Userroadmap } from "../Components";
 import { Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import GitHubCalendar from "react-github-calendar";
-import { FaPlus } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +14,7 @@ import { useQuery } from "@apollo/client";
 import { getUsers } from "../graphql/query/userQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FaEnvelope , FaMapMarkerAlt,FaGithub,FaLinkedin,FaTwitter,FaGlobe } from "react-icons/fa";
 import {
   setCollegeName,
   setEmail,
@@ -29,6 +29,8 @@ import {
   setTwitterLink,
   setProjects,
   setFlowcharts
+  
+  
 } from "../../features/userSlice";
 import { RootState } from "../../store";
 
@@ -41,7 +43,7 @@ const UserDashboard = () => {
     return null; // Or handle the case when user is null
   }
   //Use this loading and error for better performance
-  const { loading, error, data } = useQuery(getUsers, {
+  const { data } = useQuery(getUsers, {
     variables: { clerkUserId: user.id },
   });
   const achievements = [
@@ -85,7 +87,7 @@ const UserDashboard = () => {
     "Redux Toolkit",
     "Google AI Studio",
   ];
-  const [modalOpen, setModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   // Handle the click event for the plus sign
@@ -130,128 +132,126 @@ const UserDashboard = () => {
   const githubUrl = userState.links.github;
   // Get the username from the GitHub URL
   const githubUsername = getGitHubUsername(githubUrl);
-  const location =userState.location;
+  const location = userState.location;
 
 
 
 
   return (
     <div className="  dark:border-b-slate-700 dark:bg-background  h-auto overflow-y-auto">
+      {/* Navbar Component */}
       <Navbar />
 
+      {/* Main Content Wrapper */}
       <div className=" min-h-screen w-full h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap ">
+        {/* Left Sidebar */}
         <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
-          <div className=" w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3">
-            <div className=" w-full h-2/4 p-5 flex flex-col gap-2">
-              <div className=" w-full h-1/2 flex justify-center items-center">
+          {/* User Profile Card */}
+          <div className="w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3 p-4">
+            {/* Avatar and User Info */}
+            <div className="w-full h-fit p-5 flex flex-col gap-2">
+              {/* Avatar */}
+              <div className="w-full h-1/2 flex justify-center items-center">
                 <Avatar
                   src={avatarUrl}
                   sx={{ width: 96, height: 96 }}
-                  className=" border-4 border-textmain"
+                  className="border-4 border-textmain shadow-lg  shadow-current"
                 />
               </div>
 
-              <div className=" w-full h-1/4 flex justify-center items-center">
-                <h1 className=" text-3xl font-extrabold font-royal4 text-textmain">
+              {/* User Name */}
+              <div className="w-full h-1/4 flex justify-center items-center">
+                <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
                   {user.fullName}
                 </h1>
               </div>
 
-              <div className=" w-full h-8 flex justify-center items-center">
-                <span className=" text-lg font-semibold font-royal4 text-textmain">
+              {/* User Role */}
+              <div className="w-full h-8 flex justify-center items-center">
+                <span className="text-lg font-semibold font-royal4 text-textmain">
                   A Fullstack Developer
                 </span>
               </div>
 
+              {/* Social Media Links */}
               <div className="w-full h-1/4 flex justify-center items-center gap-6">
-                <span>
+                <span className=" bg-textmain rounded-md p-2">
                   <a
                     href={userState.links.github || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/github.svg" className="h-8 w-8" alt="GitHub" />
+                    <FaGithub className="h-5 w-5 "/>
                   </a>
                 </span>
-                <span>
-                  <a href={userState.links.linkedIn || "#"}
+                <span className=" bg-textmain rounded-md p-2">
+                  <a
+                    href={userState.links.linkedIn || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img
-                      src="/linkedin.svg"
-                      className="h-8 w-8"
-                      alt="LinkedIn"
-                    />
+                    <FaLinkedin className="h-5 w-5 "/>
                   </a>
                 </span>
-                <span>
-                  <a href={userState.links.portfolio || "#"}
+                <span className=" bg-textmain rounded-md p-2">
+                  <a
+                    href={userState.links.portfolio || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img
-                      src="/portfolio.svg"
-                      className="h-8 w-8"
-                      alt="Portfolio"
-                    />
+                    <FaGlobe className="h-5 w-5 "/>
                   </a>
                 </span>
-                <span>
-                  <a href={userState.links.twitter || "#"}
+                <span className=" bg-textmain rounded-md p-2">
+                  <a
+                    href={userState.links.twitter || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/twitter.svg" className="h-8 w-8" alt="Twitter" />
+                    <FaTwitter className="h-5 w-5 "/>
                   </a>
                 </span>
               </div>
             </div>
 
-            <div className=" w-full h-1/4 mt-10  flex justify-center items-center flex-col gap-12">
-              <div className=" w-1/2 h-auto  flex justify-center items-center">
-                <Link
-                  to="./edit "
-                  className=" w-full  rounded-md bg-blue-100 hover:bg-blue-300 text-textsecond flex justify-center items-center p-1 font-royal4"
-                >
-                  Edit profile
-                </Link>
-              </div>
-              {/* <div className=" flex gap-3">
-                <Link
-                  to=" "
-                  className=" w-24 h-full rounded-sm bg-textmain text-white flex justify-center items-center p-2 font-royal4"
-                >
-                  Connect
-                </Link>
-                <Link
-                  to=" "
-                  className=" w-1/2 h-full rounded-sm bg-textmain text-white flex justify-center items-center p-2 font-royal-4"
-                >
-                  Message
-                </Link>
-              </div> */}
-              <div className=" flex gap-4  w-full justify-center items-center">
-                {
-                    location ?(
-                      <>
-                      <img src="/loc.png" alt="" className=" h-8 w-8" />
-                      <h1 className=" inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text font-bold text-2xl">
-                        {location}
-                      </h1>
-                      </>
+            {/* Divider */}
+            <hr className="w-full border-t border-gray-300 dark:border-gray-800" />
 
-                    ):(
-                        <></>
-                    )
-                }
-
+            {/* Additional User Info */}
+            <div className="w-full flex flex-col  gap-4 py-1  justify-center items-start">
+              {/* Email */}
+              <div className="flex  gap-2 w-full justify-left px-16">
+                <FaEnvelope className="text-textmain h-6 w-6" />
+                <span className="text-lg font-semibold text-textmain">
+                  {userState.email}
+                </span>
               </div>
+
+              {/* Location */}
+              <div className="flex items-center gap-2 w-full justify-left px-16">
+                <FaMapMarkerAlt className="text-textmain h-6 w-6" />
+                <span className="text-lg font-semibold text-textmain">
+                  {location}
+                </span>
+              </div>
+            </div>
+
+            <hr className="w-full border-t border-gray-300 dark:border-gray-800" />
+            {/* Edit Profile Button */}
+            <div className="w-full flex justify-center ">
+              <Link
+                to="./edit"
+                className="w-1/2 rounded-md bg-blue-100 hover:bg-blue-300 text-textsecond flex justify-center items-center p-2 font-royal4"
+              >
+                Edit profile
+              </Link>
             </div>
           </div>
 
+          {/* Technologies and Education */}
           <div className=" w-full h-96 overflow-y-auto rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 ">
             <div className="bg-transparent rounded-lg p-5">
+              {/* Technologies Section */}
               <h2 className="text-lg font-semibold text-gray-600 dark:text-white mb-3">
                 Technologies known:
               </h2>
@@ -266,7 +266,8 @@ const UserDashboard = () => {
                 ))}
               </div>
             </div>
-            <div className=" h-full bg-transparent p-4 rounded-lg">
+            {/* Education Section */}
+            <div className=" h-fit bg-transparent p-4 rounded-lg">
               <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">
                 Education
               </h2>
@@ -288,16 +289,20 @@ const UserDashboard = () => {
           </div>
         </div>
 
+        {/* Main Content Area */}
+
         <div className=" w-full lg:w-3/4 md:h-screen h-fit flex md:flex-col gap-5  flex-wrap md:flex-nowrap ">
+          {/* LeetCode and GitHub Stats */}
           <div className=" w-full h-1/3  flex flex-col lg:flex-row gap-4 ">
+            {/* LeetCode Stats */}
             <div className=" w-full lg:w-1/3 h-full rounded-lg bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex justify-center items-center">
-              {/* <div > <UserSolvedProblemsStats userName="snikdhendupramanik"  /></div> */}
+
               <LeetCodeStats
                 username="Snikdhendupramanik"
                 theme={theme === "dark" ? "dark" : "light"}
               />
             </div>
-
+            {/* GitHub Calendar */}
             <div className="lg:w-2/3 w-full h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-4 font-royal4 font-bold text-base">
               {githubUsername ? (
                 <GitHubCalendar
@@ -310,9 +315,11 @@ const UserDashboard = () => {
             </div>
           </div>
 
+          {/* Projects and Roadmap Section */}
           <div className=" w-full lg:h-2/3 h-screen  flex gap-5  flex-col lg:flex-row ">
             {/* project and roadmap div */}
             <div className=" h-full w-full lg:w-2/3 rounded-md bg-white border-2 dark:border-b-slate-700 dark:bg-background shadow-2xl flex flex-col">
+              {/* Toggle Buttons for Projects and Roadmap */}
               <div className=" h-1/6 w-full bg-white  dark:bg-background  flex justify-center items-center relative border-2">
                 <div className=" flex gap-4 bg-blue-100 justify-center h-fit rounded-md p-1">
                   <button
@@ -335,7 +342,7 @@ const UserDashboard = () => {
                   </button>
                 </div>
 
-
+                {/* Plus Button for Adding Projects/Roadmaps */}
                 <div
 
                   className="relative left-6 lg:left-48 bg-textfourth rounded-full border-2 p-2 flex justify-center items-center cursor-pointer"
@@ -347,6 +354,7 @@ const UserDashboard = () => {
 
                 </div>
               </div>
+              {/* Projects or Roadmap Display */}
               <div className="h-5/6 flex flex-col  items-center overflow-y-auto  w-full">
                 {selectedContent === "project" ? (
                   <Userproject />
@@ -355,6 +363,7 @@ const UserDashboard = () => {
                 )}
               </div>
             </div>
+            {/* Achievements Section */}
             <div className=" h-full lg:w-1/3 w-full rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border-2">
               <div className=" h-full bg-transparent p-4 rounded-lg">
                 <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">

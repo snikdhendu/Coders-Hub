@@ -11,7 +11,7 @@ const Userroadmap = () => {
   const { userName } = useParams();
 
   const handleFlowchartClick = (flowchart: any) => {
-    navigate(`/dashboard/${userName}/roadmap/${flowchart.title.trim().replace(/\s+/g, '-').toLowerCase()}`, {
+    navigate(`/roadmaps/${flowchart._id}`, {
       state: { 
         title: flowchart.title, 
         nodes: flowchart.nodes, 
@@ -23,7 +23,7 @@ const Userroadmap = () => {
   return (
     <div className="flex flex-col items-center h-96 gap-6">
       <div className="bg-textfourth rounded-full p-6 flex justify-center items-center">
-        <Link to='./roadmap' className="flex justify-center items-center">
+        <Link to='/roadmap' className="flex justify-center items-center">
           <FontAwesomeIcon icon={faPlus} className='text-mainbg h-8 w-8' />
         </Link>
       </div>

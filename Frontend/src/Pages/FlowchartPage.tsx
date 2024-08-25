@@ -11,6 +11,7 @@ interface CustomNode {
 }
 
 interface LocationState {
+  id: string;
   title: string;
   nodes: CustomNode[];
   viewOnly: boolean; // Include viewOnly in the LocationState interface
@@ -26,11 +27,11 @@ const FlowchartPage: React.FC = () => {
     return null;
   }
 
-  const { title, nodes, viewOnly } = state;
+  const { id, title, nodes, viewOnly } = state;
 
   return (
     <div>
-      <Flowchart title={title} nodes={nodes} viewOnly={viewOnly} /> 
+      <Flowchart id={id} title={title} nodes={nodes} viewOnly={viewOnly} /> 
     </div>
   );
 };

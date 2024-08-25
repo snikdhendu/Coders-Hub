@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import NodeInputForm from './NodeInputForm';
 
 interface CustomNode {
@@ -13,13 +14,13 @@ interface CustomNode {
 const CreateRoadmap: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userName } = useParams();
   const { title = '', nodes = [] } = location.state as { title?: string; nodes?: CustomNode[] } || {};
 
   const handleSubmit = (title: string, nodes: CustomNode[]) => {
-    const formattedTitle = title.trim().replace(/\s+/g, '-').toLowerCase();
-    navigate(`/dashboard/${userName}/roadmap/${formattedTitle}`, { 
+    const id = uuidv4();
+    navigate(`/roadmaps/${id}`, { 
       state: { 
+        id,
         title, 
         nodes, 
         viewOnly: false

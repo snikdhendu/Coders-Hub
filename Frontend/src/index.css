@@ -76,6 +76,53 @@
     height: 600px;
     width: 1200px;
   }
+
+  .button-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .hover-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .hover-text {
+    position: absolute;
+    bottom: 100%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    background-color: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 14px;
+    z-index: 1;
+  }
+  
+  .hover-text::after {
+    content: '';
+    position: absolute;
+    top: 100%; /* Arrow position */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #000 transparent transparent transparent; /* Arrow color */
+  }
+  
+  .button-container:hover .hover-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-10px); /* Move the text slightly up */
+  }
+  
+  
   
   @keyframes shadow-slide {
     from {

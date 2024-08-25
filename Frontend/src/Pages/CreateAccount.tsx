@@ -140,7 +140,7 @@ const CreateAccount: React.FC = () => {
                                         placeholder="leetcode"
                                         value={formData.leetcode}
                                         onChange={handleChange}
-                                        required
+                                        
                                     />
                                     <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.leetcode ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
                                         Leetcode
@@ -155,7 +155,7 @@ const CreateAccount: React.FC = () => {
                                         placeholder="GitHub"
                                         value={formData.gitHub}
                                         onChange={handleChange}
-                                        required
+                                        
                                     />
                                     <span className={`absolute left-3 top-1 transition-all duration-300 ${formData.gitHub ? 'text-xs -top-3 text-cyan-500' : 'text-sm top-3 text-blue-400'} pointer-events-none`}>
                                         GitHub

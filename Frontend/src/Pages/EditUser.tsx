@@ -252,7 +252,7 @@ const EditUser: React.FC = () => {
                       </span>
                     </div>
                     <input
-                      type="text"
+                      type="url"
                       placeholder="Github"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
                       value={github}
@@ -269,7 +269,7 @@ const EditUser: React.FC = () => {
                       </span>
                     </div>
                     <input
-                      type="text"
+                      type="url"
                       placeholder="Linkedin"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
                       value={linkedin}
@@ -290,7 +290,7 @@ const EditUser: React.FC = () => {
                       </span>
                     </div>
                     <input
-                      type="text"
+                      type="url"
                       placeholder="Twitter"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
                       value={twitter}
@@ -307,7 +307,7 @@ const EditUser: React.FC = () => {
                       </span>
                     </div>
                     <input
-                      type="text"
+                      type="url"
                       placeholder="Portfolio Website"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
                       value={portfolio}
@@ -327,7 +327,7 @@ const EditUser: React.FC = () => {
                       </span>
                     </div>
                     <input
-                      type="text"
+                      type="url"
                       placeholder="Leetcode"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
                       value={portfolio}

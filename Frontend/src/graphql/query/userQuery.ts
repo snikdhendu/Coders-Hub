@@ -29,6 +29,16 @@ export const getUsers = gql`
       logo
       images
     }
+    flowcharts {
+       _id
+      title
+      nodes {
+        label
+        time
+        links
+        tips
+      }
+    }
   } 
 }
 `

@@ -20,6 +20,26 @@ type Project {
   logo: String
 }
 
+type FlowchartNode {
+    label: String!
+    time: String!
+    links: [String]
+    tips: String!
+}
+input FlowchartNodeInput {
+    label: String!
+    time: String!
+    links: [String]
+    tips: String!
+}
+
+type Flowchart {
+    _id: ID!
+    title: String!
+    nodes: [FlowchartNode!]!
+}
+
+
 type User {
     clerkUserId: String!,
     firstName: String!,
@@ -29,7 +49,8 @@ type User {
     collegeName: String,
     location: String,
     links: Links,
-    projects: [Project] 
+    projects: [Project] ,
+    flowcharts: [Flowchart]
 }
 
 type UpdateUserResponse {
@@ -37,10 +58,12 @@ type UpdateUserResponse {
     msg: String
 }
 
+
 # Queries
 type Query {
     getUserById(clerkUserId: String!): User!,
     getProjectById(clerkUserId: String!, projectId: ID!): Project!
+    getFlowchartById(clerkUserId: String!, flowchartId: ID!): Flowchart!
 }
 
 # Mutations
@@ -52,7 +75,12 @@ type Mutation {
         portfolio:String,
         profileUrl: String): UpdateUserResponse
 
-    CREATE_PROJECT(clerkUserId: String!, projectName: String!, tagline: String!, description: String!,technologies: [String],githubRepoLink: String,liveLink: String):Project 
+    CREATE_PROJECT(clerkUserId: String!, projectName: String!, tagline: String!, description: String!,technologies: [String],githubRepoLink: String,liveLink: String):Project
+    CREATE_FLOWCHART(
+        clerkUserId: String!
+        title: String!
+        nodes: [FlowchartNodeInput!]!
+    ): Flowchart 
 }
 
 `

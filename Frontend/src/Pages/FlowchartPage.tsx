@@ -22,7 +22,7 @@ const FlowchartPage: React.FC = () => {
   const state = location.state as LocationState;
 
   if (!state) {
-    navigate('/dashboard/:userName/roadmap/newflowchart'); 
+    navigate('/'); 
     return null;
   }
 

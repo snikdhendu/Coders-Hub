@@ -66,6 +66,7 @@ const UserDashboard = () => {
       dispatch(setPortfolioLink(userData.links.portfolio));
       dispatch(setTwitterLink(userData.links.twitter));
       dispatch(setProjects(userData.projects));
+      dispatch(setFlowcharts(userData.flowcharts));
       console.log(data);
     }
   }, [data, dispatch]);

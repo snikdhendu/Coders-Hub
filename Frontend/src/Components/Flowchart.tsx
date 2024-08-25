@@ -1,8 +1,18 @@
 import React, { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ReactFlow, { Edge, Node, Controls, MiniMap, Background } from 'reactflow';
+import { useMutation } from '@apollo/client';
+import { createFlowchart } from '../graphql/mutation/flowchartMutation';
+import { UseDispatch,useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import {setFlowchartTitle,addFlowchartNode} from '../../features/flowchartSlice';
+import { setFlowcharts } from '../../features/userSlice';
+import { getUsers } from "../graphql/query/userQuery";
+import { useQuery } from "@apollo/client";
 import 'reactflow/dist/style.css';
 import 'tailwindcss/tailwind.css';
+import { useDispatch } from 'react-redux';
+import { useUser } from "@clerk/clerk-react";
 
 interface CustomNode {
   id: string;
@@ -25,9 +35,14 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
   const nodeElements: Node[] = [];
   const edgeElements: Edge[] = [];
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const [createFlowchartMutation] = useMutation(createFlowchart);
   const nodeDetailsMap: { [key: string]: Omit<CustomNode, 'id' | 'label'> } = {};
-
+  const { user } = useUser();
+  if (!user) {
+    return null;
+  }
+  const {userName}=useParams();
   const baseNodeStyle = {
     backgroundColor: '#f9f295',
     border: '2px solid #000',
@@ -90,9 +105,30 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes }) => {
     setIsModalVisible(false);
   };
 
-  const handleFinalize = () => {
-    
-  };
+  const handleFinalize = async () => {
+    try {
+      dispatch(setFlowchartTitle(title));
+      const response = await createFlowchartMutation({
+        variables: {
+          clerkUserId:user?.id,
+          title,
+          nodes: nodes.map((node) => ({
+            label: node.label,
+            time: node.time,
+            links: node.links,
+            tips: node.tips,
+          })),
+        },
+      });
+
+      if (response.data?.CREATE_FLOWCHART) {
+        dispatch(addFlowchartNode(response.data.CREATE_FLOWCHART));
+        navigate(`/dashboard/${userName}`);
+      }
+    } catch (error) {
+      console.error("Failed to save flowchart:", error);
+    }
+  }
 
   return (
     <div className="w-screen h-screen relative bg-cover bg-center" style={{ backgroundImage: 'url("/pexels-hngstrm-1939485.jpg")' }}>

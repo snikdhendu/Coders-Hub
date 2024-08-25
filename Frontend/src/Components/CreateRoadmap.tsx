@@ -285,8 +285,9 @@
 
 
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import NodeInputForm from './NodeInputForm';
+
 
 interface CustomNode {
   id: string;
@@ -296,15 +297,16 @@ interface CustomNode {
   tips: string;
 }
 
-const Userroadmap: React.FC = () => {
+const CreateRoadmap: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const {userName} = useParams();
   // Ensure that location.state is an object with title and nodes properties
   const { title = '', nodes = [] } = location.state as { title?: string; nodes?: CustomNode[] } || {};
 
   const handleSubmit = (title: string, nodes: CustomNode[]) => {
-    navigate(`/dashboard/:userName/roadmap/newflowchart`, { state: { title, nodes } });
+    const formattedTitle = title.trim().replace(/\s+/g, '-').toLowerCase();
+    navigate(`/dashboard/${userName}/roadmap/${formattedTitle}`, { state: { title, nodes } });
   };
 
   return (
@@ -314,6 +316,6 @@ const Userroadmap: React.FC = () => {
   );
 };
 
-export default Userroadmap;
+export default CreateRoadmap;
 
 

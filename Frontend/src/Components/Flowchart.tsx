@@ -3,12 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ReactFlow, { Edge, Node, Controls, MiniMap, Background } from 'reactflow';
 import { useMutation } from '@apollo/client';
 import { createFlowchart } from '../graphql/mutation/flowchartMutation';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useDispatch } from 'react-redux';
 import { setFlowchartTitle, addFlowchartNode } from '../../features/flowchartSlice';
-import { setFlowcharts } from '../../features/userSlice';
-import { getUsers } from "../graphql/query/userQuery";
-import { useQuery } from "@apollo/client";
 import 'reactflow/dist/style.css';
 import 'tailwindcss/tailwind.css';
 import { useUser } from "@clerk/clerk-react";
@@ -22,12 +18,13 @@ interface CustomNode {
 }
 
 interface FlowchartProps {
+  id: string;
   title: string;
   nodes: CustomNode[];
   viewOnly: boolean;
 }
 
-const Flowchart: React.FC<FlowchartProps> = ({ title, nodes, viewOnly }) => {
+const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => {
   const [selectedNode, setSelectedNode] = useState<CustomNode | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -81,23 +78,26 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes, viewOnly }) => {
     }
   });
 
-  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    const selectedDetails = nodeDetailsMap[node.id] || null;
-    const labelText = React.isValidElement(node.data.label)
-      ? (node.data.label as React.ReactElement).props.children.toString()
-      : node.data.label.toString();
+  const onNodeClick = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      const selectedDetails = nodeDetailsMap[node.id] || null;
+      const labelText = React.isValidElement(node.data.label)
+        ? (node.data.label as React.ReactElement).props.children.toString()
+        : node.data.label.toString();
 
-    const selected = selectedDetails
-      ? { id: node.id, ...selectedDetails, label: labelText }
-      : null;
+      const selected = selectedDetails
+        ? { id: node.id, ...selectedDetails, label: labelText }
+        : null;
 
-    setSelectedNode(selected);
-    setCardPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 150 }); // Center modal
-    setIsModalVisible(true);
-  }, [nodeDetailsMap]);
+      setSelectedNode(selected);
+      setCardPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 150 }); // Center modal
+      setIsModalVisible(true);
+    },
+    [nodeDetailsMap]
+  );
 
   const handleEditClick = () => {
-    navigate(`/dashboard/:userName/roadmap`, { state: { title, nodes } });
+    navigate(`/roadmap`, { state: { title, nodes } });
   };
 
   const handleSave = () => {
@@ -126,9 +126,13 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes, viewOnly }) => {
         navigate(`/dashboard/${userName}`);
       }
     } catch (error) {
-      console.error("Failed to save flowchart:", error);
+      console.error('Failed to save flowchart:', error);
     }
-  }
+  };
+
+  const handleBackToDashboard = () => {
+    navigate(`/dashboard/${user.firstName}`);
+  };
 
   return (
     <div className="w-screen h-screen relative bg-cover bg-center" style={{ backgroundImage: 'url("/pexels-hngstrm-1939485.jpg")' }}>
@@ -142,14 +146,15 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes, viewOnly }) => {
           </div>
         </>
       )}
+      {viewOnly && (
+        <div className="absolute top-5 right-5 bg-yellow-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleBackToDashboard}>
+          Back to Dashboard
+        </div>
+      )}
       <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-black text-white p-4 rounded-md border border-gray-300 z-10 text-center">
         <h1 className="text-3xl font-fantasy">{title}</h1>
       </div>
-      <ReactFlow
-        nodes={nodeElements}
-        edges={edgeElements}
-        onNodeClick={onNodeClick}
-      >
+      <ReactFlow nodes={nodeElements} edges={edgeElements} onNodeClick={onNodeClick}>
         <Controls />
         <MiniMap />
         <Background gap={13} size={1} offset={2} />
@@ -161,7 +166,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes, viewOnly }) => {
         >
           <div
             className="relative bg-white border border-blue-200 shadow-lg rounded-md p-6 w-80 h-80 transition-all duration-200 ease-in-out hover:shadow-blue-500 hover:shadow-md"
-            onClick={(e) => e.stopPropagation()} 
+            onClick={(e) => e.stopPropagation()}
           >
             {isEditMode ? (
               <>
@@ -197,29 +202,36 @@ const Flowchart: React.FC<FlowchartProps> = ({ title, nodes, viewOnly }) => {
                   value={selectedNode.tips}
                   onChange={(e) => setSelectedNode({ ...selectedNode, tips: e.target.value })}
                 />
-                <button
-                  onClick={handleSave}
-                  className="bg-green-500 text-white p-2 rounded mt-4"
-                >
+                <button onClick={handleSave} className="bg-green-500 text-white p-2 rounded mt-4">
                   Save
                 </button>
               </>
             ) : (
               <>
                 <h2 className="text-2xl font-bold mb-2">{selectedNode.label}</h2>
-                <p className="mb-2"><strong>Time Taken:</strong> {selectedNode.time}</p>
-                <p className="mb-2"><strong>Useful Links:</strong></p>
+                <p className="mb-2">
+                  <strong>Time Taken:</strong> {selectedNode.time}
+                </p>
+                <p className="mb-2">
+                  <strong>Useful Links:</strong>
+                </p>
                 <ul className="list-disc list-inside mb-2">
                   {selectedNode.links.map((link, index) => (
                     <li key={index}>
-                      <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{link}</a>
+                      <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                        {link}
+                      </a>
                     </li>
                   ))}
                 </ul>
-                <p><strong>Tips:</strong> {selectedNode.tips}</p>
+                <p>
+                  <strong>Tips:</strong> {selectedNode.tips}
+                </p>
               </>
             )}
-            <button onClick={() => setIsModalVisible(false)} className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded">Close</button>
+            <button onClick={() => setIsModalVisible(false)} className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded">
+              Close
+            </button>
           </div>
         </div>
       )}

@@ -95,7 +95,7 @@ const UserDashboard = () => {
     if (selectedContent === "project") {
       openModal(); // Open modal in "Project" tab
     } else if (selectedContent === "roadmap") {
-      navigate("./roadmap"); // Navigate to "./roadmap" in "Roadmap" tab
+      navigate("/roadmap"); // Navigate to "./roadmap" in "Roadmap" tab
     }
   };
   const openModal = () => {

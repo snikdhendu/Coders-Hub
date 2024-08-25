@@ -1,5 +1,6 @@
 // userSlice.js
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Flowchart } from './flowchartSlice';
 // src/features/userSlice.ts
 
 export interface Project {
@@ -32,6 +33,7 @@ export interface User {
   location: string;
   profileUrl: string;
   projects?: Project[];
+  flowcharts?: Flowchart[];
 }
 
 const initialState: User = {
@@ -51,6 +53,7 @@ const initialState: User = {
   location: '',
   profileUrl: '',
   projects: [],
+  flowcharts: [],
 };
 
 const userSlice = createSlice({
@@ -101,7 +104,13 @@ const userSlice = createSlice({
     },
     setProjects:(state, action: PayloadAction<Project[]>) => {
       state.projects = action.payload;
-    }
+    },
+    setFlowcharts:(state, action: PayloadAction<Flowchart[]>) => {
+      state.flowcharts = action.payload;
+    },
+    addFlowchart: (state, action: PayloadAction<Flowchart>) => {
+      state.flowcharts?.push(action.payload);
+    },
   },
 });
 
@@ -120,7 +129,9 @@ export const {
   setLinkedInLink,
   setPortfolioLink,
   setTwitterLink,
-  setProjects
+  setProjects,
+  setFlowcharts,
+  addFlowchart
 } = userSlice.actions;
 
 export default userSlice.reducer;

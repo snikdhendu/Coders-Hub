@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 const App = () => {
   const projects = useSelector((state: RootState) => state.user.projects);
-
+  const flowcharts = useSelector((state: RootState) => state.user.flowcharts);
   // const firstName = user?.fullName ? user.fullName.split(' ')[0] : '';
   return (
     <Router>
@@ -27,7 +27,7 @@ const App = () => {
           <Route path='/dashboard/:userName/roadmap' element={<CreateRoadmap/>}/>
           <Route path="*" element={<Error />} />
           <Route path='/createAccount' element={<CreateAccount/>}/>
-          <Route path='/dashboard/:userName/roadmap/newflowchart' element={<FlowchartPage/>}/>
+          <Route path='/dashboard/:userName/roadmap/:title' element={<FlowchartPage/>}/>
           <Route path={`/projects/:id`} element={<Detailproject />} />
          
 

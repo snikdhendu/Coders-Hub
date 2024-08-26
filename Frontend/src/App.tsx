@@ -1,6 +1,6 @@
 // import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Home, Project, Roadmap,Error,UserDashboard,EditUser,Detailproject} from './Pages';
+import { Home, Project, Roadmap,Error,UserDashboard,EditUser,Detailproject,Profiles} from './Pages';
 import { CreateRoadmap } from './Components';
 import CreateAccount from './Pages/CreateAccount';
 import FlowchartPage from './Pages/FlowchartPage';
@@ -20,7 +20,7 @@ const App = () => {
           <Route path='' element={<Home/>}/>
           <Route path="/sign-in/*" element={<Signin />} />
           <Route path='/sign-up/*' element={<Signup/>}/>
-          {/* <Route path='/roadmap' element={<Roadmap/>}/> */}
+          <Route path='/profiles' element={<Profiles/>}/>
           <Route path='/projects' element={<Project/>}/>
           <Route path='/dashboard/:userName' element={<UserDashboard/>}/>
           <Route path='/dashboard/:userName/edit' element={<EditUser/>}/>
@@ -30,8 +30,6 @@ const App = () => {
           <Route path='/createAccount' element={<CreateAccount/>}/>
           <Route path='/roadmaps/:id' element={<FlowchartPage/>}/>
           <Route path={`/projects/:id`} element={<Detailproject />} />
-         
-
       </Routes>
     </Router>
   );

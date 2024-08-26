@@ -71,7 +71,7 @@ const EditUser: React.FC<EditUserProps> = ({ closeModal }) => {
                 Tell us more about this project
               </span>
             </div>
-            <div className='flex lg:gap-20 lg:flex-row flex-col gap-5 w-full p-7 lg:p-0'>
+            <div className='flex lg:gap-20 lg:flex-row flex-col gap-5 w-full p-7 lg:p-0  justify-center items-center'>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
                   <span className="label-text text-textthird dark:text-white font-royal4 text-xl font-bold">

@@ -7,12 +7,12 @@ import FlowchartPage from './Pages/FlowchartPage';
 import "./App.css";
 import Signin from './sign-in/[[...index]]';
 import Signup from './sign-up/[[...index]]';
-import { RootState } from '../store';
-import { useSelector } from "react-redux";
+// import { RootState } from '../store';
+// import { useSelector } from "react-redux";
 
 const App = () => {
-  const projects = useSelector((state: RootState) => state.user.projects);
-  const flowcharts = useSelector((state: RootState) => state.user.flowcharts);
+  // const projects = useSelector((state: RootState) => state.user.projects);
+  // const flowcharts = useSelector((state: RootState) => state.user.flowcharts);
   // const firstName = user?.fullName ? user.fullName.split(' ')[0] : '';
   return (
     <Router>

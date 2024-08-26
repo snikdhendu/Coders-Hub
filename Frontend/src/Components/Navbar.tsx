@@ -13,7 +13,7 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Link } from "react-router-dom";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
+//import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { buttonVariants } from "./ui/button";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";

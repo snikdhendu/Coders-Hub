@@ -40,7 +40,7 @@ const Userroadmap = () => {
         <>
           <div className="bg-textfourth rounded-full p-6 flex justify-center items-center mt-28">
             <Link
-              to='./createroamap'
+              to='./createroadmap'
               className="btn flex justify-center items-center bg-transparent border-none rounded-full h-12 w-12 hover:bg-transparent"
               
             >

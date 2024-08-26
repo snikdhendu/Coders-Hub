@@ -144,7 +144,7 @@ const EditUser: React.FC<EditUserProps> = ({ closeModal }) => {
                 </select>
               </label>
 
-              <TechStackSelector />
+              {/* <TechStackSelector /> */}
             </div>
 
             <div className='flex gap-20'>

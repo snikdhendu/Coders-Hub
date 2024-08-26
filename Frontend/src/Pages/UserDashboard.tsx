@@ -220,7 +220,7 @@ const UserDashboard = () => {
             {/* Additional User Info */}
             <div className="w-full flex flex-col  gap-4 py-1  justify-center items-start">
               {/* Email */}
-              <div className="flex  gap-2 w-full justify-left px-16">
+              <div className="flex  gap-2 w-full justify-left  px-4">
                 <FaEnvelope className="text-textmain h-6 w-6" />
                 <span className="text-lg font-semibold text-textmain">
                   {userState.email}
@@ -228,7 +228,7 @@ const UserDashboard = () => {
               </div>
 
               {/* Location */}
-              <div className="flex items-center gap-2 w-full justify-left px-16">
+              <div className="flex items-center gap-2 w-full justify-left px-4">
                 <FaMapMarkerAlt className="text-textmain h-6 w-6" />
                 <span className="text-lg font-semibold text-textmain">
                   {location}

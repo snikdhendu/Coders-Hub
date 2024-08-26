@@ -41,6 +41,10 @@ const routeList: RouteProps[] = [
     href: "/roadmaps",
     label: "Roadmap",
   },
+  {
+    href:"/profiles",
+    label:"Profile"
+  }
 ];
 
 

@@ -13,7 +13,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload }) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const fileUploadRef = useRef<HTMLInputElement | null>(null);
-
+  console.log(avatarURL);
   const handleImageUpload = () => {
     fileUploadRef.current?.click();
   };

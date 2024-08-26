@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ReactFlow, { Edge, Node, Controls, MiniMap, Background } from 'reactflow';
 import { useMutation } from '@apollo/client';
 import { createFlowchart } from '../graphql/mutation/flowchartMutation';
@@ -38,6 +38,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
   const { user } = useUser();
   if (!user) {
     return null;
+    console.log(id,cardPosition);
   }
   
   const baseNodeStyle = {
@@ -92,6 +93,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
       setSelectedNode(selected);
       setCardPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 150 }); // Center modal
       setIsModalVisible(true);
+      console.log(event);
     },
     [nodeDetailsMap]
   );

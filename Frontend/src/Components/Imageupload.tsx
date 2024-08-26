@@ -1,6 +1,6 @@
 import React, { useState, useRef, ChangeEvent, DragEvent } from 'react';
 import UploadingAnimation from "../assets/uploading.gif";
-import { useUser } from '@clerk/clerk-react';
+// import { useUser } from '@clerk/clerk-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 interface ImageUploadProps {
@@ -8,7 +8,7 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload }) => {
-  const { user } = useUser();
+  // const { user } = useUser();
   const userState: any = useSelector((state: RootState) => state.user);
   const DefaultImage = userState.profileUrl;
   const [avatarURL, setAvatarURL] = useState<string>(DefaultImage);

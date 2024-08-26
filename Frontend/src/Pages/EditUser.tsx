@@ -3,12 +3,9 @@ import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "@apollo/client";
 import { editUser } from "../graphql/mutation/userMutation";
 import { useDispatch, useSelector } from "react-redux";
-import { useTheme } from "../Components/theme-provider";
+// import { useTheme } from "../Components/theme-provider";
 import {
   setCollegeName,
-  setEmail,
-  setFirstName,
-  setLastName,
   setLocation,
   setYear,
   setProfileUrl,
@@ -29,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 const EditUser: React.FC = () => {
   const { user } = useUser();
   const dispatch = useDispatch();
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
 
   if (!user) {
     return null;

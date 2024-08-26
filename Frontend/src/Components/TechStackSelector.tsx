@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Tag from './Tag';
-
-const TechStackSelector: React.FC = () => {
+interface TechStackSelectorProps {
+  setTech: React.Dispatch<React.SetStateAction<string[]>>; 
+}
+const TechStackSelector: React.FC<TechStackSelectorProps> = ({
+  setTech,}) => {
   const [techStack, setTechStack] = useState<string[]>([]);
   const [selectedTechStack, setSelectedTechStack] = useState<string[]>([]);
   const selectRef = useRef<HTMLSelectElement>(null);
+  // console.log(selectedTechStack);
 
   useEffect(() => {
     const fetchTechStack = async () => {
@@ -23,7 +27,9 @@ const TechStackSelector: React.FC = () => {
   const handleSelect = () => {
     const value = selectRef.current?.value;
     if (value && !selectedTechStack.includes(value)) {
-      setSelectedTechStack([...selectedTechStack, value]);
+      const updatedStack = [...selectedTechStack, value];
+      setSelectedTechStack(updatedStack);
+      setTech(updatedStack);
     }
     if (selectRef.current) {
       selectRef.current.value = "Pick one";
@@ -31,7 +37,9 @@ const TechStackSelector: React.FC = () => {
   };
 
   const handleRemoveTag = (tech: string) => {
-    setSelectedTechStack(selectedTechStack.filter(t => t !== tech));
+    const updatedStack = selectedTechStack.filter(t => t !== tech);
+    setSelectedTechStack(updatedStack);
+    setTech(updatedStack);
   };
 
   return (

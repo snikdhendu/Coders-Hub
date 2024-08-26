@@ -42,11 +42,14 @@ interface IUser extends Document {
   clerkUserId: string;
   firstName: string;
   lastName?: string;
+  about?: string;
+  year?: string;
   profileUrl?: string;
   email: string;
   collegeName?: string;
   location?: string;
   links: LinksObj;
+  techStack?: string[];
   projects: ProjectObj[];
   flowcharts: FlowchartObj[];
 }
@@ -91,11 +94,14 @@ const UserSchema = new Schema<IUser>({
   clerkUserId: { type: String, required: true, unique: true },
   firstName: { type: String, required: true },
   lastName: { type: String, default: '' },
+  about: { type: String, default: '' },
+  year: { type: String, default: '' },
   profileUrl: { type: String },
   email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },
   collegeName: { type: String, default: '' },
   location: { type: String, default: '' },
   links: { type: LinksSchema, default: {} },
+  techStack: { type: [String], default: [] }, 
   projects: { type: [ProjectSchema], default: [] },
   flowcharts: { type: [FlowchartSchema], default: [] },
 }, {

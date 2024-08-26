@@ -48,7 +48,7 @@ const Userroadmap = () => {
             </Link>
           </div>
           <h1 className="font-royal4 font-bold inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text mt-4">
-            You have no projects yet. Add a project.
+            You have no Roadmap yet. Create a Roadmap.
           </h1>
         </>
       )}

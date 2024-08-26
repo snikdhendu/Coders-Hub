@@ -41,4 +41,47 @@ export const getUsers = gql`
     }
   } 
 }
-`
+`;
+
+
+export const getAllUsers = gql`
+  query GetAllUsers {
+    getAllUsers {
+      clerkUserId
+      firstName
+      lastName
+      email
+      collegeName
+      location
+      links {
+        github
+        linkedIn
+        leetcode
+        portfolio
+        twitter
+      }
+      profileUrl
+      projects {
+        _id
+        projectName
+        tagline
+        description
+        technologies
+        githubRepoLink
+        liveLink
+        logo
+        images
+      }
+      flowcharts {
+        _id
+        title
+        nodes {
+          label
+          time
+          links
+          tips
+        }
+      }
+    }
+  }
+`;

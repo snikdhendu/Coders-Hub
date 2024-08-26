@@ -1,4 +1,4 @@
-import { FlowchartNode, User, } from "../models/User.js";
+import { FlowchartNode, User,FlowchartObj } from "../models/User.js";
 import { Types } from 'mongoose';
 
 
@@ -59,3 +59,23 @@ export const createFlowchart = async (
       throw new Error("User not found");
     }
   }
+
+  export const getAllFlowcharts = async (): Promise<FlowchartObj[]> => {
+    try {
+ 
+      const users = await User.find({}, "flowcharts").exec();
+  
+      // Accumulate all flowcharts into a single array
+      const allFlowcharts: FlowchartObj[] = users.reduce((acc: FlowchartObj[], user) => {
+  
+        if (Array.isArray(user.flowcharts)) {
+          return acc.concat(user.flowcharts);
+        }
+        return acc;
+      }, []);
+  
+      return allFlowcharts;
+    } catch (error: any) {
+      throw new Error("Failed to retrieve flowcharts: " + error.message);
+    }
+  };

@@ -8,7 +8,14 @@ export const getUserById = async (_: any, { clerkUserId }: { clerkUserId: string
     throw new Error("User not found");
 }
 
-
+export const getAllUsers = async () => {
+  try {
+      const users = await User.find({});
+      return users;
+  } catch (error) {
+      throw new Error("Failed to fetch users");
+  }
+}
 //######################################################
 
 //Mutation functions

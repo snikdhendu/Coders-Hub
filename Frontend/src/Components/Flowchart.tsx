@@ -39,7 +39,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
   if (!user) {
     return null;
   }
-  const { userName } = useParams();
+  
   const baseNodeStyle = {
     backgroundColor: '#f9f295',
     border: '2px solid #000',
@@ -97,7 +97,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
   );
 
   const handleEditClick = () => {
-    navigate(`/roadmap`, { state: { title, nodes } });
+    navigate(`/dashboard/${user.firstName}/createroadmap`, { state: { title, nodes } });
   };
 
   const handleSave = () => {
@@ -123,7 +123,7 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
 
       if (response.data?.CREATE_FLOWCHART) {
         dispatch(addFlowchartNode(response.data.CREATE_FLOWCHART));
-        navigate(`/dashboard/${userName}`);
+        navigate(`/dashboard/${user.firstName}`);
       }
     } catch (error) {
       console.error('Failed to save flowchart:', error);

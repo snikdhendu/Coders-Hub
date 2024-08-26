@@ -25,7 +25,7 @@ const App = () => {
           <Route path='/dashboard/:userName' element={<UserDashboard/>}/>
           <Route path='/dashboard/:userName/edit' element={<EditUser/>}/>
           <Route path='/roadmaps' element={<Roadmap/>}/>
-          <Route path='/dashboard/:userName/createroamap' element={<CreateRoadmap/>}/>
+          <Route path='/dashboard/:userName/createroadmap' element={<CreateRoadmap/>}/>
           <Route path="*" element={<Error />} />
           <Route path='/createAccount' element={<CreateAccount/>}/>
           <Route path='/roadmaps/:id' element={<FlowchartPage/>}/>

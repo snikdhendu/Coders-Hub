@@ -62,8 +62,11 @@ type UpdateUserResponse {
 # Queries
 type Query {
     getUserById(clerkUserId: String!): User!,
-    getProjectById(clerkUserId: String!, projectId: ID!): Project!
-    getFlowchartById(clerkUserId: String!, flowchartId: ID!): Flowchart!
+    getAllUsers: [User]!,
+    getProjectById(clerkUserId: String!, projectId: ID!): Project!,
+    getAllProjects: [Project]!,
+    getFlowchartById(clerkUserId: String!, flowchartId: ID!): Flowchart!,
+    getAllFlowcharts: [Flowchart]!
 }
 
 # Mutations

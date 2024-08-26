@@ -1,14 +1,17 @@
 import { FilterQuery } from "mongoose";
 import { IUser, User } from "../../models/User.js";
-import { getUserById, updateUser } from "../../controllers/userController.js";
-import { createProject, getProjectById } from "../../controllers/projectController.js";
-import { createFlowchart, getFlowchartById } from "../../controllers/roadmapController.js";
+import { getAllUsers, getUserById, updateUser } from "../../controllers/userController.js";
+import { createProject, getAllProjects, getProjectById } from "../../controllers/projectController.js";
+import { createFlowchart, getAllFlowcharts, getFlowchartById } from "../../controllers/roadmapController.js";
 
 export const graphqlResolvers = {
   Query: {
     getUserById,
+    getAllUsers,
     getProjectById,
-    getFlowchartById
+    getAllProjects,
+    getFlowchartById,
+    getAllFlowcharts
   },
 
   Mutation: {

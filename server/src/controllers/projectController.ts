@@ -1,4 +1,4 @@
-import { User, } from "../models/User.js";
+import { User,ProjectObj } from "../models/User.js";
 import { Types } from 'mongoose';
 
 //Query functions
@@ -26,7 +26,23 @@ export const getProjectById = async (
     return project;
 }
 
+export const getAllProjects = async (): Promise<ProjectObj[]> => {
+  try {
+    const users = await User.find({}, "projects").exec();
 
+    const allProjects: ProjectObj[] = users.reduce((acc: ProjectObj[], user) => {
+    
+      if (Array.isArray(user.projects)) {
+        return acc.concat(user.projects);
+      }
+      return acc;
+    }, []);
+
+    return allProjects;
+  } catch (error: any) {
+    throw new Error("Failed to retrieve projects: " + error.message);
+  }
+};
 
 //######################################################
 

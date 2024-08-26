@@ -44,11 +44,14 @@ type User {
     clerkUserId: String!,
     firstName: String!,
     lastName: String,
+    about: String,
     profileUrl: String,
     email: String!,
+    year: String,
     collegeName: String,
     location: String,
     links: Links,
+    technologies:[String],
     projects: [Project] ,
     flowcharts: [Flowchart]
 }
@@ -84,6 +87,8 @@ type Mutation {
         title: String!
         nodes: [FlowchartNodeInput!]!
     ): Flowchart 
+
+    ADD_USER_BASIC_DETAILS(clerkUserId:String!,about:String,leetcode:String,github:String):User
 }
 
 `

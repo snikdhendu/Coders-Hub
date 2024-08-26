@@ -58,6 +58,18 @@ export const updateUser = async (
     }
   }
 
+export const addUserDetails = async (_: any, { clerkUserId, about, leetcode, github }: { clerkUserId: string; about:string; leetcode: string; github: string }) => {
+  const user = await User.findOne({ clerkUserId });
+  if (user) {
+    user.about = about;
+    user.links.github = github;
+    user.links.leetcode = leetcode;
+    await user.save();
+    return user;
+  } else {
+    return {user: null};
+  }
+}
 //----------------------------------------
 
 

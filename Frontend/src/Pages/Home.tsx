@@ -6,7 +6,7 @@ import { RootState } from '../../store'; // delete it later
 const Home = () => {
   //For testing purposes projects are being printed on console; delete them later
   const projects = useSelector((state: RootState) => state.user.projects);
-  console.log(projects);
+  // console.log(projects);
 
   return (
     <div className="  ">

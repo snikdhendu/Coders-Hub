@@ -23,3 +23,30 @@ mutation UserMutation($clerkUserId: String!, $collegeName: String, $location: St
   }
 }
 `;
+
+
+export const addUserBasicDetails = gql`
+
+mutation UserMutation($clerkUserId: String!,$github: String, $about: String, $leetcode: String,) {
+  ADD_USER_BASIC_DETAILS(clerkUserId: $clerkUserId,about: $about,leetcode: $leetcode,github: $github) {
+    clerkUserId
+      firstName
+      lastName
+      profileUrl
+      email
+      about
+      collegeName
+      location
+      year
+      technologies
+      links {
+        github
+        linkedIn
+        portfolio
+        twitter
+        leetcode
+      }
+  }
+}
+`;
+

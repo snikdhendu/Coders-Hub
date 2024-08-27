@@ -5,3 +5,4 @@ export {default as Error} from './Error';
 export {default as UserDashboard} from './UserDashboard';
 export {default as EditUser} from './EditUser';
 export {default as Detailproject} from './Detailproject'
+export {default as Profiles} from './Profiles'

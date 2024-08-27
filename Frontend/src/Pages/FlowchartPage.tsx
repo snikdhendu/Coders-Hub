@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Flowchart from '../Components/Flowchart';
+import { useUser } from '@clerk/clerk-react';
 
 interface CustomNode {
   id: string;
@@ -26,6 +27,15 @@ const FlowchartPage: React.FC = () => {
     navigate('/'); 
     return null;
   }
+
+  const { user } = useUser();
+
+  
+  useEffect(()=>{
+    if (!user) {
+      navigate('/sign-in');
+    }
+  },[]);
 
   const { id, title, nodes, viewOnly } = state;
 

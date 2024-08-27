@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import TechStackSelector from './TechStackSelector';
+// import TechStackSelector from './TechStackSelector';
 import { createProject } from '../graphql/mutation/projectMutation';
 import { useMutation } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 interface EditUserProps {
   closeModal: () => void;

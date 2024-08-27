@@ -1,14 +1,14 @@
-import React from 'react';
+// import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
 const Userroadmap = () => {
   const flowcharts = useSelector((state: RootState) => state.user.flowcharts);
   const navigate = useNavigate();
-  const { userName } = useParams();
+  // const { userName } = useParams();
 
   const handleFlowchartClick = (flowchart: any) => {
     navigate(`/roadmaps/${flowchart._id}`, {
@@ -40,7 +40,7 @@ const Userroadmap = () => {
         <>
           <div className="bg-textfourth rounded-full p-6 flex justify-center items-center mt-28">
             <Link
-              to='./createroamap'
+              to='./createroadmap'
               className="btn flex justify-center items-center bg-transparent border-none rounded-full h-12 w-12 hover:bg-transparent"
               
             >

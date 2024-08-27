@@ -31,6 +31,9 @@ export const updateUser = async (
       linkedIn,
       portfolio,
       profileUrl,
+      about,
+      year,
+      technologies
     }: {
       clerkUserId: string;
       collegeName: string;
@@ -40,6 +43,9 @@ export const updateUser = async (
       twitter: string;
       portfolio: string;
       profileUrl: string;
+      about: string;
+      year: string;
+      technologies: string[];
     }
   ) => {
     const user = await User.findOne({ clerkUserId });
@@ -51,6 +57,9 @@ export const updateUser = async (
       user.links.linkedIn = linkedIn;
       user.links.portfolio = portfolio;
       user.profileUrl = profileUrl;
+      user.about = about;
+      user.year = year;
+      user.techStack = technologies;
       await user.save();
       return { user: user, msg: "User updated successfully" };
     } else {

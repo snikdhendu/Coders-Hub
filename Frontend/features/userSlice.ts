@@ -32,6 +32,7 @@ export interface User {
   links: Links;
   location: string;
   profileUrl: string;
+  technology: string[];
   projects?: Project[];
   flowcharts?: Flowchart[];
 }
@@ -52,6 +53,7 @@ const initialState: User = {
   },
   location: '',
   profileUrl: '',
+  technology: [],
   projects: [],
   flowcharts: [],
 };
@@ -102,6 +104,9 @@ const userSlice = createSlice({
     setTwitterLink: (state, action: PayloadAction<string>) => {
       state.links.twitter = action.payload;
     },
+    setTechnology:(state, action: PayloadAction<string[]>) => {
+      state.technology = action.payload;
+    },
     setProjects:(state, action: PayloadAction<Project[]>) => {
       state.projects = action.payload;
     },
@@ -130,6 +135,7 @@ export const {
   setPortfolioLink,
   setTwitterLink,
   setProjects,
+  setTechnology,
   setFlowcharts,
   addFlowchart
 } = userSlice.actions;

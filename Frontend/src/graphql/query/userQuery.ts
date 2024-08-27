@@ -10,6 +10,9 @@ export const getUsers = gql`
     email
     collegeName
     location
+    year
+    about
+    technologies
     links {
       github
       linkedIn
@@ -51,8 +54,11 @@ export const getAllUsers = gql`
       firstName
       lastName
       email
+      year
+      about
       collegeName
       location
+      technologies
       links {
         github
         linkedIn

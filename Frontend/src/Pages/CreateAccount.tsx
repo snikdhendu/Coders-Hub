@@ -90,12 +90,14 @@ const CreateAccount: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateStep2()) {
-      // Dispatch the GitHub and leetcode links
-      dispatch(setGithubLink(formData.gitHub));
+      // Dispatch the user properties
+      dispatch(setAbout(formData.about));
       dispatch(setLeetcodeLink(formData.leetcode));
+      dispatch(setGithubLink(formData.gitHub));
+      
       console.log(formData);
 
-      // Execute the mutation
+      // mutation
       addUserBasicDetailsMutation({
         variables: {
           clerkUserId: user?.id,

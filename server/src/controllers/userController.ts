@@ -30,6 +30,7 @@ export const updateUser = async (
       twitter,
       linkedIn,
       portfolio,
+      leetcode,
       profileUrl,
       about,
       year,
@@ -42,6 +43,7 @@ export const updateUser = async (
       linkedIn: string;
       twitter: string;
       portfolio: string;
+      leetcode: string;
       profileUrl: string;
       about: string;
       year: string;
@@ -56,6 +58,7 @@ export const updateUser = async (
       user.links.twitter = twitter;
       user.links.linkedIn = linkedIn;
       user.links.portfolio = portfolio;
+      user.links.leetcode = leetcode;
       user.profileUrl = profileUrl;
       user.about = about;
       user.year = year;

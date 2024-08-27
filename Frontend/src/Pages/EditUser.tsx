@@ -72,7 +72,8 @@ const EditUser: React.FC = () => {
     updateUserMutation({
       variables: {
         clerkUserId: user?.id,
-        bio,
+        about: bio,
+        year,
         collegeName,
         location,
         github,
@@ -81,6 +82,7 @@ const EditUser: React.FC = () => {
         portfolio,
         leetcode,
         profileUrl: profilePhotoUrl,
+        technologies: technicalSkills,
       },
     })
       .then(({ data }) => {

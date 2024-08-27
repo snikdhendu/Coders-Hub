@@ -80,6 +80,7 @@ type Mutation {
         twitter:String,
         portfolio:String,
         profileUrl: String,
+        leetcode:String,
         about: String,
         year: String,
         technologies: [String]

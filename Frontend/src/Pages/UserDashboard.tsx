@@ -15,6 +15,8 @@ import { getUsers } from "../graphql/query/userQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope , FaMapMarkerAlt,FaGithub,FaLinkedin,FaTwitter,FaGlobe } from "react-icons/fa";
+import { RootState } from '../../store'; // delete it later
+
 import {
   setCollegeName,
   setEmail,
@@ -28,24 +30,33 @@ import {
   setPortfolioLink,
   setTwitterLink,
   setProjects,
-  setFlowcharts
+  setFlowcharts,
+  setAbout,
+  setYear,
+  setTechnology
   
   
 } from "../../features/userSlice";
-import { RootState } from "../../store";
 
 const UserDashboard = () => {
   const { user } = useUser();
   const { theme } = useTheme();
   const dispatch = useDispatch();
+  const userState: any = useSelector((state: RootState) => state.user);
+
 
   if (!user) {
     return null; // Or handle the case when user is null
   }
+
+
   //Use this loading and error for better performance
   const { data } = useQuery(getUsers, {
     variables: { clerkUserId: user.id },
+    skip: !!userState.email,
   });
+
+
   const achievements = [
     "Won 1st place in the Devbits 2024 Hackathon.",
     "Completed 100+ coding challenges on LeetCode.",
@@ -54,6 +65,7 @@ const UserDashboard = () => {
     "Contributed to 10+ open-source projects.",
   ];
   const Education = ["Techno Main Saltlake", "Third Year"];
+
   useEffect(() => {
     if (data) {
       const userData = data.getUserById;
@@ -70,6 +82,9 @@ const UserDashboard = () => {
       dispatch(setTwitterLink(userData.links.twitter));
       dispatch(setProjects(userData.projects));
       dispatch(setFlowcharts(userData.flowcharts));
+      dispatch(setAbout(userData.about));
+      dispatch(setYear(userData.year));
+      dispatch(setTechnology(userData.technologies));
       console.log(data);
     }
   }, [data, dispatch]);
@@ -77,7 +92,6 @@ const UserDashboard = () => {
   const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">(
     "project"
   );
-  const userState: any = useSelector((state: RootState) => state.user);
   const technologies = [
     "Node.js",
     "Express.js",

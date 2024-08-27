@@ -79,7 +79,11 @@ type Mutation {
         linkedIn:String,
         twitter:String,
         portfolio:String,
-        profileUrl: String): UpdateUserResponse
+        profileUrl: String,
+        about: String,
+        year: String,
+        technologies: [String]
+        ): UpdateUserResponse
 
     CREATE_PROJECT(clerkUserId: String!, projectName: String!, tagline: String!, description: String!,technologies: [String],githubRepoLink: String,liveLink: String):Project
     CREATE_FLOWCHART(

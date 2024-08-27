@@ -8,15 +8,39 @@ mutation UserMutation($clerkUserId: String!, $collegeName: String, $location: St
       firstName
       lastName
       profileUrl
+      about
+      year
       email
       collegeName
       location
+      technologies
       links {
         github
         linkedIn
         portfolio
         twitter
         leetcode
+      }
+      projects {
+        _id
+        projectName
+        tagline
+        description
+        technologies
+        githubRepoLink
+        liveLink
+        logo
+        images
+      }
+      flowcharts {
+        _id
+        title
+        nodes {
+          label
+          time
+          links
+          tips
+        }
       }
     }
     msg

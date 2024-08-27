@@ -15,6 +15,9 @@ import {
   setPortfolioLink,
   setTwitterLink,
   setAbout,
+  setTechnology,
+  setProjects,
+  setFlowcharts,
 } from "../../features/userSlice";
 import { RootState } from "../../store";
 
@@ -32,9 +35,11 @@ const EditUser: React.FC = () => {
     return null;
   }
 
-  const firstName = user.fullName ? user.fullName.split(" ")[0] : "";
   const userState = useSelector((state: RootState) => state.user);
-  const [bio, setBio] = useState(userState.collegeName || "");
+
+
+  const firstName = user.fullName ? user.fullName.split(" ")[0] : "";
+  const [bio, setBio] = useState(userState.about || "");
   const [collegeName, setCollege] = useState(userState.collegeName || "");
   const [year, setY] = useState(userState.year || "");
   const [location, setLoc] = useState(userState.location || "");
@@ -51,7 +56,6 @@ const EditUser: React.FC = () => {
 
   console.log(technicalSkills);
 
-  
   const handlePhotoUpload = (newPhotoUrl: string) => {
     setProfilePhotoUrl(newPhotoUrl);
   };
@@ -61,16 +65,6 @@ const EditUser: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(setAbout(bio));
-    dispatch(setCollegeName(collegeName));
-    dispatch(setLocation(location));
-    dispatch(setYear(year));
-    dispatch(setProfileUrl(profilePhotoUrl));
-    dispatch(setGithubLink(github));
-    dispatch(setLinkedInLink(linkedin));
-    dispatch(setTwitterLink(twitter));
-    dispatch(setPortfolioLink(portfolio));
-    dispatch(setLeetcodeLink(leetcode));
 
     updateUserMutation({
       variables: {
@@ -86,8 +80,26 @@ const EditUser: React.FC = () => {
         profileUrl: profilePhotoUrl,
       },
     })
-      .then((response) => {
-        console.log("User updated successfully:", response.data);
+      .then(({ data }) => {
+        console.log("User updated successfully:", data);
+        const userData = data?.UPDATE_USER?.user;
+        dispatch(setCollegeName(userData?.collegeName));
+        dispatch(setEmail(userData?.email));
+        dispatch(setFirstName(userData?.firstName));
+        dispatch(setLastName(userData?.lastName));
+        dispatch(setLocation(userData?.location));
+        dispatch(setProfileUrl(userData?.profileUrl));
+        dispatch(setGithubLink(userData?.links.github));
+        dispatch(setLeetcodeLink(userData?.links.leetcode));
+        dispatch(setLinkedInLink(userData?.links.linkedIn));
+        dispatch(setPortfolioLink(userData?.links.portfolio));
+        dispatch(setTwitterLink(userData?.links.twitter));
+        dispatch(setProjects(userData?.projects));
+        dispatch(setFlowcharts(userData?.flowcharts));
+        dispatch(setAbout(userData?.about));
+        dispatch(setYear(userData?.year));
+        dispatch(setTechnology(userData?.technologies));
+
         navigate(`/dashboard/${firstName}`);
       })
       .catch((error) => {
@@ -172,6 +184,7 @@ const EditUser: React.FC = () => {
                       placeholder="Full Stack Developer || Btech'26 "
                       className="textarea textarea-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-full"
                       value={bio}
+                      // defaultValue={userData.about || ""}
                       onChange={(e) => setBio(e.target.value)}
                     />
                   </label>
@@ -341,7 +354,7 @@ const EditUser: React.FC = () => {
                       type="url"
                       placeholder="Leetcode"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain w-72"
-                      value={portfolio}
+                      value={leetcode}
                       onChange={(e) => setLeetcode(e.target.value)}
                     />
                   </label>

@@ -18,6 +18,9 @@ import {
   setTechnology,
   setProjects,
   setFlowcharts,
+  setEmail,
+  setFirstName,
+  setLastName,
 } from "../../features/userSlice";
 import { RootState } from "../../store";
 

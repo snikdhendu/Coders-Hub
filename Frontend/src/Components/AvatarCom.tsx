@@ -19,6 +19,7 @@ const AvatarCom = () => {
     if (!isLoaded || !user) {
         return null;
     }
+    if(!isLoaded) <p>Loading...</p>
    
     return (
         <div className="dropdown dropdown-end">

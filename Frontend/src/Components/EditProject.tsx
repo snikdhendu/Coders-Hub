@@ -9,7 +9,7 @@ interface EditUserProps {
   closeModal: () => void;
 }
 
-const EditUser: React.FC<EditUserProps> = ({ closeModal }) => {
+const EditProject: React.FC<EditUserProps> = ({ closeModal }) => {
   const { user } = useUser();
   
   if (!user) {
@@ -192,4 +192,4 @@ const EditUser: React.FC<EditUserProps> = ({ closeModal }) => {
   );
 };
 
-export default EditUser;
+export default EditProject;

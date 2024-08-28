@@ -8,13 +8,13 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Navbar } from "../../Components/Navbar";
 import { useUser } from "@clerk/clerk-react";
-import { EditProect } from "../../Components";
+import { EditProject } from "../../Components";
 import { useTheme } from "../../Components/theme-provider";
 import { useQuery } from "@apollo/client";
 import { getUsers } from "../../graphql/query/userQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FaEnvelope , FaMapMarkerAlt,FaGithub,FaLinkedin,FaTwitter,FaGlobe } from "react-icons/fa";
+import { FaEnvelope, FaMapMarkerAlt, FaGithub, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
 import { RootState } from '../../../store'; // delete it later
 import ReadonlyDashboard from "./ReadonlyDashboard";
 import {
@@ -34,8 +34,8 @@ import {
   setAbout,
   setYear,
   setTechnology
-  
-  
+
+
 } from "../../../features/userSlice";
 
 
@@ -44,13 +44,13 @@ const UserDashboard = () => {
   const { theme } = useTheme();
   const dispatch = useDispatch();
   const userState: any = useSelector((state: RootState) => state.user);
-  const {id} = useParams();
+  const { id } = useParams();
 
 
   //Use this loading and error for better performance
   const { data } = useQuery(getUsers, {
     variables: { clerkUserId: id },
-    skip: !!userState.email,
+    // skip: !!userState.email,
   });
 
 
@@ -61,7 +61,7 @@ const UserDashboard = () => {
     "Achieved AWS Certified Solutions Architect - Associate.",
     "Contributed to 10+ open-source projects.",
   ];
-  
+
 
   useEffect(() => {
     if (data) {
@@ -153,7 +153,7 @@ const UserDashboard = () => {
 
 
   if (user?.id != id) {
-      return <ReadonlyDashboard/> ;
+    return <ReadonlyDashboard />;
   }
 
   return (
@@ -162,7 +162,7 @@ const UserDashboard = () => {
       <Navbar />
 
       {/* Main Content Wrapper */}
-      <div className=" min-h-screen w-full h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap ">
+      <div className=" min-h-screen w-full h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap">
         {/* Left Sidebar */}
         <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
           {/* User Profile Card */}
@@ -182,11 +182,11 @@ const UserDashboard = () => {
               <div className="w-full h-1/4 flex justify-center items-center">
                 <span className="flex">
                   <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
-                  {userState.firstName}
-                </h1>
-                <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
-                  {userState.lastName}
-                </h1>
+                    {userState.firstName}
+                  </h1>
+                  <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                    {userState.lastName}
+                  </h1>
                 </span>
               </div>
 
@@ -209,7 +209,6 @@ const UserDashboard = () => {
               {/* Social Media Links */}
               <div className="w-full h-1/4 flex justify-center items-center gap-6">
                 {userState.links.github ? (
-
                   <span className=" bg-textmain rounded-md p-2">
                     <a
                       href={userState.links.github}
@@ -219,13 +218,10 @@ const UserDashboard = () => {
                       <FaGithub className="h-5 w-5 " />
                     </a>
                   </span>
-
                 ) : (
-                  <div className="button-container">
-                    <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
-                      <FaGithub className="h-5 w-5 " />
-                    </span>
-                  </div>
+                  <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
+                    <FaGithub className="h-5 w-5 " />
+                  </span>
                 )}
 
                 {userState.links.linkedIn ? (
@@ -393,7 +389,7 @@ const UserDashboard = () => {
 
         <div className=" w-full lg:w-3/4 md:h-screen h-fit flex md:flex-col gap-5  flex-wrap md:flex-nowrap ">
           {/* LeetCode and GitHub Stats */}
-          <div className=" w-full h-1/3  flex flex-col lg:flex-row gap-4 ">
+          <div className=" w-full h-1/3  flex flex-col lg:flex-row gap-4">
             {/* LeetCode Stats */}
             <div className=" w-full lg:w-1/3 h-full rounded-lg bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex justify-center items-center">
 
@@ -499,7 +495,7 @@ const UserDashboard = () => {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
           <div className="flex justify-center items-center h-full">
-            <EditProect closeModal={closeModal} />
+            <EditProject closeModal={closeModal} />
             <button
               type="button"
               className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full"

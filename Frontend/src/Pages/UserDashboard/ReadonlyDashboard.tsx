@@ -1,17 +1,17 @@
 // import React from 'react';
-import { LeetCodeStats, Userproject, Userroadmap } from "../../Components";
+import { LeetCodeStats, ReadonlyUserProject,ReadonlyUserRoadmap } from "../../Components";
 import { Avatar } from "@mui/material";
 import GitHubCalendar from "react-github-calendar";
 import { useState } from "react";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faPlus } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Navbar } from "../../Components/Navbar";
 // import { useUser } from "@clerk/clerk-react";
-import { EditProect } from "../../Components";
+import { EditProject } from "../../Components";
 import { useTheme } from "../../Components/theme-provider";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { FaEnvelope , FaMapMarkerAlt,FaGithub,FaLinkedin,FaTwitter,FaGlobe } from "react-icons/fa";
+// import { useNavigate } from "react-router-dom";
+import { FaEnvelope, FaMapMarkerAlt, FaGithub, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
 import { RootState } from '../../../store'; // delete it later
 
 
@@ -26,7 +26,7 @@ const ReadonlyDashboard = () => {
     "Contributed to 10+ open-source projects.",
   ];
 
-  
+
 
   const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">(
     "project"
@@ -41,24 +41,24 @@ const ReadonlyDashboard = () => {
     "Google AI Studio",
   ];
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Handle the click event for the plus sign
-  const handlePlusClick = () => {
-    if (selectedContent === "project") {
-      openModal(); // Open modal in "Project" tab
-    } else if (selectedContent === "roadmap") {
-      navigate("./createroadmap"); // Navigate to "./roadmap" in "Roadmap" tab
-    }
-  };
-  const openModal = () => {
-    const modal = document.getElementById('my_modal_3');
-    if (modal instanceof HTMLDialogElement) {
-      modal.showModal();
-    } else {
-      console.error('Modal element not found or is not a dialog.');
-    }
-  };
+  // const handlePlusClick = () => {
+  //   if (selectedContent === "project") {
+  //     openModal(); // Open modal in "Project" tab
+  //   } else if (selectedContent === "roadmap") {
+  //     navigate("./createroadmap"); // Navigate to "./roadmap" in "Roadmap" tab
+  //   }
+  // };
+  // const openModal = () => {
+  //   const modal = document.getElementById('my_modal_3');
+  //   if (modal instanceof HTMLDialogElement) {
+  //     modal.showModal();
+  //   } else {
+  //     console.error('Modal element not found or is not a dialog.');
+  //   }
+  // };
 
   const closeModal = () => {
     const modal = document.getElementById('my_modal_3');
@@ -121,11 +121,11 @@ const ReadonlyDashboard = () => {
               <div className="w-full h-1/4 flex justify-center items-center">
                 <span className="flex">
                   <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
-                  {userState.firstName}
-                </h1>
-                <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
-                  {userState.lastName}
-                </h1>
+                    {userState.firstName}
+                  </h1>
+                  <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                    {userState.lastName}
+                  </h1>
                 </span>
               </div>
 
@@ -148,7 +148,6 @@ const ReadonlyDashboard = () => {
               {/* Social Media Links */}
               <div className="w-full h-1/4 flex justify-center items-center gap-6">
                 {userState.links.github ? (
-
                   <span className=" bg-textmain rounded-md p-2">
                     <a
                       href={userState.links.github}
@@ -158,13 +157,10 @@ const ReadonlyDashboard = () => {
                       <FaGithub className="h-5 w-5 " />
                     </a>
                   </span>
-
                 ) : (
-                  <div className="button-container">
-                    <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
-                      <FaGithub className="h-5 w-5 " />
-                    </span>
-                  </div>
+                  <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
+                    <FaGithub className="h-5 w-5 " />
+                  </span>
                 )}
 
                 {userState.links.linkedIn ? (
@@ -335,7 +331,7 @@ const ReadonlyDashboard = () => {
                   />
 
                 ) : (
-                  <p>Add leetcode</p>
+                  <p>Leetcode not added yet</p>
                 )
               }
             </div>
@@ -347,7 +343,7 @@ const ReadonlyDashboard = () => {
                   colorScheme={theme === "dark" ? "dark" : "light"}
                 />
               ) : (
-                <p>Add GitHub</p>
+                <p>GitHub not added yet</p>
               )}
             </div>
           </div>
@@ -380,7 +376,7 @@ const ReadonlyDashboard = () => {
                 </div>
 
                 {/* Plus Button for Adding Projects/Roadmaps */}
-                <div
+                {/* <div
 
                   className="relative left-6 lg:left-48 bg-textfourth rounded-full border-2 p-2 flex justify-center items-center cursor-pointer"
                 >
@@ -389,14 +385,14 @@ const ReadonlyDashboard = () => {
                   </button>
 
 
-                </div>
+                </div> */}
               </div>
               {/* Projects or Roadmap Display */}
               <div className="h-5/6 flex flex-col  items-center overflow-y-auto  w-full">
                 {selectedContent === "project" ? (
-                  <Userproject />
+                  <ReadonlyUserProject />
                 ) : (
-                  <Userroadmap />
+                  <ReadonlyUserRoadmap />
                 )}
               </div>
             </div>
@@ -429,7 +425,7 @@ const ReadonlyDashboard = () => {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box relative shadow-lg w-11/12 max-w-5xl h-screen bg-white dark:bg-black text-textmain">
           <div className="flex justify-center items-center h-full">
-            <EditProect closeModal={closeModal} />
+            <EditProject closeModal={closeModal} />
             <button
               type="button"
               className="btn btn-sm btn-circle btn-ghost absolute right-4 top-3 hover:bg-textthird hover:text-white text-2xl bg-textfourth text-secondbg flex justify-center items-center rounded-full"

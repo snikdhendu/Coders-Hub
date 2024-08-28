@@ -59,14 +59,14 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
       links: node.links,
       tips: node.tips,
     };
-
+  
     nodeElements.push({
       id: labelNodeId,
       data: { label: <strong>{node.label}</strong> },
       position: { x: 675, y: (index + 1) * verticalSpacing },
       style: baseNodeStyle,
     });
-
+  
     if (index < nodes.length - 1) {
       const nextLabelNodeId = `node-${index + 1}`;
       edgeElements.push({
@@ -74,10 +74,16 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
         source: labelNodeId,
         target: nextLabelNodeId,
         type: 'smoothstep',
-        style: { stroke: '#333' },
+        animated: true, // Enable animation
+        style: {
+          stroke: '#333',
+          strokeDasharray: '5 5', // Creates the dashed effect
+          animation: 'dash-animation 2s linear infinite', // Animates the dash offset
+        },
       });
     }
   });
+  
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: Node) => {
@@ -161,82 +167,83 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
         <MiniMap />
         <Background gap={13} size={1} offset={2} />
       </ReactFlow>
-      {isModalVisible && selectedNode && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30"
-          onClick={() => setIsModalVisible(false)}
-        >
-          <div
-            className="relative bg-white border border-blue-200 shadow-lg rounded-md p-6 w-80 h-80 transition-all duration-200 ease-in-out hover:shadow-blue-500 hover:shadow-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {isEditMode ? (
-              <>
-                <h2 className="text-2xl font-bold mb-2">Edit {selectedNode.label}</h2>
-                <label className="block mb-2">Label:</label>
-                <input
-                  className="w-full mb-2 p-2 border rounded"
-                  value={selectedNode.label}
-                  onChange={(e) => setSelectedNode({ ...selectedNode, label: e.target.value })}
-                />
-                <label className="block mb-2">Time Taken:</label>
-                <input
-                  className="w-full mb-2 p-2 border rounded"
-                  value={selectedNode.time}
-                  onChange={(e) => setSelectedNode({ ...selectedNode, time: e.target.value })}
-                />
-                <label className="block mb-2">Links:</label>
-                {selectedNode.links.map((link, index) => (
-                  <input
-                    key={index}
-                    className="w-full mb-2 p-2 border rounded"
-                    value={link}
-                    onChange={(e) => {
-                      const newLinks = [...selectedNode.links];
-                      newLinks[index] = e.target.value;
-                      setSelectedNode({ ...selectedNode, links: newLinks });
-                    }}
-                  />
-                ))}
-                <label className="block mb-2">Tips:</label>
-                <input
-                  className="w-full mb-2 p-2 border rounded"
-                  value={selectedNode.tips}
-                  onChange={(e) => setSelectedNode({ ...selectedNode, tips: e.target.value })}
-                />
-                <button onClick={handleSave} className="bg-green-500 text-white p-2 rounded mt-4">
-                  Save
-                </button>
-              </>
-            ) : (
-              <>
-                <h2 className="text-2xl font-bold mb-2">{selectedNode.label}</h2>
-                <p className="mb-2">
-                  <strong>Time Taken:</strong> {selectedNode.time}
-                </p>
-                <p className="mb-2">
-                  <strong>Useful Links:</strong>
-                </p>
-                <ul className="list-disc list-inside mb-2">
-                  {selectedNode.links.map((link, index) => (
-                    <li key={index}>
-                      <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <p>
-                  <strong>Tips:</strong> {selectedNode.tips}
-                </p>
-              </>
-            )}
-            <button onClick={() => setIsModalVisible(false)} className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded">
-              Close
-            </button>
-          </div>
-        </div>
+{isModalVisible && selectedNode && (
+  <div
+    className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30"
+    onClick={() => setIsModalVisible(false)}
+  >
+    <div
+      className="relative bg-white border border-blue-200 shadow-lg rounded-md p-6 w-80 h-80 transition-all duration-200 ease-in-out hover:shadow-blue-500 hover:shadow-md"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {isEditMode ? (
+        <>
+          <h2 className="text-2xl font-bold mb-2">Edit {selectedNode.label}</h2>
+          <label className="block mb-2">Label:</label>
+          <input
+            className="w-full mb-2 p-2 border rounded"
+            value={selectedNode.label}
+            onChange={(e) => setSelectedNode({ ...selectedNode, label: e.target.value })}
+          />
+          <label className="block mb-2">Time Taken:</label>
+          <input
+            className="w-full mb-2 p-2 border rounded"
+            value={selectedNode.time}
+            onChange={(e) => setSelectedNode({ ...selectedNode, time: e.target.value })}
+          />
+          <label className="block mb-2">Links:</label>
+          {selectedNode.links.map((link, index) => (
+            <input
+              key={index}
+              className="w-full mb-2 p-2 border rounded"
+              value={link}
+              onChange={(e) => {
+                const newLinks = [...selectedNode.links];
+                newLinks[index] = e.target.value;
+                setSelectedNode({ ...selectedNode, links: newLinks });
+              }}
+            />
+          ))}
+          <label className="block mb-2">Tips:</label>
+          <input
+            className="w-full mb-2 p-2 border rounded"
+            value={selectedNode.tips}
+            onChange={(e) => setSelectedNode({ ...selectedNode, tips: e.target.value })}
+          />
+          <button onClick={handleSave} className="bg-green-500 text-white p-2 rounded mt-4">
+            Save
+          </button>
+        </>
+      ) : (
+        <>
+          <h2 className="text-2xl font-bold mb-2">{selectedNode.label}</h2>
+          <p className="mb-2">
+            <strong>Time Taken:</strong> {selectedNode.time}
+          </p>
+          <p className="mb-2">
+            <strong>Useful Links:</strong>
+          </p>
+          <ul className="list-disc list-inside mb-2">
+            {selectedNode.links.map((link, index) => (
+              <li key={index}>
+                <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                  {link}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p>
+            <strong>Tips:</strong> {selectedNode.tips}
+          </p>
+        </>
       )}
+      <button onClick={() => setIsModalVisible(false)} className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded">
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

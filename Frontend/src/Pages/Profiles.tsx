@@ -4,10 +4,7 @@ import { getAllUsers } from "../graphql/query/userQuery";
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {
-    useUser,
-    SignOutButton
-} from "@clerk/clerk-react";
+
 import Avatar from "react-avatar";
 
 interface ProfileType {
@@ -41,7 +38,7 @@ const Profiles = () => {
         // const matchesFilter = filterCategory === "All" || project.category === filterCategory;
         return matchesSearch;
     });
-    const { user } = useUser();
+  
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;

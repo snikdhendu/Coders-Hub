@@ -45,14 +45,12 @@ const UserDashboard = () => {
   const dispatch = useDispatch();
   const userState: any = useSelector((state: RootState) => state.user);
   const {id} = useParams();
-  
 
-  
 
   //Use this loading and error for better performance
   const { data } = useQuery(getUsers, {
     variables: { clerkUserId: id },
-    // skip: !!userState.email,
+    skip: !!userState.email,
   });
 
 
@@ -149,13 +147,14 @@ const UserDashboard = () => {
   const githubUsername = getUsername(githubUrl);
   const leetcodeUsername = getUsername(leetcodeUrl);
   const location = userState.location;
+  const college = userState.collegeName;
+  const year = userState.year;
+  const about = userState.about;
 
 
   if (user?.id != id) {
       return <ReadonlyDashboard/> ;
   }
-
-
 
   return (
     <div className="  dark:border-b-slate-700 dark:bg-background  h-auto overflow-y-auto">
@@ -181,17 +180,22 @@ const UserDashboard = () => {
 
               {/* User Name */}
               <div className="w-full h-1/4 flex justify-center items-center">
-                <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
-                  {user?.fullName}
+                <span className="flex">
+                  <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                  {userState.firstName}
                 </h1>
+                <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                  {userState.lastName}
+                </h1>
+                </span>
               </div>
 
               {/* User Role */}
               {
-                userState.about ? (
+                about ? (
                   <div className="w-full h-8 flex justify-center items-center">
                     <span className="text-xl font-semibold font-royal4 text-textmain">
-                      {userState.about}
+                      {about}
                     </span>
                   </div>
 
@@ -334,14 +338,14 @@ const UserDashboard = () => {
             </div>
             {/* Education Section */}
             {
-              userState.college || userState.year ? (
+              college || year ? (
                 <div className=" h-fit bg-transparent p-4 rounded-lg">
                   <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">
                     Education
                   </h2>
                   <ul className="space-y-3">
 
-                    {userState.collegeName ? (
+                    {college ? (
                       <li className="flex items-start">
                         <img
                           src="/college.png"
@@ -349,7 +353,7 @@ const UserDashboard = () => {
                           className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
                         />
                         <span className="dark:text-white text-textmain font-royal4 font-medium ">
-                          {userState.collegeName}
+                          {college}
                         </span>
                       </li>
 
@@ -357,7 +361,7 @@ const UserDashboard = () => {
                       " "
                     )
                     }
-                    {userState.year ? (
+                    {year ? (
                       <li className="flex items-start">
                         <img
                           src="/college.png"
@@ -365,7 +369,7 @@ const UserDashboard = () => {
                           className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
                         />
                         <span className="dark:text-white text-textmain font-royal4 font-medium ">
-                          {userState.year}
+                          {year}
                         </span>
                       </li>
 
@@ -511,3 +515,5 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+
+

@@ -230,15 +230,16 @@ const EditUser: React.FC = () => {
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain lg:w-64 w-72"
                       value={year}
                       onChange={(e) => setY(e.target.value)}
+                      defaultValue={"Pick one"}
                     >
                       <option disabled selected>
                         Pick one
                       </option>
-                      <option value={1}>First Year</option>
-                      <option value={2}>Second Year</option>
-                      <option value={3}>Third Year</option>
-                      <option value={4}>Fourth Year</option>
-                      <option value={0}>Pass Out</option>
+                      <option value={"First Year"}>First Year</option>
+                      <option value={"Second Year"}>Second Year</option>
+                      <option value={"Third Year"}>Third Year</option>
+                      <option value={"Final Year"}>Fourth Year</option>
+                      <option value={"Pass Out"}>Pass Out</option>
                     </select>
                   </label>
                 </div>

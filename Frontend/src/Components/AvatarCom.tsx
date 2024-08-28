@@ -15,9 +15,7 @@ const AvatarCom = () => {
     if (!user) {
         return null; // Or handle the case when user is null
     }
-    const firstName = user.fullName ? user.fullName.split(' ')[0] : '';
-   
-
+    // const firstName = user.fullName ? user.fullName.split(' ')[0] : '';
     if (!isLoaded || !user) {
         return null;
     }
@@ -37,7 +35,7 @@ const AvatarCom = () => {
                 <hr />
                 <div className='flex  p-4 w-full gap-4 items-center'>
                     <FontAwesomeIcon icon={faGraduationCap} className=' text-textmain h-6 w-6' />
-                    <Link to={`/dashboard/${firstName}`} className='font-royal4 dark:text-white text-textmain font-bold text-lg '>DashBoard</Link>      
+                    <Link to={`/dashboard/${user.id}`} className='font-royal4 dark:text-white text-textmain font-bold text-lg '>DashBoard</Link>      
                 </div>
                 <hr />
                 </div>

@@ -1,62 +1,23 @@
 // import React from 'react';
-import { LeetCodeStats, Userproject, Userroadmap } from "../Components";
+import { LeetCodeStats, Userproject, Userroadmap } from "../../Components";
 import { Avatar } from "@mui/material";
-import { Link } from "react-router-dom";
 import GitHubCalendar from "react-github-calendar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Navbar } from "../Components/Navbar";
-import { useUser } from "@clerk/clerk-react";
-import { EditProect } from "../Components";
-import { useTheme } from "../Components/theme-provider";
-import { useQuery } from "@apollo/client";
-import { getUsers } from "../graphql/query/userQuery";
-import { useDispatch, useSelector } from "react-redux";
+import { Navbar } from "../../Components/Navbar";
+// import { useUser } from "@clerk/clerk-react";
+import { EditProect } from "../../Components";
+import { useTheme } from "../../Components/theme-provider";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope , FaMapMarkerAlt,FaGithub,FaLinkedin,FaTwitter,FaGlobe } from "react-icons/fa";
-import { RootState } from '../../store'; // delete it later
+import { RootState } from '../../../store'; // delete it later
 
-import {
-  setCollegeName,
-  setEmail,
-  setFirstName,
-  setLastName,
-  setLocation,
-  setProfileUrl,
-  setGithubLink,
-  setLeetcodeLink,
-  setLinkedInLink,
-  setPortfolioLink,
-  setTwitterLink,
-  setProjects,
-  setFlowcharts,
-  setAbout,
-  setYear,
-  setTechnology
-  
-  
-} from "../../features/userSlice";
 
-const UserDashboard = () => {
-  const { user } = useUser();
+const ReadonlyDashboard = () => {
   const { theme } = useTheme();
-  const dispatch = useDispatch();
   const userState: any = useSelector((state: RootState) => state.user);
-
-
-  if (!user) {
-    return null; // Or handle the case when user is null
-  }
-
-
-  //Use this loading and error for better performance
-  const { data } = useQuery(getUsers, {
-    variables: { clerkUserId: user.id },
-    skip: !!userState.email,
-  });
-
-
   const achievements = [
     "Won 1st place in the Devbits 2024 Hackathon.",
     "Completed 100+ coding challenges on LeetCode.",
@@ -66,28 +27,7 @@ const UserDashboard = () => {
   ];
   const Education = ["Techno Main Saltlake", "Third Year"];
 
-  useEffect(() => {
-    if (data) {
-      const userData = data.getUserById;
-      dispatch(setCollegeName(userData.collegeName));
-      dispatch(setEmail(userData.email));
-      dispatch(setFirstName(userData.firstName));
-      dispatch(setLastName(userData.lastName));
-      dispatch(setLocation(userData.location));
-      dispatch(setProfileUrl(userData.profileUrl));
-      dispatch(setGithubLink(userData.links.github));
-      dispatch(setLeetcodeLink(userData.links.leetcode));
-      dispatch(setLinkedInLink(userData.links.linkedIn));
-      dispatch(setPortfolioLink(userData.links.portfolio));
-      dispatch(setTwitterLink(userData.links.twitter));
-      dispatch(setProjects(userData.projects));
-      dispatch(setFlowcharts(userData.flowcharts));
-      dispatch(setAbout(userData.about));
-      dispatch(setYear(userData.year));
-      dispatch(setTechnology(userData.technologies));
-      console.log(data);
-    }
-  }, [data, dispatch]);
+  
 
   const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">(
     "project"
@@ -175,9 +115,14 @@ const UserDashboard = () => {
 
               {/* User Name */}
               <div className="w-full h-1/4 flex justify-center items-center">
-                <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
-                  {user.fullName}
-                </h1>
+                <span className="flex gap-2">
+                    <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                    {userState?.firstName}
+                    </h1>
+                    <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                    {userState?.lastName}
+                    </h1>
+                </span>
               </div>
 
               {/* User Role */}
@@ -252,14 +197,14 @@ const UserDashboard = () => {
 
             <hr className="w-full border-t border-gray-300 dark:border-gray-800" />
             {/* Edit Profile Button */}
-            <div className="w-full flex justify-center ">
+            {/* <div className="w-full flex justify-center ">
               <Link
                 to="./edit"
                 className="w-1/2 rounded-md bg-blue-100 hover:bg-blue-300 text-textsecond flex justify-center items-center p-2 font-royal4"
               >
                 Edit profile
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Technologies and Education */}
@@ -421,4 +366,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default ReadonlyDashboard;

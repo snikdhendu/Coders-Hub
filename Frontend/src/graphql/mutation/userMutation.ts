@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client";
 
 export const editUser = gql`
-mutation UserMutation($clerkUserId: String!, $collegeName: String, $location: String,$github: String,$twitter: String, $linkedIn: String, $portfolio: String, $profileUrl: String, $about: String, $year: String, $technologies: [String],) {
+mutation UserMutation($clerkUserId: String!, $collegeName: String, $location: String,$github: String,$twitter: String, $linkedIn: String, $portfolio: String, $profileUrl: String, $about: String, $year: String, $technologies: [String], $leetcode: String,) {
   
-  UPDATE_USER(clerkUserId: $clerkUserId, collegeName: $collegeName, location: $location,github: $github, twitter: $twitter, linkedIn: $linkedIn, portfolio: $portfolio, profileUrl: $profileUrl, about: $about, year: $year, technologies: $technologies) {
+  UPDATE_USER(clerkUserId: $clerkUserId, collegeName: $collegeName, location: $location,github: $github, twitter: $twitter, linkedIn: $linkedIn, portfolio: $portfolio, profileUrl: $profileUrl, about: $about, year: $year, technologies: $technologies, leetcode: $leetcode) {
     user {
       clerkUserId
       firstName

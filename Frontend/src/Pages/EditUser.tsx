@@ -43,7 +43,7 @@ const EditUser: React.FC = () => {
   const userState = useSelector((state: RootState) => state.user);
 
 
-  const firstName = user?.fullName ? user?.fullName.split(" ")[0] : "";
+  // const firstName = user?.fullName ? user?.fullName.split(" ")[0] : "";
   const [bio, setBio] = useState(userState.about || "");
   const [collegeName, setCollege] = useState(userState.collegeName || "");
   const [year, setY] = useState(userState.year || "");
@@ -107,7 +107,7 @@ const EditUser: React.FC = () => {
         dispatch(setYear(userData?.year));
         dispatch(setTechnology(userData?.technologies));
 
-        navigate(`/dashboard/${firstName}`);
+        navigate(`/dashboard/${id}`);
       })
       .catch((error) => {
         console.error("Error updating user:", error);

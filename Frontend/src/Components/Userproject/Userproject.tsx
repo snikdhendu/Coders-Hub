@@ -1,10 +1,10 @@
 // import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import EditProject from './EditProject';
+import EditProject from "../EditProject";
 import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import { RootState } from '../../store';
+import { RootState } from "../../../store";
 
 const Userproject = () => {
   const projects = useSelector((state: RootState) => state.user.projects);

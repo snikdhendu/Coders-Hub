@@ -134,16 +134,22 @@ html {
   text-align: center;
   overflow: hidden;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .our-team .picture {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 130px;
   width: 130px;
   margin-bottom: 50px;
   z-index: 1;
   position: relative;
-  
+
 }
 
 .our-team .picture::before {
@@ -280,5 +286,10 @@ html {
       background: hsl(var(--primary) / 30%);
       right: 100px;
     }
+  }
+}
+@keyframes dash-animation {
+  to {
+    stroke-dashoffset: -50;
   }
 }

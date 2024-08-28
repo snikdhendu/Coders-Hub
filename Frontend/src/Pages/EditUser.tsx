@@ -3,6 +3,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "@apollo/client";
 import { editUser } from "../graphql/mutation/userMutation";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 // import { useTheme } from "../Components/theme-provider";
 import {
   setCollegeName,
@@ -33,15 +34,16 @@ const EditUser: React.FC = () => {
   const { user } = useUser();
   const dispatch = useDispatch();
   // const { theme } = useTheme();
-
-  if (!user) {
-    return null;
+  const {id} = useParams();
+  
+  if (user?.id != id){
+    return null; ///WE HAVE TO SHOW THAT 404 ERROR PAGE
   }
 
   const userState = useSelector((state: RootState) => state.user);
 
 
-  const firstName = user.fullName ? user.fullName.split(" ")[0] : "";
+  const firstName = user?.fullName ? user?.fullName.split(" ")[0] : "";
   const [bio, setBio] = useState(userState.about || "");
   const [collegeName, setCollege] = useState(userState.collegeName || "");
   const [year, setY] = useState(userState.year || "");
@@ -148,7 +150,7 @@ const EditUser: React.FC = () => {
                       type="text"
                       placeholder="Name"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain lg:w-fit w-72"
-                      defaultValue={user.fullName || ""}
+                      defaultValue={user?.fullName || ""}
                       disabled
                     />
                   </label>
@@ -167,7 +169,7 @@ const EditUser: React.FC = () => {
                       placeholder="Email"
                       className="input input-bordered bg-white dark:border-b-slate-700 dark:bg-background text-textmain dark:text-white text-xl font-royal4 font-medium border-textmain lg:w-fit w-72"
                       value={
-                        user.primaryEmailAddress?.emailAddress ||
+                        user?.primaryEmailAddress?.emailAddress ||
                         "No email address found"
                       }
                       disabled

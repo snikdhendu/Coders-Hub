@@ -1,62 +1,23 @@
 // import React from 'react';
-import { LeetCodeStats, Userproject, Userroadmap } from "../Components";
+import { LeetCodeStats, Userproject, Userroadmap } from "../../Components";
 import { Avatar } from "@mui/material";
-import { Link } from "react-router-dom";
 import GitHubCalendar from "react-github-calendar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Navbar } from "../Components/Navbar";
-import { useUser } from "@clerk/clerk-react";
-import { EditProect } from "../Components";
-import { useTheme } from "../Components/theme-provider";
-import { useQuery } from "@apollo/client";
-import { getUsers } from "../graphql/query/userQuery";
-import { useDispatch, useSelector } from "react-redux";
+import { Navbar } from "../../Components/Navbar";
+// import { useUser } from "@clerk/clerk-react";
+import { EditProect } from "../../Components";
+import { useTheme } from "../../Components/theme-provider";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FaEnvelope, FaMapMarkerAlt, FaGithub, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
-import { RootState } from '../../store'; // delete it later
-
-import {
-  setCollegeName,
-  setEmail,
-  setFirstName,
-  setLastName,
-  setLocation,
-  setProfileUrl,
-  setGithubLink,
-  setLeetcodeLink,
-  setLinkedInLink,
-  setPortfolioLink,
-  setTwitterLink,
-  setProjects,
-  setFlowcharts,
-  setAbout,
-  setYear,
-  setTechnology
+import { FaEnvelope , FaMapMarkerAlt,FaGithub,FaLinkedin,FaTwitter,FaGlobe } from "react-icons/fa";
+import { RootState } from '../../../store'; // delete it later
 
 
-} from "../../features/userSlice";
-
-const UserDashboard = () => {
-  const { user } = useUser();
+const ReadonlyDashboard = () => {
   const { theme } = useTheme();
-  const dispatch = useDispatch();
   const userState: any = useSelector((state: RootState) => state.user);
-
-
-  if (!user) {
-    return null; // Or handle the case when user is null
-  }
-
-
-  //Use this loading and error for better performance
-  const { data } = useQuery(getUsers, {
-    variables: { clerkUserId: user.id },
-    skip: !!userState.email,
-  });
-
-
   const achievements = [
     "Won 1st place in the Devbits 2024 Hackathon.",
     "Completed 100+ coding challenges on LeetCode.",
@@ -64,30 +25,9 @@ const UserDashboard = () => {
     "Achieved AWS Certified Solutions Architect - Associate.",
     "Contributed to 10+ open-source projects.",
   ];
-  
+  const Education = ["Techno Main Saltlake", "Third Year"];
 
-  useEffect(() => {
-    if (data) {
-      const userData = data.getUserById;
-      dispatch(setCollegeName(userData.collegeName));
-      dispatch(setEmail(userData.email));
-      dispatch(setFirstName(userData.firstName));
-      dispatch(setLastName(userData.lastName));
-      dispatch(setLocation(userData.location));
-      dispatch(setProfileUrl(userData.profileUrl));
-      dispatch(setGithubLink(userData.links.github));
-      dispatch(setLeetcodeLink(userData.links.leetcode));
-      dispatch(setLinkedInLink(userData.links.linkedIn));
-      dispatch(setPortfolioLink(userData.links.portfolio));
-      dispatch(setTwitterLink(userData.links.twitter));
-      dispatch(setProjects(userData.projects));
-      dispatch(setFlowcharts(userData.flowcharts));
-      dispatch(setAbout(userData.about));
-      dispatch(setYear(userData.year));
-      dispatch(setTechnology(userData.technologies));
-      console.log(data);
-    }
-  }, [data, dispatch]);
+  
 
   const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">(
     "project"
@@ -129,7 +69,7 @@ const UserDashboard = () => {
       console.error('Modal element not found or is not a dialog.');
     }
   };
-  const getUsername = (githubUrl: string): string => {
+  const getGitHubUsername = (githubUrl: string): string => {
     try {
       // Use URL object to parse the URL and extract the path
       const url = new URL(githubUrl);
@@ -142,17 +82,13 @@ const UserDashboard = () => {
     }
   };
 
-
   const avatarUrl = userState.profileUrl;
   const githubUrl = userState.links.github;
-  const leetcodeUrl = userState.links.leetcode;
   // Get the username from the GitHub URL
-  const githubUsername = getUsername(githubUrl);
-  const leetcodeUsername = getUsername(leetcodeUrl);
+  const githubUsername = getGitHubUsername(githubUrl);
   const location = userState.location;
-  const college = userState.collegeName;
-  const year = userState.year;
-  const about = userState.about;
+
+
 
 
   return (
@@ -179,96 +115,61 @@ const UserDashboard = () => {
 
               {/* User Name */}
               <div className="w-full h-1/4 flex justify-center items-center">
-                <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
-                  {user.fullName}
-                </h1>
+                <span className="flex gap-2">
+                    <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                    {userState?.firstName}
+                    </h1>
+                    <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                    {userState?.lastName}
+                    </h1>
+                </span>
               </div>
 
               {/* User Role */}
-              {
-                about ? (
-                  <div className="w-full h-8 flex justify-center items-center">
-                    <span className="text-xl font-semibold font-royal4 text-textmain">
-                      {about}
-                    </span>
-                  </div>
+              <div className="w-full h-8 flex justify-center items-center">
+                <span className="text-lg font-semibold font-royal4 text-textmain">
+                  A Fullstack Developer
+                </span>
+              </div>
 
-                ) : (
-                  ""
-                )
-              }
-
-
-              {/* Social Media Links */}
               {/* Social Media Links */}
               <div className="w-full h-1/4 flex justify-center items-center gap-6">
-                {userState.links.github ? (
-
-                  <span className=" bg-textmain rounded-md p-2">
-                    <a
-                      href={userState.links.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaGithub className="h-5 w-5 " />
-                    </a>
-                  </span>
-
-                ) : (
-                  <div className="button-container">
-                    <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
-                      <FaGithub className="h-5 w-5 " />
-                    </span>
-                  </div>
-                )}
-
-                {userState.links.linkedIn ? (
-                  <span className=" bg-textmain rounded-md p-2">
-                    <a
-                      href={userState.links.linkedIn}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaLinkedin className="h-5 w-5 " />
-                    </a>
-                  </span>
-                ) : (
-                  <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
-                    <FaLinkedin className="h-5 w-5 " />
-                  </span>
-                )}
-
-                {userState.links.portfolio ? (
-                  <span className=" bg-textmain rounded-md p-2">
-                    <a
-                      href={userState.links.portfolio}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaGlobe className="h-5 w-5 " />
-                    </a>
-                  </span>
-                ) : (
-                  <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
-                    <FaGlobe className="h-5 w-5 " />
-                  </span>
-                )}
-
-                {userState.links.twitter ? (
-                  <span className=" bg-textmain rounded-md p-2">
-                    <a
-                      href={userState.links.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaTwitter className="h-5 w-5 " />
-                    </a>
-                  </span>
-                ) : (
-                  <span className=" bg-textmain rounded-md p-2 opacity-50 cursor-not-allowed">
-                    <FaTwitter className="h-5 w-5 " />
-                  </span>
-                )}
+                <span className=" bg-textmain rounded-md p-2">
+                  <a
+                    href={userState.links.github || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaGithub className="h-5 w-5 "/>
+                  </a>
+                </span>
+                <span className=" bg-textmain rounded-md p-2">
+                  <a
+                    href={userState.links.linkedIn || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaLinkedin className="h-5 w-5 "/>
+                  </a>
+                </span>
+                <span className=" bg-textmain rounded-md p-2">
+                  <a
+                    href={userState.links.portfolio || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaGlobe className="h-5 w-5 "/>
+                  </a>
+                </span>
+                <span className=" bg-textmain rounded-md p-2">
+                  <a
+                    href={userState.links.twitter || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaTwitter className="h-5 w-5 "/>
+                  </a>
+                </span>
               </div>
             </div>
 
@@ -286,30 +187,24 @@ const UserDashboard = () => {
               </div>
 
               {/* Location */}
-              {location ? (
-                <div className="flex items-center gap-2 w-full justify-left px-4">
-                  <FaMapMarkerAlt className="text-textmain h-6 w-6" />
-                  <span className="text-lg font-semibold text-textmain">
-                    {location}
-                  </span>
-                </div>
-
-              ) : (
-                " "
-
-              )}
+              <div className="flex items-center gap-2 w-full justify-left px-4">
+                <FaMapMarkerAlt className="text-textmain h-6 w-6" />
+                <span className="text-lg font-semibold text-textmain">
+                  {location}
+                </span>
+              </div>
             </div>
 
             <hr className="w-full border-t border-gray-300 dark:border-gray-800" />
             {/* Edit Profile Button */}
-            <div className="w-full flex justify-center ">
+            {/* <div className="w-full flex justify-center ">
               <Link
                 to="./edit"
                 className="w-1/2 rounded-md bg-blue-100 hover:bg-blue-300 text-textsecond flex justify-center items-center p-2 font-royal4"
               >
                 Edit profile
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Technologies and Education */}
@@ -331,55 +226,25 @@ const UserDashboard = () => {
               </div>
             </div>
             {/* Education Section */}
-            {
-              college || year ? (
-                <div className=" h-fit bg-transparent p-4 rounded-lg">
-                  <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">
-                    Education
-                  </h2>
-                  <ul className="space-y-3">
-
-                    {college ? (
-                      <li className="flex items-start">
-                        <img
-                          src="/college.png"
-                          alt="Bullet point"
-                          className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
-                        />
-                        <span className="dark:text-white text-textmain font-royal4 font-medium ">
-                          {college}
-                        </span>
-                      </li>
-
-                    ) : (
-                      " "
-                    )
-                    }
-                    {year ? (
-                      <li className="flex items-start">
-                        <img
-                          src="/college.png"
-                          alt="Bullet point"
-                          className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
-                        />
-                        <span className="dark:text-white text-textmain font-royal4 font-medium ">
-                          {year}
-                        </span>
-                      </li>
-
-                    ) : (
-                      " "
-                    )
-                    }
-                  </ul>
-                </div>
-
-              ) : (
-                " "
-
-              )
-            }
-
+            <div className=" h-fit bg-transparent p-4 rounded-lg">
+              <h2 className="text-lg font-semibold dark:text-white text-textmain mb-3">
+                Education
+              </h2>
+              <ul className="space-y-3">
+                {Education.map((Education, index) => (
+                  <li key={index} className="flex items-start">
+                    <img
+                      src="/college.png"
+                      alt="Bullet point"
+                      className="w-5 h-5 mr-3 mt-1 shadow-xl shadow-slate-200"
+                    />
+                    <span className="dark:text-white text-textmain font-royal4 font-medium ">
+                      {Education}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -391,17 +256,10 @@ const UserDashboard = () => {
             {/* LeetCode Stats */}
             <div className=" w-full lg:w-1/3 h-full rounded-lg bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex justify-center items-center">
 
-              {
-                leetcodeUsername ? (
-                  <LeetCodeStats
-                    username={leetcodeUsername}
-                    theme={theme === "dark" ? "dark" : "light"}
-                  />
-
-                ) : (
-                  <p>Add leetcode</p>
-                )
-              }
+              <LeetCodeStats
+                username="Snikdhendupramanik"
+                theme={theme === "dark" ? "dark" : "light"}
+              />
             </div>
             {/* GitHub Calendar */}
             <div className="lg:w-2/3 w-full h-full rounded-md  shadow-2xl border bg-white dark:border-b-slate-700 dark:bg-background p-4 font-royal4 font-bold text-base">
@@ -508,4 +366,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default ReadonlyDashboard;

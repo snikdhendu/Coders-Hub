@@ -50,7 +50,7 @@ const UserDashboard = () => {
   //Use this loading and error for better performance
   const { data } = useQuery(getUsers, {
     variables: { clerkUserId: id },
-    // skip: !!userState.email,
+    skip: !!userState.email,
   });
 
 

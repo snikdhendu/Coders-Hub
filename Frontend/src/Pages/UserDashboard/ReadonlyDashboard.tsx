@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaMapMarkerAlt, FaGithub, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
 import { RootState } from '../../../store'; // delete it later
-
+import { Link } from "react-router-dom";
 
 const ReadonlyDashboard = () => {
   const { theme } = useTheme();
@@ -101,9 +101,9 @@ const ReadonlyDashboard = () => {
       <Navbar />
 
       {/* Main Content Wrapper */}
-      <div className=" min-h-screen w-full h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap ">
+      <div className=" min-h-screen lg:w-full  overflow-x-hidden h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background lg:p-8 p-4 flex gap-6  flex-wrap md:flex-nowrap justify-center items-center ">
         {/* Left Sidebar */}
-        <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
+        <div className=" w-96  justify-center items-center md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  lg:p-0 p-8 ">
           {/* User Profile Card */}
           <div className="w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3 p-4">
             {/* Avatar and User Info */}
@@ -120,10 +120,10 @@ const ReadonlyDashboard = () => {
               {/* User Name */}
               <div className="w-full h-1/4 flex justify-center items-center">
                 <span className="flex">
-                  <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                  <h1 className="lg:text-2xl text-lg font-extrabold font-royal4 text-textmain">
                     {userState.firstName}
                   </h1>
-                  <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                  <h1 className="lg:text-2xl text-lg font-extrabold font-royal4 text-textmain">
                     {userState.lastName}
                   </h1>
                 </span>
@@ -242,6 +242,15 @@ const ReadonlyDashboard = () => {
             </div>
 
             <hr className="w-full border-t border-gray-300 dark:border-gray-800" />
+            {/* Edit Profile Button */}
+            <div className="w-full flex justify-center ">
+              <Link
+                to="./edit"
+                className="w-1/2 rounded-md bg-blue-100 hover:bg-blue-300 text-textsecond flex justify-center items-center p-2 font-royal4"
+              >
+                Edit profile
+              </Link>
+            </div>
           </div>
 
           {/* Technologies and Education */}

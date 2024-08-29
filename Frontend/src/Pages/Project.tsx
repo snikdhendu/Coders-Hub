@@ -83,20 +83,20 @@ const Project: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen text-2xl text-slate-200">
-        <div className="p-4">
-          <h1 className="text-4xl mb-4 ml-40 text-black dark:text-white font-semibold">
+      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen text-2xl text-slate-200  flex justify-center items-center overflow-x-hidden">
+        <div className="p-4 flex justify-center items-center w-full flex-col">
+          <h1 className="text-4xl mb-4 ml-40 text-black dark:text-white font-semibold w-full">
             Projects ({filteredProjects.length})
           </h1>
-          <div className="flex justify-center items-center mb-10 p-5 mx-40 bg-white dark:border-b-slate-700 dark:bg-background rounded-xl shadow-xl">
-            <div className="relative w-full">
+          <div className="flex w-full justify-center items-center mb-10 p-5 mx-40 bg-white dark:border-b-slate-700 dark:bg-background rounded-xl shadow-xl">
+            <div className="relative w-2/3">
               <FaSearch className="absolute left-3 top-3 text-black dark:text-white" />
               <input
                 type="text"
                 placeholder="Search projects..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="pl-10 p-2 text-black w-full rounded-xl bg-white dark:border-b-slate-700 dark:bg-background border border-gray-300"
+                className="pl-10 p-2 text-black w-full rounded-xl bg-white dark:border-b-slate-700 dark:bg-background border border-gray-300 "
               />
             </div>
             <select
@@ -111,16 +111,16 @@ const Project: React.FC = () => {
               {/* Add more filter options as needed */}
             </select>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-40">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 mx-40 w-full  justify-center items-center">
             {filteredProjects.map((project) => (
               <div
                 key={project._id}
-                className="bg-white border-2 dark:border-b-slate-700 dark:bg-background text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer"
+                className="bg-white  dark:border-b-slate-700 dark:bg-background text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer w-full lg:w-4/5 border-2 "
                 onClick={() => redirectToProjectDetails(project._id)}
               >
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
-                    <img src={project.logo} alt={project.projectName} className="mr-2 w-16 h-16" />
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7rd-L1O08jT63q1yKavoQA200iJbxFbKzhg&s" alt={project.projectName} className="mr-2 w-16 h-16 rounded-full" />
                     <h2 className="text-3xl mb-2 cursor-pointer">{project.projectName}</h2>
                   </div>
                   {/* <button onClick={(event) => { handleLike(event, project._id) }} className="bg-white dark:border-b-slate-700 dark:bg-background border border-black text-gray-800 hover:bg-gray-200 rounded-md flex items-center space-x-2 dark:text-white">

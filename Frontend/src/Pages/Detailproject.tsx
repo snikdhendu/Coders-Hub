@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_PROJECTS } from '../graphql/query/projectQuery';
-import { FaGithub, FaHeart, FaLink } from "react-icons/fa";
+import { FaGithub, FaLink } from "react-icons/fa";
 import Carousel from "../Components/Carousel";
 import { useUser } from '@clerk/clerk-react';
+// import { Like } from '../Components';
 
 const DetailProject: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); 
+  const { id } = useParams<{ id: string }>();
   const { user } = useUser();
   const navigate = useNavigate();
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     if (!user) {
       navigate('/sign-in');
     }
-  },[]);
- 
+  }, []);
+
   const { loading, error, data } = useQuery(GET_ALL_PROJECTS);
 
   if (loading) return <div>Loading...</div>;
@@ -34,6 +35,7 @@ const DetailProject: React.FC = () => {
   }
 
   
+
   const images = [
     "https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg?auto=compress&cs=tinysrgb&w=600",
     "https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg?auto=compress&cs=tinysrgb&w=600",
@@ -49,6 +51,21 @@ const DetailProject: React.FC = () => {
     "Redux Toolkit",
     "Google AI Studio"
   ];
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(100);
+
+  const handleLike = (event: React.MouseEvent<HTMLButtonElement>, projectId: any) => {
+    event.stopPropagation();
+
+    if (isLiked) {
+      setLikeCount(likeCount - 1);
+      console.log(`${user?.id} user ${projectId} disliked `) // Decrease count if already liked
+    } else {
+      setLikeCount(likeCount + 1);
+      console.log(`${user?.id} user ${projectId} liked `) // Increase count if not liked
+    }
+    setIsLiked(!isLiked); // Toggle like status
+  }
 
   return (
     <div className="bg-white dark:border-b-slate-700 dark:bg-black min-h-screen text-2xl text-slate-200">
@@ -83,9 +100,22 @@ const DetailProject: React.FC = () => {
                   <FaLink className='h-4 w-4' />
                 </a>
               </button>
-              <button className="bg-white dark:border-b-slate-700 dark:bg-background border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2 dark:text-white">
-                <FaHeart className='text-red-600' />
-                <span className="ml-2">100</span>
+              <button onClick={(event) => { handleLike(event, project._id) }} className="bg-white dark:border-b-slate-700 dark:bg-background border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2 dark:text-white">
+                <input className="check" type="checkbox" id="like-toggle" checked={isLiked} onClick={(e) => e.stopPropagation()} />
+                <label className="container p-0" htmlFor="like-toggle">
+                  <svg
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`icon ${isLiked ? 'active' : 'inactive'}`}
+                  >
+                    <path
+                      d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"
+                    ></path>
+                  </svg>
+                  <div className="checkmark"></div>
+                  {/* <span className="like-text">Like</span> */}
+                </label>
+                <span className="ml-2">{likeCount}</span>
               </button>
             </div>
           </div>

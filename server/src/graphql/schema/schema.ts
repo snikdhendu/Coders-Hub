@@ -10,14 +10,17 @@ type Links {
 
 type Project {
   _id: ID  
-  projectName: String!
-  tagline: String!
-  description: String!
+  projectName: String
+  tagline: String
+  description: String
   technologies: [String]
   githubRepoLink: String
   liveLink: String
   images: [String]
   logo: String
+  clerkUserId: String!
+  firstName: String!
+  lastName: String
 }
 
 type FlowchartNode {

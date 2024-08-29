@@ -21,6 +21,7 @@ type Project {
   clerkUserId: String!
   firstName: String!
   lastName: String
+  profileUrl: String
 }
 
 type FlowchartNode {

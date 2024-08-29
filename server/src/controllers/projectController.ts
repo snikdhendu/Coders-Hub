@@ -51,41 +51,50 @@ interface ProjectWithUserDetails extends ProjectObj {
   clerkUserId: string;
   firstName: string;
   lastName: string;
+  profileUrl: string;
 }
 
 export const getAllProjects = async (): Promise<ProjectWithUserDetails[]> => {
   try {
-    const users = await User.find({}, "clerkUserId firstName lastName projects").exec();
+    const users = await User.find(
+      {},
+      "clerkUserId firstName lastName profileUrl projects"
+    ).exec();
 
-    const allProjects: ProjectWithUserDetails[] = users.reduce((acc: ProjectWithUserDetails[], user) => {
-      // Check if the projects array is not empty
-      if (user.projects.length > 0) {
-        // Add user details to each project
-        const userProjects: ProjectWithUserDetails[] = user.projects.map(project => ({
-          _id: project._id,
-          projectName: project.projectName,
-          tagline: project.tagline,
-          description: project.description,
-          technologies: project.technologies,
-          githubRepoLink: project.githubRepoLink,
-          liveLink: project.liveLink,
-          images: project.images,
-          logo: project.logo,
-          clerkUserId: user.clerkUserId,
-          firstName: user.firstName,
-          lastName: user.lastName || "", 
-        }));
-        return acc.concat(userProjects);
-      }
-      return acc;
-    }, []);
+    const allProjects: ProjectWithUserDetails[] = users.reduce(
+      (acc: ProjectWithUserDetails[], user) => {
+        // Check if the projects array is not empty
+        if (user.projects.length > 0) {
+          // Add user details to each project
+          const userProjects: ProjectWithUserDetails[] = user.projects.map(
+            (project) => ({
+              _id: project._id,
+              projectName: project.projectName,
+              tagline: project.tagline,
+              description: project.description,
+              technologies: project.technologies,
+              githubRepoLink: project.githubRepoLink,
+              liveLink: project.liveLink,
+              images: project.images || [],
+              logo: project.logo || "",
+              clerkUserId: user.clerkUserId,
+              firstName: user.firstName,
+              lastName: user.lastName || "",
+              profileUrl: user.profileUrl || "",
+            })
+          );
+          return acc.concat(userProjects);
+        }
+        return acc;
+      },
+      []
+    );
 
     return allProjects;
   } catch (error: any) {
     throw new Error("Failed to retrieve projects: " + error.message);
   }
 };
-
 
 //######################################################
 

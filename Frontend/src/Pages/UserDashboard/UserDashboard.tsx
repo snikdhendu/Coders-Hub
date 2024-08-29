@@ -156,9 +156,9 @@ const UserDashboard = () => {
       <Navbar />
 
       {/* Main Content Wrapper */}
-      <div className=" min-h-screen w-full h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background p-8 flex gap-6  flex-wrap md:flex-nowrap">
+      <div className=" min-h-screen lg:w-full  overflow-x-hidden h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background lg:p-8 p-4 flex gap-6  flex-wrap md:flex-nowrap justify-center items-center ">
         {/* Left Sidebar */}
-        <div className=" w-96 md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  ">
+        <div className=" w-96  justify-center items-center md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  lg:p-0 p-8 ">
           {/* User Profile Card */}
           <div className="w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3 p-4">
             {/* Avatar and User Info */}
@@ -173,12 +173,12 @@ const UserDashboard = () => {
               </div>
 
               {/* User Name */}
-              <div className="w-full h-1/4 flex justify-center items-center">
-                <span className="flex">
-                  <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+              <div className="w-full  flex justify-center items-center">
+                <span className="flex gap-2 w-full justify-center items-center ">
+                  <h1 className="lg:text-2xl text-lg font-extrabold font-royal4 text-textmain">
                     {userState.firstName}
                   </h1>
-                  <h1 className="text-2xl font-extrabold font-royal4 text-textmain">
+                  <h1 className="lg:text-2xl text-lg font-extrabold font-royal4 text-textmain">
                     {userState.lastName}
                   </h1>
                 </span>
@@ -276,7 +276,7 @@ const UserDashboard = () => {
               {/* Email */}
               <div className="flex  gap-2 w-full justify-left  px-4">
                 <FaEnvelope className="text-textmain h-6 w-6" />
-                <span className="text-lg font-semibold text-textmain">
+                <span className="lg:text-lg text-md font-semibold text-textmain">
                   {userState.email}
                 </span>
               </div>
@@ -285,7 +285,7 @@ const UserDashboard = () => {
               {location ? (
                 <div className="flex items-center gap-2 w-full justify-left px-4">
                   <FaMapMarkerAlt className="text-textmain h-6 w-6" />
-                  <span className="text-lg font-semibold text-textmain">
+                  <span className="lg:text-lg text-md font-semibold text-textmain">
                     {location}
                   </span>
                 </div>

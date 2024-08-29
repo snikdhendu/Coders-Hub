@@ -1,9 +1,8 @@
-// import React from 'react';
+import  { useState, useEffect } from 'react';
 import { LeetCodeStats, Userproject, Userroadmap } from "../../Components";
 import { Avatar } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import GitHubCalendar from "react-github-calendar";
-import { useState, useEffect } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Navbar } from "../../Components/Navbar";
@@ -15,7 +14,7 @@ import { getUsers } from "../../graphql/query/userQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaMapMarkerAlt, FaGithub, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
-import { RootState } from '../../../store'; // delete it later
+import { RootState } from '../../../store';
 import ReadonlyDashboard from "./ReadonlyDashboard";
 import {
   setCollegeName,
@@ -34,10 +33,7 @@ import {
   setAbout,
   setYear,
   setTechnology
-
-
 } from "../../../features/userSlice";
-
 
 const UserDashboard = () => {
   const { user } = useUser();
@@ -46,13 +42,10 @@ const UserDashboard = () => {
   const userState: any = useSelector((state: RootState) => state.user);
   const { id } = useParams();
 
-
-  //Use this loading and error for better performance
-  const { data } = useQuery(getUsers, {
+  // Remove the skip condition to always fetch data
+  const { data, refetch } = useQuery(getUsers, {
     variables: { clerkUserId: id },
-    skip: !!userState.email,
   });
-
 
   const achievements = [
     "Won 1st place in the Devbits 2024 Hackathon.",
@@ -62,33 +55,33 @@ const UserDashboard = () => {
     "Contributed to 10+ open-source projects.",
   ];
 
-
   useEffect(() => {
     if (data) {
       const userData = data.getUserById;
-      dispatch(setCollegeName(userData.collegeName));
-      dispatch(setEmail(userData.email));
-      dispatch(setFirstName(userData.firstName));
-      dispatch(setLastName(userData.lastName));
-      dispatch(setLocation(userData.location));
-      dispatch(setProfileUrl(userData.profileUrl));
-      dispatch(setGithubLink(userData.links.github));
-      dispatch(setLeetcodeLink(userData.links.leetcode));
-      dispatch(setLinkedInLink(userData.links.linkedIn));
-      dispatch(setPortfolioLink(userData.links.portfolio));
-      dispatch(setTwitterLink(userData.links.twitter));
-      dispatch(setProjects(userData.projects));
-      dispatch(setFlowcharts(userData.flowcharts));
-      dispatch(setAbout(userData.about));
-      dispatch(setYear(userData.year));
-      dispatch(setTechnology(userData.technologies));
-      console.log(data);
+      // Only update the Redux store if the fetched data differs from the current state
+      if (userState.email !== userData.email) {
+        dispatch(setCollegeName(userData.collegeName));
+        dispatch(setEmail(userData.email));
+        dispatch(setFirstName(userData.firstName));
+        dispatch(setLastName(userData.lastName));
+        dispatch(setLocation(userData.location));
+        dispatch(setProfileUrl(userData.profileUrl));
+        dispatch(setGithubLink(userData.links.github));
+        dispatch(setLeetcodeLink(userData.links.leetcode));
+        dispatch(setLinkedInLink(userData.links.linkedIn));
+        dispatch(setPortfolioLink(userData.links.portfolio));
+        dispatch(setTwitterLink(userData.links.twitter));
+        dispatch(setProjects(userData.projects));
+        dispatch(setFlowcharts(userData.flowcharts));
+        dispatch(setAbout(userData.about));
+        dispatch(setYear(userData.year));
+        dispatch(setTechnology(userData.technologies));
+        console.log(data);
+      }
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, userState]);
 
-  const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">(
-    "project"
-  );
+  const [selectedContent, setSelectedContent] = useState<"project" | "roadmap">("project");
   const technologies = [
     "Node.js",
     "Express.js",
@@ -101,14 +94,14 @@ const UserDashboard = () => {
 
   const navigate = useNavigate();
 
-  // Handle the click event for the plus sign
   const handlePlusClick = () => {
     if (selectedContent === "project") {
-      openModal(); // Open modal in "Project" tab
+      openModal(); 
     } else if (selectedContent === "roadmap") {
-      navigate("./createroadmap"); // Navigate to "./roadmap" in "Roadmap" tab
+      navigate("./createroadmap"); 
     }
   };
+
   const openModal = () => {
     const modal = document.getElementById('my_modal_3');
     if (modal instanceof HTMLDialogElement) {
@@ -126,11 +119,10 @@ const UserDashboard = () => {
       console.error('Modal element not found or is not a dialog.');
     }
   };
+
   const getUsername = (githubUrl: string): string => {
     try {
-      // Use URL object to parse the URL and extract the path
       const url = new URL(githubUrl);
-      // Extract the last part of the pathname
       const username = url.pathname.split('/').filter(Boolean).pop();
       return username || '';
     } catch (error) {
@@ -139,11 +131,9 @@ const UserDashboard = () => {
     }
   };
 
-
   const avatarUrl = userState.profileUrl;
   const githubUrl = userState.links.github;
   const leetcodeUrl = userState.links.leetcode;
-  // Get the username from the GitHub URL
   const githubUsername = getUsername(githubUrl);
   const leetcodeUsername = getUsername(leetcodeUrl);
   const location = userState.location;
@@ -151,8 +141,12 @@ const UserDashboard = () => {
   const year = userState.year;
   const about = userState.about;
 
+  // Refetch user data on component mount or when 'id' changes
+  useEffect(() => {
+    refetch();
+  }, [id, refetch]);
 
-  if (user?.id != id) {
+  if (user?.id !== id) {
     return <ReadonlyDashboard />;
   }
 

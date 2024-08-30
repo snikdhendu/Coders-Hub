@@ -101,9 +101,9 @@ const ReadonlyDashboard = () => {
       <Navbar />
 
       {/* Main Content Wrapper */}
-      <div className=" min-h-screen lg:w-full  overflow-x-hidden h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background lg:p-8 p-4 flex gap-6  flex-wrap md:flex-nowrap justify-center items-center ">
+      <div className=" min-h-screen lg:w-full  overflow-x-hidden h-fit overflow-y-auto bg-white dark:border-b-slate-700 dark:bg-background lg:p-8 p-4 flex gap-6  flex-wrap md:flex-nowrap justify-center items-center border-lime-300 border-2 ">
         {/* Left Sidebar */}
-        <div className=" w-96  justify-center items-center md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  lg:p-0 p-7 ">
+        <div className=" w-96  justify-center items-center md:h-screen h-fit  flex gap-4 md:flex-col flex-wrap md:flex-nowrap  lg:p-0 p-4 ">
           {/* User Profile Card */}
           <div className="w-full h-4/5 rounded-md bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 flex flex-col gap-3 p-4">
             {/* Avatar and User Info */}

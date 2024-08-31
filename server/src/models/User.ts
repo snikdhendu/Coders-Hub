@@ -20,6 +20,8 @@ interface ProjectObj {
   liveLink: string;
   images?: string[];
   logo?: string;
+  likes: string[];
+  likesCount: number;
 }
 
 // Interface for a node in the flowchart
@@ -73,6 +75,8 @@ const ProjectSchema = new Schema<ProjectObj>({
   liveLink: { type: String, default: '' },
   images: [{ type: String, default: [] }],
   logo: { type: String }, // required: true will be set in the future
+  likes: [{ type: String, default: [] }],
+  likesCount: { type: Number, default: 0 },
 });
 
 // Schema for the flowchart nodes

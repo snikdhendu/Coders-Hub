@@ -1,7 +1,7 @@
 import { FilterQuery } from "mongoose";
 import { IUser, User } from "../../models/User.js";
 import { addUserDetails, getAllUsers, getUserById, updateUser } from "../../controllers/userController.js";
-import { createProject, getAllProjects, getProjectById } from "../../controllers/projectController.js";
+import { createProject, getAllProjects, getProjectById, likeProject } from "../../controllers/projectController.js";
 import { createFlowchart, getAllFlowcharts, getFlowchartById } from "../../controllers/roadmapController.js";
 
 export const graphqlResolvers = {
@@ -19,5 +19,6 @@ export const graphqlResolvers = {
     CREATE_PROJECT: createProject,
     CREATE_FLOWCHART: createFlowchart,
     ADD_USER_BASIC_DETAILS: addUserDetails,
+    LIKE_PROJECT: likeProject,
   },
 };

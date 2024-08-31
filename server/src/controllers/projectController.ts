@@ -29,23 +29,7 @@ export const getProjectById = async (
   return project;
 };
 
-// export const getAllProjects = async (): Promise<ProjectObj[]> => {
-//   try {
-//     const users = await User.find({}, "projects").exec();
-
-//     const allProjects: ProjectObj[] = users.reduce((acc: ProjectObj[], user) => {
-
-//       if (Array.isArray(user.projects)) {
-//         return acc.concat(user.projects);
-//       }
-//       return acc;
-//     }, []);
-
-//     return allProjects;
-//   } catch (error: any) {
-//     throw new Error("Failed to retrieve projects: " + error.message);
-//   }
-// };
+///////////////////////////////////////
 
 interface ProjectWithUserDetails extends ProjectObj {
   clerkUserId: string;
@@ -77,6 +61,8 @@ export const getAllProjects = async (): Promise<ProjectWithUserDetails[]> => {
               liveLink: project.liveLink,
               images: project.images || [],
               logo: project.logo || "",
+              likes: project.likes || [],
+              likesCount: project.likesCount || 0,
               clerkUserId: user.clerkUserId,
               firstName: user.firstName,
               lastName: user.lastName || "",
@@ -132,6 +118,8 @@ export const createProject = async (
       liveLink,
       images: [],
       logo: "",
+      likes: [],
+      likesCount: 0,
     };
 
     user.projects.push(newProject);
@@ -148,3 +136,72 @@ export const createProject = async (
     throw new Error("User not found");
   }
 };
+
+
+///////////////////////////////////////
+
+export const likeProject = async (
+  _: any,
+  { clerkUserId, projectId }: { clerkUserId: string; projectId: Types.ObjectId }
+) => {
+  // Step 1: Find the user who owns the project
+  const user = await User.findOne({ "projects._id": projectId });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // Step 2: Find the project in the user's projects
+  const project = user.projects.find(
+    (project) => project._id?.toString() === projectId.toString()
+  );
+
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  // Step 3: Determine if the user has already liked the project
+  const hasLiked = project.likes.includes(clerkUserId);
+
+  if (hasLiked) {
+    // User has already liked the project, so remove the like
+    project.likes = project.likes.filter((id) => id !== clerkUserId);
+    project.likesCount--;
+  } else {
+    // User has not liked the project yet, so add the like
+    project.likes.push(clerkUserId);
+    project.likesCount++;
+  }
+
+  // Save the updated user document
+  await user.save();
+
+  // Return the updated project
+  const updatedProject = user.projects.find(
+    (project) => project._id?.toString() === projectId.toString() // Use optional chaining
+  );
+
+  if (!updatedProject) {
+    throw new Error("Project not found after update");
+  }
+const updatedProjectDetails = {
+  _id: updatedProject._id,
+  projectName: updatedProject.projectName,
+  tagline: updatedProject.tagline,
+  description: updatedProject.description,
+  technologies: updatedProject.technologies,
+  githubRepoLink: updatedProject.githubRepoLink,
+  liveLink: updatedProject.liveLink,
+  images: updatedProject.images || [],
+  logo: updatedProject.logo || "",
+  likes: updatedProject.likes || [],
+  likesCount: updatedProject.likesCount || 0,
+  clerkUserId: user.clerkUserId,
+  firstName: user.firstName,
+  lastName: user.lastName || "",
+  profileUrl: user.profileUrl || "",
+}
+  return updatedProjectDetails;
+};
+
+

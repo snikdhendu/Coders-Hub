@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_PROJECTS } from '../graphql/query/projectQuery';
 import { FaGithub, FaLink } from "react-icons/fa";
@@ -12,7 +12,7 @@ import { likeProject } from '../graphql/mutation/userMutation';
 const DetailProject: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState<number>(0);
   

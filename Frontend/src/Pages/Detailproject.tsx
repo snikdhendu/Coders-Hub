@@ -5,6 +5,7 @@ import { GET_ALL_PROJECTS } from '../graphql/query/projectQuery';
 import { FaGithub, FaLink } from "react-icons/fa";
 import Carousel from "../Components/Carousel";
 import { useUser } from '@clerk/clerk-react';
+import { Link } from 'react-router-dom';
 // import { Like } from '../Components';
 
 const DetailProject: React.FC = () => {
@@ -29,12 +30,14 @@ const DetailProject: React.FC = () => {
   // Find the project with the matching ID
   const project = projects?.find((p: any) => p._id === id);
 
+  console.log(project)
+
   // Handle case when the project is not found
   if (!project) {
     return <div>Project not found</div>;
   }
 
-  
+
 
   const images = [
     "https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg?auto=compress&cs=tinysrgb&w=600",
@@ -136,12 +139,17 @@ const DetailProject: React.FC = () => {
           </div>
           <div className="flex items-center mt-3 border-t border-gray-200 pt-4">
             <img
-              src='https://images.pexels.com/photos/1580271/pexels-photo-1580271.jpeg?auto=compress&cs=tinysrgb&w=600'
+              src={project.profileUrl}
               className="w-10 h-10 rounded-full mr-4"
             />
-            <p className="text-base font-semibold dark:text-white">
-              Created by <span className="text-gray-700 dark:text-white">Shreyam Kundu</span>
-            </p>
+            <span className="text-base font-semibold dark:text-white flex gap-2">
+              Created by <Link to={`/dashboard/${project.clerkUserId
+                }`} className="  flex gap-1 text-textmain">
+                <h2>{project.firstName}</h2>
+                <h2>{project.lastName}</h2>
+
+              </Link>
+            </span>
           </div>
         </div>
       </div>

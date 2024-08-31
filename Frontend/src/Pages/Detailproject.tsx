@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_PROJECTS } from '../graphql/query/projectQuery';
 import { FaGithub, FaLink } from "react-icons/fa";
 import Carousel from "../Components/Carousel";
 import { useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+import { likeProject } from '../graphql/mutation/userMutation';
 // import { Like } from '../Components';
 
 const DetailProject: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/sign-in');
-    }
-  }, []);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState<number>(0);
+  
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate('/sign-in');
+  //   }
+  // }, []);
 
   const { loading, error, data } = useQuery(GET_ALL_PROJECTS);
+  const [likeProjectMutation] = useMutation(likeProject);
+
+  useEffect(() => {
+    if (data?.getAllProjects) {
+      const project = data.getAllProjects.find((p: any) => p._id === id);
+      console.log(project);
+      if (project) {
+        setLikeCount(project.likesCount);
+        setIsLiked(project.likes.includes(user?.id || ''));
+      }
+    }
+  }, [data, id, user]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -30,7 +45,7 @@ const DetailProject: React.FC = () => {
   // Find the project with the matching ID
   const project = projects?.find((p: any) => p._id === id);
 
-  console.log(project)
+  // console.log(project)
 
   // Handle case when the project is not found
   if (!project) {
@@ -54,21 +69,45 @@ const DetailProject: React.FC = () => {
     "Redux Toolkit",
     "Google AI Studio"
   ];
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(100);
+ 
 
-  const handleLike = (event: React.MouseEvent<HTMLButtonElement>, projectId: any) => {
+  // const handleLike = (event: React.MouseEvent<HTMLButtonElement>, projectId: any) => {
+  //   event.stopPropagation();
+
+  //   if (isLiked) {
+  //     setLikeCount(likeCount - 1);
+  //     console.log(`${user?.id} user ${projectId} disliked `) // Decrease count if already liked
+  //   } else {
+  //     setLikeCount(likeCount + 1);
+  //     console.log(`${user?.id} user ${projectId} liked `) // Increase count if not liked
+  //   }
+  //   setIsLiked(!isLiked); // Toggle like status
+  // }
+
+  const handleLike = async (event: React.MouseEvent<HTMLButtonElement>,projectId:any) => {
+    // Prevents the event from bubbling up to parent elements
     event.stopPropagation();
 
-    if (isLiked) {
-      setLikeCount(likeCount - 1);
-      console.log(`${user?.id} user ${projectId} disliked `) // Decrease count if already liked
-    } else {
-      setLikeCount(likeCount + 1);
-      console.log(`${user?.id} user ${projectId} liked `) // Increase count if not liked
+    try {
+        // Perform the GraphQL mutation to like the project
+        const { data } = await likeProjectMutation({
+            variables: {
+                clerkUserId: user?.id || '', 
+                projectId: projectId, 
+            },
+        });
+        console.log(data);
+        //Check if the mutation was successful and update state accordingly
+        if (data?.LIKE_PROJECT) {
+            setLikeCount(data.LIKE_PROJECT.likesCount); // Update the like count from the response
+            setIsLiked(data.LIKE_PROJECT.likes.includes(user?.id || '')); // Check if the user has liked the project
+        }
+    } catch (err) {
+        // Log any errors that occur during the mutation
+        console.error("Error liking project:", err);
     }
-    setIsLiked(!isLiked); // Toggle like status
-  }
+};
+
 
   return (
     <div className="bg-white dark:border-b-slate-700 dark:bg-black min-h-screen text-2xl text-slate-200">

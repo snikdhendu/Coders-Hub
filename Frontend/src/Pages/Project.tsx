@@ -225,17 +225,15 @@ const Project: React.FC = () => {
       setProjects(data.getAllProjects);
       //temporary solution
       console.log(data);
-          // Create an initial state object for each project
           const initialStates = data.getAllProjects.reduce((acc, project) => {
-            // Initialize the state for each project with like count and liked status
+            console.log(project.likes.includes(user?.id!));
             acc[project._id] = {
-              isLiked: false,          // Default liked status
-              likeCount: project.likesCount // Initial like count from project data
+              isLiked: project.likes.includes(user?.id!),          
+              likeCount: project.likesCount 
             };
-            return acc; // Return the accumulator for the next iteration
+            return acc; 
           }, {} as { [key: string]: { isLiked: boolean; likeCount: number } });
       
-          // Update the state with the initial values
           setLikeStates(initialStates);
         }
   }, [data]);

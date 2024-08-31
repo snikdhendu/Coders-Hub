@@ -33,7 +33,7 @@ const Userproject = () => {
             <Link
               key={project._id}
               to={`/projects/${project._id}`}
-              className="bg-muted/50 border shadow-md rounded-lg p-4 w-full mb-4 h-36 cursor-pointer"
+              className="bg-muted/50 border shadow-md rounded-lg p-4 w-full mb-4 h-fit cursor-pointer"
             >
               <h2 className="text-2xl font-bold">{project.projectName}</h2>
               <p className="text-lg">{project.description}</p>

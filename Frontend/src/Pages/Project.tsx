@@ -294,9 +294,9 @@ const Project: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen h-screen text-2xl text-slate-200 flex justify-center items-center overflow-x-hidden">
-        <div className="flex h-full gap-6 p-6 items-center w-full flex-col">
-          <div className="flex flex-col gap-3 w-full justify-center items-center">
+      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen   text-2xl text-slate-200  flex justify-center items-center overflow-x-hidden ">
+        <div className="flex h-full gap-6 p-6 items-center w-full flex-col ">
+          <div className="flex flex-col gap-3 w-full  justify-center items-center">
             <h1 className="text-4xl mb-4 ml-40 text-black dark:text-white font-semibold w-full">
               Projects ({filteredProjects.length})
             </h1>
@@ -373,8 +373,7 @@ const Project: React.FC = () => {
                 </div>
 
                 <div
-                  className="flex items-center mt-3 border-t border-gray-200 pt-
-4"
+                  className="flex items-center mt-3 border-t border-gray-200 pt-4"
                 >
                   <img
                     src={project.profileUrl}

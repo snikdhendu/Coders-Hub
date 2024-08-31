@@ -1,12 +1,20 @@
-import React, { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ReactFlow, { Edge, Node, Controls, MiniMap, Background } from 'reactflow';
-import { useMutation } from '@apollo/client';
-import { createFlowchart } from '../graphql/mutation/flowchartMutation';
-import { useDispatch } from 'react-redux';
-import { setFlowchartTitle, addFlowchartNode } from '../../features/flowchartSlice';
-import 'reactflow/dist/style.css';
-import 'tailwindcss/tailwind.css';
+import React, { useState, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import ReactFlow, {
+  Edge,
+  Node,
+  Background,
+  
+} from "reactflow";
+import { useMutation } from "@apollo/client";
+import { createFlowchart } from "../graphql/mutation/flowchartMutation";
+import { useDispatch } from "react-redux";
+import {
+  setFlowchartTitle,
+  addFlowchartNode,
+} from "../../features/flowchartSlice";
+import "reactflow/dist/style.css";
+import "tailwindcss/tailwind.css";
 import { useUser } from "@clerk/clerk-react";
 
 interface CustomNode {
@@ -24,42 +32,55 @@ interface FlowchartProps {
   viewOnly: boolean;
 }
 
-const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => {
+const Flowchart: React.FC<FlowchartProps> = ({
+  id,
+  title,
+  nodes,
+  viewOnly,
+}) => {
   const [selectedNode, setSelectedNode] = useState<CustomNode | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [cardPosition, setCardPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  // const [isEditMode, setIsEditMode] = useState(false);
+  console.log(selectedNode)
+  console.log(isModalVisible)
+  const [cardPosition, setCardPosition] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
   const nodeElements: Node[] = [];
   const edgeElements: Edge[] = [];
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [createFlowchartMutation] = useMutation(createFlowchart);
-  const nodeDetailsMap: { [key: string]: Omit<CustomNode, 'id' | 'label'> } = {};
+  const nodeDetailsMap: { [key: string]: Omit<CustomNode, "id" | "label"> } =
+    {};
   const { user } = useUser();
   if (!user) {
     return null;
-    console.log(id,cardPosition);
+    console.log(id, cardPosition);
   }
-  
+
   const baseNodeStyle = {
-    backgroundColor: '#f9f295',
-    border: '2px solid #000',
-    color: '#333',
-    padding: '10px',
-    borderRadius: '5px',
-    height: '50px',
+    backgroundColor: "#ff0072",
+    border: "2px solid #000",
+    color: "white",
+    fontSize:"20px",
+    padding: "10px",
+    borderRadius: "5px",
+    height: "70px",
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center"
+
   };
 
-  const verticalSpacing = 200;
-
-  nodes.forEach((node, index) => {
-    const labelNodeId = `node-${index}`;
-    nodeDetailsMap[labelNodeId] = {
-      time: node.time,
-      links: node.links,
-      tips: node.tips,
-    };
+  const horizontalSpacing = 100; // Gap between side nodes and main node
+  const verticalSpacing = 200;   // Gap between rows of main nodes
   
+  nodes.forEach((node, index) => {
+    const labelNodeId = `node-${index}`;  // Unique ID for the main node
+  
+    // Main Node with Label
     nodeElements.push({
       id: labelNodeId,
       data: { label: <strong>{node.label}</strong> },
@@ -67,22 +88,87 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
       style: baseNodeStyle,
     });
   
+    // Left Side Node (Time Taken)
+    nodeElements.push({
+      id: `${labelNodeId}-left`,  // Unique ID for left side node
+      className:" flex h-fit justify-center items-center w-fit bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 p-4",
+      data: {
+        label: (
+          <div className="p-1 bg-transparent rounded-md shadow-md w-fit max-w-48 max-h-32 overflow-y-auto text-center text-textmain dark:text-white flex  flex-col gap-3 text-pretty text-lg font-royal4">
+            <p className="text-left ">
+              <strong>Time Taken:</strong><span className="text-blue-500"> {node.time}</span> 
+            </p>
+            <p className=" text-left">
+            <strong>Tips:</strong> <span className="text-blue-500">{node.tips}</span> 
+            </p>
+          </div>
+        ),
+      },
+      position: { x: 575 - horizontalSpacing - 100, y: (index + 1) * verticalSpacing },  // Position to the left
+    });
+  
+    // Right Side Node (Resources)
+    nodeElements.push({
+      id: `${labelNodeId}-right`,  // Unique ID for right side node
+      className:" flex h-fit justify-center items-center w-fit bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 dark:text-white flex  flex-col gap-3 text-pretty text-lg font-royal4",
+      data: {
+        label: (
+          <div className="p-2 bg-transparent rounded-md shadow-md w-fit text-center text-textmain dark:text-white">
+            <strong>Resources:</strong>
+            <ul className="list-disc list-inside text-blue-500 text-left">
+              {node.links.map((link, linkIndex) => (
+                <li key={linkIndex}>
+                  <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline text-xs"
+                  >
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ),
+      },
+      position: { x: 775 + horizontalSpacing + 100, y: (index + 1) * verticalSpacing },  // Position to the right
+    });
+  
+    // Edge between main node and left side node
+    edgeElements.push({
+      id: `edge-${labelNodeId}-left`,  // Unique ID for edge
+      source: labelNodeId,
+      target: `${labelNodeId}-left`,
+      type: 'smoothstep',
+      animated: true,
+      style: { stroke: '#1282a2', strokeWidth: 2 },
+    });
+  
+    // Edge between main node and right side node
+    edgeElements.push({
+      id: `edge-${labelNodeId}-right`,  // Unique ID for edge
+      source: labelNodeId,
+      target: `${labelNodeId}-right`,
+      type: 'smoothstep',
+      animated: true,
+      style: { stroke: '#1282a2', strokeWidth: 2 },
+    });
+  
+    // Edge to connect the main node to the next main node (to maintain the flow)
     if (index < nodes.length - 1) {
-      const nextLabelNodeId = `node-${index + 1}`;
+      const nextLabelNodeId = `node-${index + 1}`;  // Unique ID for the next main node
       edgeElements.push({
-        id: `edge-${labelNodeId}-${nextLabelNodeId}`,
+        id: `edge-${labelNodeId}-${nextLabelNodeId}`,  // Unique ID for edge
         source: labelNodeId,
         target: nextLabelNodeId,
         type: 'smoothstep',
-        animated: true, // Enable animation
-        style: {
-          stroke: '#333',
-          strokeDasharray: '5 5', // Creates the dashed effect
-          animation: 'dash-animation 2s linear infinite', // Animates the dash offset
-        },
+        animated: true,
+        style: { stroke: '#1282a2', strokeDasharray: '3 3', strokeWidth:3 },
       });
     }
   });
+  
   
 
   const onNodeClick = useCallback(
@@ -97,7 +183,10 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
         : null;
 
       setSelectedNode(selected);
-      setCardPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 150 }); // Center modal
+      setCardPosition({
+        x: window.innerWidth / 2 - 200,
+        y: window.innerHeight / 2 - 150,
+      }); // Center modal
       setIsModalVisible(true);
       console.log(event);
     },
@@ -105,13 +194,12 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
   );
 
   const handleEditClick = () => {
-    navigate(`/dashboard/${user.firstName}/createroadmap`, { state: { title, nodes } });
+    navigate(`/dashboard/${user.firstName}/createroadmap`, {
+      state: { title, nodes },
+    });
   };
 
-  const handleSave = () => {
-    setIsEditMode(false);
-    setIsModalVisible(false);
-  };
+
 
   const handleFinalize = async () => {
     try {
@@ -134,116 +222,47 @@ const Flowchart: React.FC<FlowchartProps> = ({ id, title, nodes, viewOnly }) => 
         navigate(`/dashboard/${user.firstName}`);
       }
     } catch (error) {
-      console.error('Failed to save flowchart:', error);
+      console.error("Failed to save flowchart:", error);
     }
   };
 
-  const handleBackToDashboard = () => {
-    navigate(`/dashboard/${user.firstName}`);
-  };
+
 
   return (
-    <div className="w-screen h-screen relative bg-cover bg-center" style={{ backgroundImage: 'url("/pexels-hngstrm-1939485.jpg")' }}>
+    <div className="w-screen h-screen relative bg-cover bg-center">
+      {/* style={{ backgroundImage: 'url("/pexels-hngstrm-1939485.jpg")' }} */}
       {!viewOnly && (
         <>
-          <div className="absolute top-5 left-5 bg-blue-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleEditClick}>
+          <div
+            className="absolute top-5 left-5 bg-blue-500 text-white p-2 rounded-md cursor-pointer z-20"
+            onClick={handleEditClick}
+          >
             Edit
           </div>
-          <div className="absolute top-5 right-5 bg-green-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleFinalize}>
+          <div
+            className="absolute top-5 right-5 bg-green-500 text-white p-2 rounded-md cursor-pointer z-20"
+            onClick={handleFinalize}
+          >
             Finalize
           </div>
         </>
       )}
       {viewOnly && (
-        <div className="absolute top-5 right-5 bg-yellow-500 text-white p-2 rounded-md cursor-pointer z-20" onClick={handleBackToDashboard}>
+        <Link to={`/dashboard/${user.id}`}
+          className="absolute top-5 right-5 bg-yellow-500 text-white p-2 rounded-md cursor-pointer z-20"
+          // onClick={handleBackToDashboard}
+        >
           Back to Dashboard
-        </div>
+        </Link>
       )}
       <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-black text-white p-4 rounded-md border border-gray-300 z-10 text-center">
         <h1 className="text-3xl font-fantasy">{title}</h1>
       </div>
       <ReactFlow nodes={nodeElements} edges={edgeElements} onNodeClick={onNodeClick}>
-        <Controls />
-        <MiniMap />
-        <Background gap={13} size={1} offset={2} />
+        {/* <Controls /> */}
+        {/* <MiniMap /> */}
+        <Background gap={13} size={1} offset={2} className="flex justify-center items-center"/>
       </ReactFlow>
-{isModalVisible && selectedNode && (
-  <div
-    className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30"
-    onClick={() => setIsModalVisible(false)}
-  >
-    <div
-      className="relative bg-white border border-blue-200 shadow-lg rounded-md p-6 w-80 h-80 transition-all duration-200 ease-in-out hover:shadow-blue-500 hover:shadow-md"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {isEditMode ? (
-        <>
-          <h2 className="text-2xl font-bold mb-2">Edit {selectedNode.label}</h2>
-          <label className="block mb-2">Label:</label>
-          <input
-            className="w-full mb-2 p-2 border rounded"
-            value={selectedNode.label}
-            onChange={(e) => setSelectedNode({ ...selectedNode, label: e.target.value })}
-          />
-          <label className="block mb-2">Time Taken:</label>
-          <input
-            className="w-full mb-2 p-2 border rounded"
-            value={selectedNode.time}
-            onChange={(e) => setSelectedNode({ ...selectedNode, time: e.target.value })}
-          />
-          <label className="block mb-2">Links:</label>
-          {selectedNode.links.map((link, index) => (
-            <input
-              key={index}
-              className="w-full mb-2 p-2 border rounded"
-              value={link}
-              onChange={(e) => {
-                const newLinks = [...selectedNode.links];
-                newLinks[index] = e.target.value;
-                setSelectedNode({ ...selectedNode, links: newLinks });
-              }}
-            />
-          ))}
-          <label className="block mb-2">Tips:</label>
-          <input
-            className="w-full mb-2 p-2 border rounded"
-            value={selectedNode.tips}
-            onChange={(e) => setSelectedNode({ ...selectedNode, tips: e.target.value })}
-          />
-          <button onClick={handleSave} className="bg-green-500 text-white p-2 rounded mt-4">
-            Save
-          </button>
-        </>
-      ) : (
-        <>
-          <h2 className="text-2xl font-bold mb-2">{selectedNode.label}</h2>
-          <p className="mb-2">
-            <strong>Time Taken:</strong> {selectedNode.time}
-          </p>
-          <p className="mb-2">
-            <strong>Useful Links:</strong>
-          </p>
-          <ul className="list-disc list-inside mb-2">
-            {selectedNode.links.map((link, index) => (
-              <li key={index}>
-                <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  {link}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p>
-            <strong>Tips:</strong> {selectedNode.tips}
-          </p>
-        </>
-      )}
-      <button onClick={() => setIsModalVisible(false)} className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded">
-        Close
-      </button>
-    </div>
-  </div>
-)}
-
     </div>
   );
 };

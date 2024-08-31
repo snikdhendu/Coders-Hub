@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_PROJECTS } from '../graphql/query/projectQuery';
 import { FaGithub, FaLink } from "react-icons/fa";
@@ -12,7 +12,7 @@ import { likeProject } from '../graphql/mutation/userMutation';
 const DetailProject: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState<number>(0);
   
@@ -112,7 +112,7 @@ const DetailProject: React.FC = () => {
   return (
     <div className="bg-white dark:border-b-slate-700 dark:bg-black min-h-screen text-2xl text-slate-200">
       <div className="p-4 min-h-screen flex justify-center items-center">
-        <div className="project relative bg-white dark:border-b-slate-700 dark:bg-background p-6 rounded-lg shadow-xl mx-auto my-5 min-w-[500px] text-black z-30 border-2 min-h-full">
+        <div className="project relative bg-white dark:border-b-slate-700 dark:bg-background p-6 rounded-lg shadow-xl mx-auto my-5 min-w-[500px] text-black z-30 border-2 min-h-full h-fit border-red-500">
           <div className="flex items-start mb-4">
             <img
               src={project.logo || 'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=600'}
@@ -142,6 +142,7 @@ const DetailProject: React.FC = () => {
                   <FaLink className='h-4 w-4' />
                 </a>
               </button>
+              
               <button onClick={(event) => { handleLike(event, project._id) }} className="bg-white dark:border-b-slate-700 dark:bg-background border border-black text-gray-800 hover:bg-gray-200 rounded-md px-4 py-2 flex items-center space-x-2 dark:text-white">
                 <input className="check" type="checkbox" id="like-toggle" checked={isLiked} onClick={(e) => e.stopPropagation()} />
                 <label className="container p-0" htmlFor="like-toggle">

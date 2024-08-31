@@ -89,7 +89,7 @@ const Project: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen h-screen  text-2xl text-slate-200  flex justify-center items-center overflow-x-hidden ">
+      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen   text-2xl text-slate-200  flex justify-center items-center overflow-x-hidden ">
         <div className="flex h-full gap-6 p-6 items-center w-full flex-col ">
           <div className="flex flex-col gap-3 w-full  justify-center items-center">
             <h1 className="text-4xl mb-4 ml-40 text-black dark:text-white font-semibold w-full">
@@ -119,11 +119,11 @@ const Project: React.FC = () => {
               </select>
             </div>
           </div>
-          <div className="flex lg:flex-row flex-col lg:gap-10 gap-4 p-4 lg:px-24 w-full  justify-center items-center ">
+          <div className="flex flex-wrap justify-center lg:px-24 gap-6 p-4 w-full">
             {filteredProjects.map((project) => (
               <div
                 key={project._id}
-                className="bg-white  dark:border-b-slate-700 dark:bg-background text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer w-full lg:w-1/2 border-2 "
+                className="bg-white  dark:border-b-slate-700 dark:bg-background text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer w-full lg:w-[calc(50%-12px)] border-2 "
                 onClick={() => redirectToProjectDetails(project._id)}
               >
                 <div className="flex flex-col  gap-5 p-3 ">

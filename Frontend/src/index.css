@@ -271,6 +271,7 @@ html {
 
 .check[type="checkbox"] {
   display: none;
+  
 }
 
 /* .container {
@@ -384,4 +385,39 @@ html {
   to {
     stroke-dashoffset: -50;
   }
+}
+
+/* flowchart animation */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes writeText {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes strokeIn {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+.node-appear {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.node-text {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  display: inline-block;
+  animation: writeText 1s ease-out forwards;
+}
+
+.node-stroke {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: strokeIn 0.5s ease-out forwards;
 }

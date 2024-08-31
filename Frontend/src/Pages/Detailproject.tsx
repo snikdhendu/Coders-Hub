@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_PROJECTS } from '../graphql/query/projectQuery';
 import { FaGithub, FaLink } from "react-icons/fa";

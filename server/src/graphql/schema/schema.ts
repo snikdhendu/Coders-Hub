@@ -18,6 +18,8 @@ type Project {
   liveLink: String
   images: [String]
   logo: String
+  likes: [String]
+  likesCount: Int
   clerkUserId: String!
   firstName: String!
   lastName: String
@@ -91,6 +93,7 @@ type Mutation {
         ): UpdateUserResponse
 
     CREATE_PROJECT(clerkUserId: String!, projectName: String!, tagline: String!, description: String!,technologies: [String],githubRepoLink: String,liveLink: String):Project
+
     CREATE_FLOWCHART(
         clerkUserId: String!
         title: String!
@@ -98,6 +101,9 @@ type Mutation {
     ): Flowchart 
 
     ADD_USER_BASIC_DETAILS(clerkUserId:String!,about:String,leetcode:String,github:String):User
+
+    LIKE_PROJECT(clerkUserId: String!, projectId: ID!): Project
+
 }
 
 `

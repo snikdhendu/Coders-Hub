@@ -12,6 +12,8 @@ export const GET_ALL_PROJECTS = gql`
     technologies
     images
     logo
+    likes
+    likesCount
     clerkUserId
     firstName
     lastName

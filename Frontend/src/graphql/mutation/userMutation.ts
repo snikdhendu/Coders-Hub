@@ -77,5 +77,26 @@ mutation UserMutation($clerkUserId: String!,$github: String, $about: String, $le
 
 
 
+export const likeProject =gql`
+mutation LIKE_PROJECT($clerkUserId: String!, $projectId: ID!) {
+  LIKE_PROJECT(clerkUserId: $clerkUserId, projectId: $projectId) {
+    _id
+    clerkUserId
+    description
+    firstName
+    githubRepoLink
+    images
+    lastName
+    likes
+    likesCount
+    liveLink
+    logo
+    profileUrl
+    projectName
+    tagline
+    technologies
+  }
+}
 
+`
 

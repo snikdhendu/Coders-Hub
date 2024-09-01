@@ -112,7 +112,7 @@ const DetailProject: React.FC = () => {
   return (
     <div className="bg-white dark:border-b-slate-700 dark:bg-black min-h-screen text-2xl text-slate-200">
       <div className="p-4 min-h-screen flex justify-center items-center">
-        <div className="project relative bg-white dark:border-b-slate-700 dark:bg-background p-6 rounded-lg shadow-xl mx-auto my-5 min-w-[500px] text-black z-30 border-2 min-h-full h-fit border-red-500">
+        <div className="project relative bg-white dark:border-b-slate-700 dark:bg-background p-6 rounded-lg shadow-xl mx-auto my-5 min-w-[500px] text-black z-30 border-2 min-h-full h-fit ">
           <div className="flex items-start mb-4">
             <img
               src={project.logo || 'https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=600'}
@@ -193,6 +193,7 @@ const DetailProject: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className=' shadow'></div>
     </div>
   );
 }

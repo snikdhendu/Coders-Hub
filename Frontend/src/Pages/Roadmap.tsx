@@ -8,11 +8,12 @@ import { GET_ALL_FLOWCHARTS } from "../graphql/query/roadmapQuery";
 interface FlowchartType {
   _id: string;
   title: string;
-  nodes: { label: string;
+  nodes: {
+    label: string;
     time: string;
     links: string[];
     tips: string;
-   }[];
+  }[];
 }
 
 const Roadmap: React.FC = () => {
@@ -44,6 +45,7 @@ const Roadmap: React.FC = () => {
   const filteredFlowcharts = flowcharts.filter((flowchart) =>
     flowchart.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  console.log(flowcharts);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -51,7 +53,7 @@ const Roadmap: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen text-2xl text-slate-200">
+      <div className="bg-white dark:border-b-slate-700 dark:bg-background min-h-screen text-2xl text-slate-200  overflow-x-hidden">
         <div className="p-4">
           <h1 className="text-4xl mb-4 ml-40 text-black dark:text-white font-semibold">
             Flowcharts ({filteredFlowcharts.length})
@@ -64,23 +66,28 @@ const Roadmap: React.FC = () => {
                 placeholder="Search flowcharts..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="pl-10 p-2 text-black w-full rounded-xl bg-white dark:border-b-slate-700 dark:bg-background border border-gray-300"
+                className="pl-10 p-2 text-black  dark:text-white w-full rounded-xl bg-white dark:border-b-slate-700 dark:bg-background border border-gray-300"
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-40">
+          <div className=" flex p-8 lg:px-20 justify-center items-center">
+            <div className="flex w-full  justify-items-start p-4 items-start flex-wrap ">
             {filteredFlowcharts.map((flowchart) => (
               <div
                 key={flowchart._id}
-                className="bg-white border-2 dark:border-b-slate-700 dark:bg-background text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer"
                 onClick={() => redirectToFlowchartDetails(flowchart)}
-              >
-                <h2 className="text-3xl mb-2">{flowchart.title}</h2>
-                <p className="text-lg">
+                className="card w-96 h-56 bg-white border-2 dark:border-b-slate-700 dark:bg-background text-textmain font-bold font-royal4 p-8 rounded-lg shadow-lg cursor-pointer">
+                <p className="card-title text-3xl mb-2">{flowchart.title}</p>
+                <p className="small-desc text-lg">
                   Nodes: {flowchart.nodes.length}
                 </p>
+                <div className="go-corner">
+                  <div className="go-arrow">→</div>
+                </div>
               </div>
+
             ))}
+            </div>
           </div>
         </div>
       </div>

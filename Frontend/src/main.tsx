@@ -17,6 +17,7 @@ if (!PUBLISHABLE_KEY) {
 const client = new ApolloClient({
   uri: import.meta.env.VITE_GRAPHQL_SERVER_URL,
   cache: new InMemoryCache(),
+  credentials: 'include'
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

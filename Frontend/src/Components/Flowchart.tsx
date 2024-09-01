@@ -88,7 +88,7 @@ const Flowchart: React.FC<FlowchartProps> = ({
       style: baseNodeStyle,
     });
   
-    // Left Side Node (Time Taken)
+    // Left Side Node (Time Taken or resources)
     nodeElements.push({
       id: `${labelNodeId}-left`,  // Unique ID for left side node
       className:" flex h-fit justify-center items-center w-fit bg-white dark:border-b-slate-700 dark:bg-background shadow-2xl border border-zinc-300 p-4",

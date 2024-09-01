@@ -8,6 +8,7 @@ import { connectGraphQL } from "./graphql/graphql.js";
 import { expressMiddleware } from "@apollo/server/express4";
 import { connectDB } from "./db/connectDb.js";
 import { handleWebhook } from "./controllers/webhook.js";
+import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
 
 dotenv.config({ path: "./.env" });
 
@@ -22,9 +23,24 @@ await graphqlServer.start();
 app.use(express.urlencoded({ extended: true }));
 
 // app.use(bodyParser.raw({ type: 'application/json' }));
-app.use(cors({ origin: " * ", credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 // app.use(morgan("dev"));
-app.use("/graphql",express.json(), expressMiddleware(graphqlServer));
+
+app.use(ClerkExpressWithAuth());
+
+app.use(
+  '/graphql',
+  express.json(),
+  expressMiddleware(graphqlServer, {
+    context: async ({ req }:{req:any}) => {
+      // Access the user from the request object populated by Clerk
+      const {userId} = req.auth;
+      console.log("hey",userId); // Adjust based on Clerk's actual implementation
+      return { userId }; // Return user information in context
+    },
+  })
+);
+
 
 app.post(
   '/api/webhook',bodyParser.raw({ type: 'application/json' }),handleWebhook);

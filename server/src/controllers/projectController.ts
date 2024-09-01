@@ -1,5 +1,6 @@
 import { User, ProjectObj } from "../models/User.js";
 import { Types } from "mongoose";
+import ErrorHandler from "../utils/errorHandler.js";
 
 //Query functions
 
@@ -11,12 +12,18 @@ export const getProjectById = async (
   }: {
     clerkUserId: string;
     projectId: Types.ObjectId;
-  }
+  },contextValue: any
 ) => {
+    console.log("hello");
+    console.log("contextvalue",contextValue);
+
+  if (!contextValue.userId) {
+    throw new ErrorHandler(401, "Not authorized to access this project");
+  }
   const user = await User.findOne({ clerkUserId });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new ErrorHandler(404,"User not found");
   }
   const project = user.projects.find(
     (project) =>
@@ -24,7 +31,7 @@ export const getProjectById = async (
   );
 
   if (!project) {
-    throw new Error("Project not found");
+    throw new ErrorHandler(404,"Project not found");
   }
   return project;
 };
@@ -78,7 +85,7 @@ export const getAllProjects = async (): Promise<ProjectWithUserDetails[]> => {
 
     return allProjects;
   } catch (error: any) {
-    throw new Error("Failed to retrieve projects: " + error.message);
+    throw new ErrorHandler(500,"Failed to retrieve projects: " + error.message);
   }
 };
 
@@ -107,8 +114,10 @@ export const createProject = async (
   }
 ) => {
   const user = await User.findOne({ clerkUserId });
+  if (!user) {
+    throw new ErrorHandler(404, "User not found");
+  }
 
-  if (user) {
     const newProject = {
       projectName,
       tagline,
@@ -130,25 +139,27 @@ export const createProject = async (
       const savedProject = user.projects[user.projects.length - 1];
       return savedProject;
     } catch (error: any) {
-      throw new Error("Failed to save the project: " + error.message);
+      throw new ErrorHandler(500,"Failed to save the project: " + error.message);
     }
-  } else {
-    throw new Error("User not found");
-  }
-};
+}
+;
 
 
 ///////////////////////////////////////
 
 export const likeProject = async (
   _: any,
-  { clerkUserId, projectId }: { clerkUserId: string; projectId: Types.ObjectId }
+  { clerkUserId, projectId }: { clerkUserId: string; projectId: Types.ObjectId },contextValue:any
 ) => {
+  const {userId} = contextValue;
+
+  if(userId==null) throw new ErrorHandler(401,"Not authenticated");
+
   // Step 1: Find the user who owns the project
   const user = await User.findOne({ "projects._id": projectId });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new ErrorHandler(404,"User not found");
   }
 
   // Step 2: Find the project in the user's projects
@@ -157,7 +168,7 @@ export const likeProject = async (
   );
 
   if (!project) {
-    throw new Error("Project not found");
+    throw new ErrorHandler(500,"Project not found");
   }
 
   // Step 3: Determine if the user has already liked the project
@@ -182,7 +193,7 @@ export const likeProject = async (
   );
 
   if (!updatedProject) {
-    throw new Error("Project not found after update");
+    throw new ErrorHandler(404,"Project not found after update");
   }
 const updatedProjectDetails = {
   _id: updatedProject._id,

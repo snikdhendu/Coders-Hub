@@ -35,7 +35,7 @@ app.use(
     context: async ({ req }:{req:any}) => {
       // Access the user from the request object populated by Clerk
       const {userId} = req.auth;
-      console.log("hey",userId); // Adjust based on Clerk's actual implementation
+      console.log("hey",req.auth); // Adjust based on Clerk's actual implementation
       return { userId }; // Return user information in context
     },
   })

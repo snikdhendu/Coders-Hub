@@ -215,4 +215,109 @@ const updatedProjectDetails = {
   return updatedProjectDetails;
 };
 
+export const deleteProject = async (
+  _: any,
+  {
+    clerkUserId,
+    projectId,
+  }: {
+    clerkUserId: string;
+    projectId: Types.ObjectId;
+  },
+  contextValue: any
+) => {
+  if (!contextValue.userId) {
+    throw new ErrorHandler(401, "Not authorized to delete this project");
+  }
+
+  const user = await User.findOne({ clerkUserId });
+
+  if (!user) {
+    throw new ErrorHandler(404, "User not found");
+  }
+
+  const projectIndex = user.projects.findIndex(
+    (project) =>
+      (project._id as Types.ObjectId).toString() === projectId.toString()
+  );
+
+  if (projectIndex === -1) {
+    throw new ErrorHandler(404, "Project not found");
+  }
+
+  user.projects.splice(projectIndex, 1);
+
+  try {
+    await user.save();
+    return {
+      success: true,
+      message: "Project deleted successfully",
+    };
+  } catch (error: any) {
+    throw new ErrorHandler(500, "Failed to delete the project: " + error.message);
+  }
+};
+
+export const updateProject = async (
+  _: any,
+  {
+    clerkUserId,
+    projectId,
+    projectName,
+    tagline,
+    description,
+    technologies,
+    githubRepoLink,
+    liveLink,
+    images,
+    logo
+  }: {
+    clerkUserId: string;
+    projectId: Types.ObjectId;
+    projectName?: string;
+    tagline?: string;
+    description?: string;
+    technologies?: string[];
+    githubRepoLink?: string;
+    liveLink?: string;
+    images?: string[];
+    logo?: string;
+  },
+  contextValue: any
+) => {
+  if (!contextValue.userId) {
+    throw new ErrorHandler(401, "Not authorized to update this project");
+  }
+
+  const user = await User.findOne({ clerkUserId });
+
+  if (!user) {
+    throw new ErrorHandler(404, "User not found");
+  }
+
+  const project = user.projects.find(
+    (project) => (project._id as Types.ObjectId).toString() === projectId.toString()
+  );
+
+  if (!project) {
+    throw new ErrorHandler(404, "Project not found");
+  }
+
+  // Update project details
+  if (projectName) project.projectName = projectName;
+  if (tagline) project.tagline = tagline;
+  if (description) project.description = description;
+  if (technologies) project.technologies = technologies;
+  if (githubRepoLink) project.githubRepoLink = githubRepoLink;
+  if (liveLink) project.liveLink = liveLink;
+  if (images) project.images = images;
+  if (logo) project.logo = logo;
+
+  try {
+    await user.save();
+    return project;
+  } catch (error: any) {
+    throw new ErrorHandler(500, "Failed to update the project: " + error.message);
+  }
+};
 

@@ -40,8 +40,16 @@ const Profiles = () => {
     });
 
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (loading) return (
+        <div className="loader flex justify-center items-center h-screen">
+          <div data-glitch="Loading..." className="glitch relative font-bold text-2xl tracking-widest z-10 text-white animate-shift">
+            Loading...
+            <span className="absolute top-0 left-0 opacity-80 text-purple-600 animate-glitch -z-10">{'Loading...'}</span>
+            <span className="absolute top-0 left-0 opacity-80 text-green-500 animate-glitchReverse -z-20">{'Loading...'}</span>
+          </div>
+        </div>
+      );
+      if (error) return <p>Error: {error.message}</p>;
     console.log(profiles[0]?.clerkUserId);
 
     return (

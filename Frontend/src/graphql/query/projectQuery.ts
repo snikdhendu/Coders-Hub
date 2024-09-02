@@ -21,3 +21,19 @@ export const GET_ALL_PROJECTS = gql`
   }
 }
 `;
+
+export const GET_PROJECT_BY_ID = gql`
+  query GetProjectById($id: ID!) {
+    project(id: $id) {
+      _id
+      projectName
+      tagline
+      description
+      technologies
+      githubRepoLink
+      liveLink
+      images
+      logo
+    }
+  }
+`;

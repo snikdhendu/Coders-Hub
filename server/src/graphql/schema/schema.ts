@@ -67,6 +67,12 @@ type UpdateUserResponse {
     msg: String
 }
 
+type DeleteResponse {
+  success: Boolean!
+  message: String
+}
+
+
 
 # Queries
 type Query {
@@ -104,6 +110,25 @@ type Mutation {
 
     LIKE_PROJECT(clerkUserId: String!, projectId: ID!): Project
 
+    DELETE_PROJECT(clerkUserId: String!, projectId: ID!): DeleteResponse
+
+    DELETE_FLOWCHART(
+        clerkUserId: String!,
+        flowchartId: ID!
+    ): DeleteResponse
+
+    UPDATE_PROJECT(
+        clerkUserId: String!
+        projectId: ID!
+        projectName: String
+        tagline: String
+        description: String
+        technologies: [String]
+        githubRepoLink: String
+        liveLink: String
+        images: [String]
+        logo: String
+    ): Project
 }
 
 `

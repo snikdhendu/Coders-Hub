@@ -22,3 +22,19 @@ export const createFlowchart = gql`
     }
   }
 `;
+
+export const deleteFlowchart = gql`
+  #graphql
+  mutation DeleteFlowchartMutation(
+    $clerkUserId: String!
+    $flowchartId: ID!
+  ) {
+    DELETE_FLOWCHART(
+      clerkUserId: $clerkUserId
+      flowchartId: $flowchartId
+    ) {
+      success
+      message
+    }
+  }
+`;

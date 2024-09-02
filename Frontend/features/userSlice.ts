@@ -110,12 +110,22 @@ const userSlice = createSlice({
     setProjects:(state, action: PayloadAction<Project[]>) => {
       state.projects = action.payload;
     },
+    deleteProjects: (state, action: PayloadAction<string>) => {
+      if (state.projects) {
+        state.projects = state.projects.filter(project => project._id !== action.payload);
+      }
+    },
     setFlowcharts:(state, action: PayloadAction<Flowchart[]>) => {
       state.flowcharts = action.payload;
     },
     addFlowchart: (state, action: PayloadAction<Flowchart>) => {
       state.flowcharts?.push(action.payload);
     },
+    deleteFlowchart: (state, action: PayloadAction<string>) => {
+      if (state.flowcharts) {
+          state.flowcharts = state.flowcharts.filter(flowchart => flowchart._id !== action.payload);
+      }
+  },
   },
 });
 
@@ -137,7 +147,9 @@ export const {
   setProjects,
   setTechnology,
   setFlowcharts,
-  addFlowchart
+  addFlowchart,
+  deleteProjects,
+  deleteFlowchart
 } = userSlice.actions;
 
 export default userSlice.reducer;

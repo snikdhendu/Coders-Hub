@@ -219,7 +219,7 @@ const Flowchart: React.FC<FlowchartProps> = ({
 
       if (response.data?.CREATE_FLOWCHART) {
         dispatch(addFlowchartNode(response.data.CREATE_FLOWCHART));
-        navigate(`/dashboard/${user.firstName}`);
+        navigate(`/dashboard/${user.id}`);
       }
     } catch (error) {
       console.error("Failed to save flowchart:", error);

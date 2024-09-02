@@ -79,3 +79,38 @@ export const createFlowchart = async (
       throw new Error("Failed to retrieve flowcharts: " + error.message);
     }
   };
+
+  
+  export const deleteFlowchart = async (
+    _: any,
+    {
+        clerkUserId,
+        flowchartId,
+    }: {
+        clerkUserId: string;
+        flowchartId: Types.ObjectId;
+    }
+) => {
+    const user = await User.findOne({ clerkUserId });
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const flowchartIndex = user.flowcharts.findIndex(
+        (flowchart) => (flowchart._id as Types.ObjectId).toString() === flowchartId.toString()
+    );
+
+    if (flowchartIndex === -1) {
+        throw new Error("Flowchart not found");
+    }
+
+    user.flowcharts.splice(flowchartIndex, 1);
+
+    try {
+        await user.save();
+        return { success: true, message: "Flowchart deleted successfully" };
+    } catch (error: any) {
+        throw new Error("Failed to delete the flowchart: " + error.message);
+    }
+};
